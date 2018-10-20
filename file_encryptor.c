@@ -20,7 +20,7 @@
 
 extern int gDebugParam;
 
-#define batchSize 16
+#define batchSize 128
 #define TIMEOUT_MS  5000    // 5 seconds
 #define MAX_PATH    1024
 // Function qatMemAllocNUMA can only allocate a contiguous memory with size up
@@ -152,10 +152,10 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
                                  char *dst, unsigned int dstLen)
 {
     CpaStatus status = CPA_STATUS_SUCCESS;
-	Cpa8U *pBufferMeta[batchSize] = NULL, *pSrcBuffer[batchSize] = NULL, cnt = 0;
-    CpaBufferList *pBufferList[batchSize] = NULL;
+	Cpa8U *pBufferMeta[batchSize] = {NULL}, *pSrcBuffer[batchSize] = {NULL}, cnt = 0;
+    CpaBufferList *pBufferList[batchSize] = {NULL};
     CpaFlatBuffer *pFlatBuffer = NULL;
-    CpaCySymOpData *pOpData[cnt] = NULL;
+    CpaCySymOpData *pOpData = NULL;
     Cpa32U bufferSize = 256, numBuffers = 1, bufferMetaSize = 0;
     Cpa32U bufferListMemSize =
         sizeof(CpaBufferList) + (numBuffers * sizeof(CpaFlatBuffer));
@@ -181,7 +181,20 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
         status = PHYS_CONTIG_ALLOC(&pSrcBuffer[cnt], bufferSize);
 		cnt++;
     }
+	if (CPA_STATUS_SUCCESS == status){
+		status = OS_MALLOC(&pOpData, sizeof(CpaCySymOpData));
+	}
 	
+	if (CPA_STATUS_SUCCESS == status){
+                        pOpData->sessionCtx = sessionCtx;
+                        pOpData->packetType = CPA_CY_SYM_PACKET_TYPE_FULL;
+                        pOpData->cryptoStartSrcOffsetInBytes = 0;
+                        pOpData->messageLenToCipherInBytes = bufferSize;
+                        pOpData->pIv = NULL;
+		        pOpData->ivLenInBytes = 0;
+
+        }
+
 	while (1) {
 		if (rounds < batchSize)
 			thisBatch = rounds;
@@ -191,7 +204,6 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
 		cnt = 0;
 		while (CPA_STATUS_SUCCESS == status && cnt < thisBatch){
 			memcpy(pSrcBuffer[cnt], pWorkSrc, bufferSize);
-			pWorkSrc += 256;
 			
 			/* increment by sizeof(CpaBufferList) to get at the array of flatbuffers */
 			pFlatBuffer = (CpaFlatBuffer *)(pBufferList[cnt] + 1);
@@ -202,24 +214,17 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
 
 			pFlatBuffer->dataLenInBytes = bufferSize;
 			pFlatBuffer->pData = pSrcBuffer[cnt];
+			pWorkSrc += 256;
+			cnt++;
+		}
 
-			status = OS_MALLOC(&pOpData[cnt], sizeof(CpaCySymOpData));
-			cnt++;
-		}
-		cnt = 0;
-		while (CPA_STATUS_SUCCESS == status && cnt < thisBatch){
-			pOpData[cnt]->sessionCtx = sessionCtx;
-			pOpData[cnt]->packetType = CPA_CY_SYM_PACKET_TYPE_FULL;
-			pOpData[cnt]->cryptoStartSrcOffsetInBytes = 0;
-			pOpData[cnt]->messageLenToCipherInBytes = bufferSize;
-			cnt++;
-		}
+	
 		cnt = 0;
 		COMPLETION_INIT(&complete);
 		while (CPA_STATUS_SUCCESS == status && cnt < thisBatch){
 			RT_PRINT_DBG("cpaCySymPerformOp\n");
 
-			status = cpaCySymPerformOp(cyInstHandle, (void *)&complete, pOpData[cnt], pBufferList[cnt], pBufferList[cnt], NULL);
+			status = cpaCySymPerformOp(cyInstHandle, (void *)&complete, pOpData, pBufferList[cnt], pBufferList[cnt], NULL);
 			
 			cnt++;
 		}
