@@ -156,111 +156,113 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
         sizeof(CpaBufferList) + (numBuffers * sizeof(CpaFlatBuffer));
     Cpa8U *pSrcBuffer = NULL, *pDstBuffer = NULL;	//modified.
     //Cpa8U *pIvBuffer = NULL;	//modified.
-    RT_PRINT("good01\n");
+	char *pWorkSrc = src, *pWorkDst = dst;	//new insertions.
+	int rounds = (srcLen + 255)/256;	//new insertions.
 	struct COMPLETION_STRUCT complete;
 	
 	RT_PRINT_DBG("cpaCyBufferListGetMetaSize\n");
-	RT_PRINT("good02\n");
 	status =
         cpaCyBufferListGetMetaSize(cyInstHandle, numBuffers, &bufferMetaSize);
 		
 	if (CPA_STATUS_SUCCESS == status)
     {
         status = PHYS_CONTIG_ALLOC(&pBufferMeta, bufferMetaSize);
-	RT_PRINT("good03\n");
     }
 	
 	if (CPA_STATUS_SUCCESS == status)
     {
         status = OS_MALLOC(&pBufferList, bufferListMemSize);
-	RT_PRINT("good04\n");
     }
+	
 	if (CPA_STATUS_SUCCESS == status)	//new insertions.
     {
         status = OS_MALLOC(&pBufferList_dst, bufferListMemSize);
-	RT_PRINT("good05\n");
     }
 	
 	if (CPA_STATUS_SUCCESS == status)
     {
         status = PHYS_CONTIG_ALLOC(&pSrcBuffer, 256);	// old value:buffersize
-	status = PHYS_CONTIG_ALLOC(&pDstBuffer, 256);	// new insertions.
-	RT_PRINT("good06\n");
+		status = PHYS_CONTIG_ALLOC(&pDstBuffer, 256);	// new insertions.
     }
 	
 	//AES_ECB doesn't use initialization vector.
-	
-	if (CPA_STATUS_SUCCESS == status)
-    {
-	RT_PRINT("good07\n");
-        /* copy source into buffer */
-        memcpy(pSrcBuffer, src, 256);	//modified.
+	while (rounds--) {
+		if (CPA_STATUS_SUCCESS == status)
+		{
+			/* copy source into buffer */
+			memset(pSrcBuffer, 0, 256);	//new insertions.
+			if (rounds || srcLen%256 == 0)
+				memcpy(pSrcBuffer, pWorkSrc, 256);	//modified.
+			else
+				memcpy(pSrcBuffer, pWorkSrc, srcLen%256);	//new insertions.
+			pWorkSrc += 256;	//new insertions.
+			/* copy IV into buffer */
+			//memcpy(pIvBuffer, sampleCipherIv, sizeof(sampleCipherIv));	//modified.
 
-        /* copy IV into buffer */
-        //memcpy(pIvBuffer, sampleCipherIv, sizeof(sampleCipherIv));	//modified.
+			/* increment by sizeof(CpaBufferList) to get at the
+			 * array of flatbuffers */
+			pFlatBuffer = (CpaFlatBuffer *)(pBufferList + 1);
 
-        /* increment by sizeof(CpaBufferList) to get at the
-         * array of flatbuffers */
-        pFlatBuffer = (CpaFlatBuffer *)(pBufferList + 1);
+			pBufferList->pBuffers = pFlatBuffer;
+			pBufferList->numBuffers = 1;
+			pBufferList->pPrivateMetaData = pBufferMeta;
 
-        pBufferList->pBuffers = pFlatBuffer;
-        pBufferList->numBuffers = 1;
-        pBufferList->pPrivateMetaData = pBufferMeta;
+			pFlatBuffer->dataLenInBytes = bufferSize;
+			pFlatBuffer->pData = pSrcBuffer;
+			
+			pFlatBuffer = (CpaFlatBuffer *)(pBufferList_dst + 1);
 
-        pFlatBuffer->dataLenInBytes = bufferSize;
-        pFlatBuffer->pData = pSrcBuffer;
+			pBufferList_dst->pBuffers = pFlatBuffer;
+			pBufferList_dst->numBuffers = 1;
+			pBufferList_dst->pPrivateMetaData = pBufferMeta;
+
+			pFlatBuffer->dataLenInBytes = bufferSize_dst;
+			pFlatBuffer->pData = pDstBuffer;
+
+			status = OS_MALLOC(&pOpData, sizeof(CpaCySymOpData));
+		}
 		
-		pFlatBuffer = (CpaFlatBuffer *)(pBufferList_dst + 1);
+		if (CPA_STATUS_SUCCESS == status)
+		{
+			/*
+			 * Populate the structure containing the operational data needed
+			 * to run the algorithm:
+			 * - packet type information (the algorithm can operate on a full
+			 *   packet, perform a partial operation and maintain the state or
+			 *   complete the last part of a multi-part operation)
+			 * - the initialization vector and its length
+			 * - the offset in the source buffer
+			 * - the length of the source message
+			 */
+			//<snippet name="opData">
+			pOpData->sessionCtx = sessionCtx;
+			pOpData->packetType = CPA_CY_SYM_PACKET_TYPE_FULL;
+			pOpData->pIv = NULL;	//modified.
+			pOpData->ivLenInBytes = 0;	//modified.
+			pOpData->cryptoStartSrcOffsetInBytes = 0;
+			pOpData->messageLenToCipherInBytes = srcLen;	//modified.
+			//</snippet>
+		}
+		
+		if (CPA_STATUS_SUCCESS == status)
+		{
+			RT_PRINT("cpaCySymPerformOp\n");
 
-        pBufferList_dst->pBuffers = pFlatBuffer;
-        pBufferList_dst->numBuffers = 1;
-        pBufferList_dst->pPrivateMetaData = pBufferMeta;
+			//<snippet name="perfOp">
+			COMPLETION_INIT(&complete);
 
-        pFlatBuffer->dataLenInBytes = bufferSize_dst;
-        pFlatBuffer->pData = pDstBuffer;
-
-        status = OS_MALLOC(&pOpData, sizeof(CpaCySymOpData));
-    }
-	
-	if (CPA_STATUS_SUCCESS == status)
-    {
-	RT_PRINT("good08\n");
-        /*
-         * Populate the structure containing the operational data needed
-         * to run the algorithm:
-         * - packet type information (the algorithm can operate on a full
-         *   packet, perform a partial operation and maintain the state or
-         *   complete the last part of a multi-part operation)
-         * - the initialization vector and its length
-         * - the offset in the source buffer
-         * - the length of the source message
-         */
-        //<snippet name="opData">
-        pOpData->sessionCtx = sessionCtx;
-        pOpData->packetType = CPA_CY_SYM_PACKET_TYPE_FULL;
-        pOpData->pIv = NULL;	//modified.
-        pOpData->ivLenInBytes = 0;	//modified.
-        pOpData->cryptoStartSrcOffsetInBytes = 0;
-        pOpData->messageLenToCipherInBytes = srcLen;	//modified.
-        //</snippet>
-    }
-	
-    if (CPA_STATUS_SUCCESS == status)
-    {
-        RT_PRINT("cpaCySymPerformOp\n");
-
-        //<snippet name="perfOp">
-        COMPLETION_INIT(&complete);
-
-        status = cpaCySymPerformOp(
-            cyInstHandle,
-            (void *)&complete, /* data sent as is to the callback function*/
-            pOpData,           /* operational data struct */
-            pBufferList,       /* source buffer list */
-            pBufferList_dst,       /* same src & dst for an in-place operation*/	//modified.
-            NULL);
-        //</snippet>
-	RT_PRINT("status:%d\n", (int)status);
+			status = cpaCySymPerformOp(
+				cyInstHandle,
+				(void *)&complete, /* data sent as is to the callback function*/
+				pOpData,           /* operational data struct */
+				pBufferList,       /* source buffer list */
+				pBufferList_dst,       /* same src & dst for an in-place operation*/	//modified.
+				NULL);
+			
+			memcpy(pWorkDst, pDstBuffer, 256);	//new insertions.
+			pWorkDst += 256;	// new insertions.
+			//</snippet>
+	}
         if (CPA_STATUS_SUCCESS != status)
         {
             RT_PRINT("cpaCySymPerformOp failed. (status = %d)\n", status);
@@ -384,7 +386,6 @@ CpaStatus qatAes256EcbEnc(char *src, unsigned int srcLen, char *dst,
     RT_PRINT("good00\n");
     // Perform Cipher operation (sync / async / batch, etc.)
     rc = cipherPerformOp(sess->cyInstHandle, sess->ctx, src, srcLen, dst, dstLen);
-    RT_PRINT("rc:%d\n", (int)rc);
     // Wait for inflight requests before free resources
     symSessionWaitForInflightReq(sess->ctx);
 
