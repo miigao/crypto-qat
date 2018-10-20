@@ -136,7 +136,6 @@ static void symCallback(void *pCallbackTag,
                         CpaBoolean verifyResult)
 {
     RT_PRINT_DBG("Callback called with status = %d.\n", status);
-    COMPLETE((struct COMPLETION_STRUCT *)pCallbackTag);
 }
 
 static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
@@ -145,62 +144,37 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
                                  char *dst, unsigned int dstLen)
 {
     CpaStatus status = CPA_STATUS_SUCCESS;
-	Cpa8U *pBufferMeta = NULL;
-    Cpa32U bufferMetaSize = 0;
-    CpaBufferList *pBufferList = NULL, *pBufferList_dst = NULL;	//modified.
+	Cpa8U *pBufferMeta = NULL, *pSrcBuffer = NULL;
+    CpaBufferList *pBufferList = NULL;
     CpaFlatBuffer *pFlatBuffer = NULL;
     CpaCySymOpData *pOpData = NULL;
-    Cpa32U bufferSize = srcLen, bufferSize_dst = dstLen;	//modified.
-    Cpa32U numBuffers = 1;
-    Cpa32U bufferListMemSize =
+    Cpa32U bufferSize = 256, batchSize = 16, numBuffers = 1, bufferMetaSize = 0;
+    Cpa32U rounds = (srcLen + 255)/256, bufferListMemSize =
         sizeof(CpaBufferList) + (numBuffers * sizeof(CpaFlatBuffer));
-    Cpa8U *pSrcBuffer = NULL, *pDstBuffer = NULL;	//modified.
-    //Cpa8U *pIvBuffer = NULL;	//modified.
-	char *pWorkSrc = src, *pWorkDst = dst;	//new insertions.
-	int rounds = (srcLen + 255)/256;	//new insertions.
-	struct COMPLETION_STRUCT complete;
+	
+	char *pWorkSrc = src, *pWorkDst = dst;
 	
 	RT_PRINT_DBG("cpaCyBufferListGetMetaSize\n");
-	status =
-        cpaCyBufferListGetMetaSize(cyInstHandle, numBuffers, &bufferMetaSize);
+	status = cpaCyBufferListGetMetaSize(cyInstHandle, numBuffers, &bufferMetaSize);
 		
-	if (CPA_STATUS_SUCCESS == status)
-    {
+	if (CPA_STATUS_SUCCESS == status){
         status = PHYS_CONTIG_ALLOC(&pBufferMeta, bufferMetaSize);
     }
 	
-	if (CPA_STATUS_SUCCESS == status)
-    {
+	if (CPA_STATUS_SUCCESS == status){
         status = OS_MALLOC(&pBufferList, bufferListMemSize);
     }
 	
-	if (CPA_STATUS_SUCCESS == status)	//new insertions.
-    {
-        status = OS_MALLOC(&pBufferList_dst, bufferListMemSize);
+	if (CPA_STATUS_SUCCESS == status){
+        status = PHYS_CONTIG_ALLOC(&pSrcBuffer, bufferSize);
     }
 	
-	if (CPA_STATUS_SUCCESS == status)
-    {
-        status = PHYS_CONTIG_ALLOC(&pSrcBuffer, 256);	// old value:buffersize
-		//status = PHYS_CONTIG_ALLOC(&pDstBuffer, 256);	// new insertions.
-    }
-	
-	//AES_ECB doesn't use initialization vector.
 	while (rounds--) {
-		if (CPA_STATUS_SUCCESS == status)
-		{
-			/* copy source into buffer */
-			memset(pSrcBuffer, 0, 256);	//new insertions.
-			if (rounds || srcLen%256 == 0)
-				memcpy(pSrcBuffer, pWorkSrc, 256);	//modified.
-			else
-				memcpy(pSrcBuffer, pWorkSrc, srcLen%256);	//new insertions.
-			pWorkSrc += 256;	//new insertions.
-			/* copy IV into buffer */
-			//memcpy(pIvBuffer, sampleCipherIv, sizeof(sampleCipherIv));	//modified.
-
-			/* increment by sizeof(CpaBufferList) to get at the
-			 * array of flatbuffers */
+		if (CPA_STATUS_SUCCESS == status){
+			memcpy(pSrcBuffer, pWorkSrc, bufferSize);
+			pWorkSrc += 256;
+			
+			/* increment by sizeof(CpaBufferList) to get at the array of flatbuffers */
 			pFlatBuffer = (CpaFlatBuffer *)(pBufferList + 1);
 
 			pBufferList->pBuffers = pFlatBuffer;
@@ -209,78 +183,28 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
 
 			pFlatBuffer->dataLenInBytes = bufferSize;
 			pFlatBuffer->pData = pSrcBuffer;
-			
-			pFlatBuffer = (CpaFlatBuffer *)(pBufferList_dst + 1);
-
-			pBufferList_dst->pBuffers = pFlatBuffer;
-			pBufferList_dst->numBuffers = 1;
-			pBufferList_dst->pPrivateMetaData = pBufferMeta;
-
-			pFlatBuffer->dataLenInBytes = bufferSize_dst;
-			pFlatBuffer->pData = pDstBuffer;
 
 			status = OS_MALLOC(&pOpData, sizeof(CpaCySymOpData));
 		}
 		
-		if (CPA_STATUS_SUCCESS == status)
-		{
-			/*
-			 * Populate the structure containing the operational data needed
-			 * to run the algorithm:
-			 * - packet type information (the algorithm can operate on a full
-			 *   packet, perform a partial operation and maintain the state or
-			 *   complete the last part of a multi-part operation)
-			 * - the initialization vector and its length
-			 * - the offset in the source buffer
-			 * - the length of the source message
-			 */
-			//<snippet name="opData">
+		if (CPA_STATUS_SUCCESS == status){
 			pOpData->sessionCtx = sessionCtx;
 			pOpData->packetType = CPA_CY_SYM_PACKET_TYPE_FULL;
-			pOpData->pIv = NULL;	//modified.
-			pOpData->ivLenInBytes = 0;	//modified.
 			pOpData->cryptoStartSrcOffsetInBytes = 0;
-			pOpData->messageLenToCipherInBytes = srcLen;	//modified.
-			//</snippet>
+			pOpData->messageLenToCipherInBytes = bufferSize;
 		}
 		
-		if (CPA_STATUS_SUCCESS == status)
-		{
+		if (CPA_STATUS_SUCCESS == status){
 			RT_PRINT_DBG("cpaCySymPerformOp\n");
 
-			//<snippet name="perfOp">
-			COMPLETION_INIT(&complete);
-
-			status = cpaCySymPerformOp(
-				cyInstHandle,
-				(void *)&complete, /* data sent as is to the callback function*/
-				pOpData,           /* operational data struct */
-				pBufferList,       /* source buffer list */
-				pBufferList,       /* same src & dst for an in-place operation*/	//modified.
-				NULL);
+			status = cpaCySymPerformOp(cyInstHandle, NULL, pOpData, pBufferList, pBufferList, NULL);
 			
-			memcpy(pWorkDst, pSrcBuffer, 256);	//new insertions.
-			pWorkDst += 256;	// new insertions.
-			//</snippet>
-	}
-        if (CPA_STATUS_SUCCESS != status)
-        {
+			memcpy(pWorkDst, pSrcBuffer, bufferSize);
+			pWorkDst += 256;
+		}
+		
+        if (CPA_STATUS_SUCCESS != status){
             RT_PRINT("cpaCySymPerformOp failed. (status = %d)\n", status);
-        }
-
-        /*
-         * We now wait until the completion of the operation.  This uses a macro
-         * which can be defined differently for different OSes.
-         */
-        if (CPA_STATUS_SUCCESS == status)
-        {
-            //<snippet name="completion">
-            if (!COMPLETION_WAIT(&complete, TIMEOUT_MS))
-            {
-                PRINT_ERR("timeout or interruption in cpaCySymPerformOp\n");
-                status = CPA_STATUS_FAIL;
-            }
-            //</snippet>
         }
     }
 	
@@ -341,7 +265,7 @@ unlock:
     // Populate the session setup structure for the operation required
     // TODO #1: please fillup the following properties in sessionSetupData
     // for AES-256-ECB encrypt/decrypt operation:
-    sessionSetupData.sessionPriority = CPA_CY_PRIORITY_NORMAL;	// maybe you can try CPA_CY_PRIORITY_HIGH
+    sessionSetupData.sessionPriority = CPA_CY_PRIORITY_NORMAL;	// backup: CPA_CY_PRIORITY_HIGH
     sessionSetupData.symOperation = CPA_CY_SYM_OP_CIPHER;
     sessionSetupData.cipherSetupData.cipherAlgorithm = CPA_CY_SYM_CIPHER_AES_ECB;
     sessionSetupData.cipherSetupData.pCipherKey = sampleCipherKey;
