@@ -18,6 +18,8 @@
 #include "icp_sal_user.h"
 #include "rt_utils.h"
 
+extern int gDebugParam;
+
 #define TIMEOUT_MS  5000    // 5 seconds
 #define MAX_PATH    1024
 // Function qatMemAllocNUMA can only allocate a contiguous memory with size up
@@ -152,41 +154,47 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
     Cpa32U numBuffers = 1;
     Cpa32U bufferListMemSize =
         sizeof(CpaBufferList) + (numBuffers * sizeof(CpaFlatBuffer));
-    Cpa8U *pSrcBuffer = src, *pDstBuffer = dst;	//modified.
+    Cpa8U *pSrcBuffer = NULL, *pDstBuffer = NULL;	//modified.
     //Cpa8U *pIvBuffer = NULL;	//modified.
-    
+    RT_PRINT("good01\n");
 	struct COMPLETION_STRUCT complete;
 	
-	PRINT_DBG("cpaCyBufferListGetMetaSize\n");
-	
+	RT_PRINT_DBG("cpaCyBufferListGetMetaSize\n");
+	RT_PRINT("good02\n");
 	status =
         cpaCyBufferListGetMetaSize(cyInstHandle, numBuffers, &bufferMetaSize);
 		
 	if (CPA_STATUS_SUCCESS == status)
     {
         status = PHYS_CONTIG_ALLOC(&pBufferMeta, bufferMetaSize);
+	RT_PRINT("good03\n");
     }
 	
 	if (CPA_STATUS_SUCCESS == status)
     {
         status = OS_MALLOC(&pBufferList, bufferListMemSize);
+	RT_PRINT("good04\n");
     }
 	if (CPA_STATUS_SUCCESS == status)	//new insertions.
     {
         status = OS_MALLOC(&pBufferList_dst, bufferListMemSize);
+	RT_PRINT("good05\n");
     }
-	/*
+	
 	if (CPA_STATUS_SUCCESS == status)
     {
-        status = PHYS_CONTIG_ALLOC(&pSrcBuffer, bufferSize);
+        status = PHYS_CONTIG_ALLOC(&pSrcBuffer, 256);	// old value:buffersize
+	status = PHYS_CONTIG_ALLOC(&pDstBuffer, 256);	// new insertions.
+	RT_PRINT("good06\n");
     }
-	*/
+	
 	//AES_ECB doesn't use initialization vector.
 	
 	if (CPA_STATUS_SUCCESS == status)
     {
+	RT_PRINT("good07\n");
         /* copy source into buffer */
-        //memcpy(pSrcBuffer, src, srcLen);	//modified.
+        memcpy(pSrcBuffer, src, 256);	//modified.
 
         /* copy IV into buffer */
         //memcpy(pIvBuffer, sampleCipherIv, sizeof(sampleCipherIv));	//modified.
@@ -216,6 +224,7 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
 	
 	if (CPA_STATUS_SUCCESS == status)
     {
+	RT_PRINT("good08\n");
         /*
          * Populate the structure containing the operational data needed
          * to run the algorithm:
@@ -238,7 +247,7 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
 	
     if (CPA_STATUS_SUCCESS == status)
     {
-        PRINT_DBG("cpaCySymPerformOp\n");
+        RT_PRINT("cpaCySymPerformOp\n");
 
         //<snippet name="perfOp">
         COMPLETION_INIT(&complete);
@@ -251,10 +260,10 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
             pBufferList_dst,       /* same src & dst for an in-place operation*/	//modified.
             NULL);
         //</snippet>
-
+	RT_PRINT("status:%d\n", (int)status);
         if (CPA_STATUS_SUCCESS != status)
         {
-            PRINT_ERR("cpaCySymPerformOp failed. (status = %d)\n", status);
+            RT_PRINT("cpaCySymPerformOp failed. (status = %d)\n", status);
         }
 
         /*
@@ -365,16 +374,17 @@ void qatAes256EcbSessionFree(QatAes256EcbSession *sess)
 CpaStatus qatAes256EcbEnc(char *src, unsigned int srcLen, char *dst,
         unsigned int dstLen, int isEnc)
 {
+    //extern int gDebugParam;
     CpaStatus rc = CPA_STATUS_SUCCESS;
     QatAes256EcbSession *sess = calloc(1, sizeof(QatAes256EcbSession));
     CpaCySymStats64 symStats = {0};
 
     // Acquire a QAT_CY instance & initialize a QAT_CY_SYM_AES_256_ECB session
     qatAes256EcbSessionInit(sess, isEnc);
-
+    RT_PRINT("good00\n");
     // Perform Cipher operation (sync / async / batch, etc.)
     rc = cipherPerformOp(sess->cyInstHandle, sess->ctx, src, srcLen, dst, dstLen);
-
+    RT_PRINT("rc:%d\n", (int)rc);
     // Wait for inflight requests before free resources
     symSessionWaitForInflightReq(sess->ctx);
 
@@ -382,7 +392,6 @@ CpaStatus qatAes256EcbEnc(char *src, unsigned int srcLen, char *dst,
     CHECK(cpaCySymQueryStats64(sess->cyInstHandle, &symStats));
     RT_PRINT("Number of symmetic operation completed: %llu\n",
             (unsigned long long)symStats.numSymOpCompleted);
-
     qatAes256EcbSessionFree(sess);
 
     return rc;
