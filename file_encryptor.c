@@ -182,7 +182,7 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
 	if (CPA_STATUS_SUCCESS == status)
     {
         status = PHYS_CONTIG_ALLOC(&pSrcBuffer, 256);	// old value:buffersize
-		status = PHYS_CONTIG_ALLOC(&pDstBuffer, 256);	// new insertions.
+		//status = PHYS_CONTIG_ALLOC(&pDstBuffer, 256);	// new insertions.
     }
 	
 	//AES_ECB doesn't use initialization vector.
@@ -246,7 +246,7 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
 		
 		if (CPA_STATUS_SUCCESS == status)
 		{
-			RT_PRINT("cpaCySymPerformOp\n");
+			RT_PRINT_DBG("cpaCySymPerformOp\n");
 
 			//<snippet name="perfOp">
 			COMPLETION_INIT(&complete);
@@ -256,10 +256,10 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
 				(void *)&complete, /* data sent as is to the callback function*/
 				pOpData,           /* operational data struct */
 				pBufferList,       /* source buffer list */
-				pBufferList_dst,       /* same src & dst for an in-place operation*/	//modified.
+				pBufferList,       /* same src & dst for an in-place operation*/	//modified.
 				NULL);
 			
-			memcpy(pWorkDst, pDstBuffer, 256);	//new insertions.
+			memcpy(pWorkDst, pSrcBuffer, 256);	//new insertions.
 			pWorkDst += 256;	// new insertions.
 			//</snippet>
 	}
@@ -383,7 +383,6 @@ CpaStatus qatAes256EcbEnc(char *src, unsigned int srcLen, char *dst,
 
     // Acquire a QAT_CY instance & initialize a QAT_CY_SYM_AES_256_ECB session
     qatAes256EcbSessionInit(sess, isEnc);
-    RT_PRINT("good00\n");
     // Perform Cipher operation (sync / async / batch, etc.)
     rc = cipherPerformOp(sess->cyInstHandle, sess->ctx, src, srcLen, dst, dstLen);
     // Wait for inflight requests before free resources
