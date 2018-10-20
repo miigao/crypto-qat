@@ -20,6 +20,7 @@
 
 extern int gDebugParam;
 
+#define batchSize 16
 #define TIMEOUT_MS  5000    // 5 seconds
 #define MAX_PATH    1024
 // Function qatMemAllocNUMA can only allocate a contiguous memory with size up
@@ -81,6 +82,7 @@ static Cpa8U sampleCipherKey[] = {
     0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37,
     0x30, 0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37,};
 
+static int thisBatch = 0;
 static RunTime *gRunTimeHead = NULL;
 static pthread_mutex_t gMutex = PTHREAD_MUTEX_INITIALIZER;
 
@@ -135,7 +137,13 @@ static void symCallback(void *pCallbackTag,
                         CpaBufferList *pDstBuffer,
                         CpaBoolean verifyResult)
 {
+	static int callBackCnt = 0;
     RT_PRINT_DBG("Callback called with status = %d.\n", status);
+	callBackCnt++;
+	if (callBackCnt == thisBatch){
+		COMPLETE((struct COMPLETION_STRUCT *)pCallbackTag);
+		callBackCnt = 0;
+	}
 }
 
 static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
@@ -144,68 +152,98 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
                                  char *dst, unsigned int dstLen)
 {
     CpaStatus status = CPA_STATUS_SUCCESS;
-	Cpa8U *pBufferMeta = NULL, *pSrcBuffer = NULL;
-    CpaBufferList *pBufferList = NULL;
+	Cpa8U *pBufferMeta[batchSize] = NULL, *pSrcBuffer[batchSize] = NULL, cnt = 0;
+    CpaBufferList *pBufferList[batchSize] = NULL;
     CpaFlatBuffer *pFlatBuffer = NULL;
-    CpaCySymOpData *pOpData = NULL;
-    Cpa32U bufferSize = 256, batchSize = 16, numBuffers = 1, bufferMetaSize = 0;
-    Cpa32U rounds = (srcLen + 255)/256, bufferListMemSize =
+    CpaCySymOpData *pOpData[cnt] = NULL;
+    Cpa32U bufferSize = 256, numBuffers = 1, bufferMetaSize = 0;
+    Cpa32U bufferListMemSize =
         sizeof(CpaBufferList) + (numBuffers * sizeof(CpaFlatBuffer));
-	
+	Cpa32U rounds = (srcLen + 255)/256;
 	char *pWorkSrc = src, *pWorkDst = dst;
+	
+	struct COMPLETION_STRUCT complete;
 	
 	RT_PRINT_DBG("cpaCyBufferListGetMetaSize\n");
 	status = cpaCyBufferListGetMetaSize(cyInstHandle, numBuffers, &bufferMetaSize);
-		
-	if (CPA_STATUS_SUCCESS == status){
-        status = PHYS_CONTIG_ALLOC(&pBufferMeta, bufferMetaSize);
+	cnt = 0;
+	while (CPA_STATUS_SUCCESS == status && cnt < batchSize){
+        status = PHYS_CONTIG_ALLOC(&pBufferMeta[cnt], bufferMetaSize);
+		cnt++;
+    }
+	cnt = 0;
+	while (CPA_STATUS_SUCCESS == status && cnt < batchSize){
+        status = OS_MALLOC(&pBufferList[cnt], bufferListMemSize);
+		cnt++;
+    }
+	cnt = 0;
+	while (CPA_STATUS_SUCCESS == status && cnt < batchSize){
+        status = PHYS_CONTIG_ALLOC(&pSrcBuffer[cnt], bufferSize);
+		cnt++;
     }
 	
-	if (CPA_STATUS_SUCCESS == status){
-        status = OS_MALLOC(&pBufferList, bufferListMemSize);
-    }
-	
-	if (CPA_STATUS_SUCCESS == status){
-        status = PHYS_CONTIG_ALLOC(&pSrcBuffer, bufferSize);
-    }
-	
-	while (rounds--) {
-		if (CPA_STATUS_SUCCESS == status){
-			memcpy(pSrcBuffer, pWorkSrc, bufferSize);
+	while (1) {
+		if (rounds < batchSize)
+			thisBatch = rounds;
+		else
+			thisBatch = batchSize;
+		rounds -= thisBatch;
+		cnt = 0;
+		while (CPA_STATUS_SUCCESS == status && cnt < thisBatch){
+			memcpy(pSrcBuffer[cnt], pWorkSrc, bufferSize);
 			pWorkSrc += 256;
 			
 			/* increment by sizeof(CpaBufferList) to get at the array of flatbuffers */
-			pFlatBuffer = (CpaFlatBuffer *)(pBufferList + 1);
+			pFlatBuffer = (CpaFlatBuffer *)(pBufferList[cnt] + 1);
 
-			pBufferList->pBuffers = pFlatBuffer;
-			pBufferList->numBuffers = 1;
-			pBufferList->pPrivateMetaData = pBufferMeta;
+			pBufferList[cnt]->pBuffers = pFlatBuffer;
+			pBufferList[cnt]->numBuffers = 1;
+			pBufferList[cnt]->pPrivateMetaData = pBufferMeta[cnt];
 
 			pFlatBuffer->dataLenInBytes = bufferSize;
-			pFlatBuffer->pData = pSrcBuffer;
+			pFlatBuffer->pData = pSrcBuffer[cnt];
 
-			status = OS_MALLOC(&pOpData, sizeof(CpaCySymOpData));
+			status = OS_MALLOC(&pOpData[cnt], sizeof(CpaCySymOpData));
+			cnt++;
 		}
-		
-		if (CPA_STATUS_SUCCESS == status){
-			pOpData->sessionCtx = sessionCtx;
-			pOpData->packetType = CPA_CY_SYM_PACKET_TYPE_FULL;
-			pOpData->cryptoStartSrcOffsetInBytes = 0;
-			pOpData->messageLenToCipherInBytes = bufferSize;
+		cnt = 0;
+		while (CPA_STATUS_SUCCESS == status && cnt < thisBatch){
+			pOpData[cnt]->sessionCtx = sessionCtx;
+			pOpData[cnt]->packetType = CPA_CY_SYM_PACKET_TYPE_FULL;
+			pOpData[cnt]->cryptoStartSrcOffsetInBytes = 0;
+			pOpData[cnt]->messageLenToCipherInBytes = bufferSize;
+			cnt++;
 		}
-		
-		if (CPA_STATUS_SUCCESS == status){
+		cnt = 0;
+		COMPLETION_INIT(&complete);
+		while (CPA_STATUS_SUCCESS == status && cnt < thisBatch){
 			RT_PRINT_DBG("cpaCySymPerformOp\n");
 
-			status = cpaCySymPerformOp(cyInstHandle, NULL, pOpData, pBufferList, pBufferList, NULL);
+			status = cpaCySymPerformOp(cyInstHandle, (void *)&complete, pOpData[cnt], pBufferList[cnt], pBufferList[cnt], NULL);
 			
-			memcpy(pWorkDst, pSrcBuffer, bufferSize);
-			pWorkDst += 256;
+			cnt++;
 		}
 		
         if (CPA_STATUS_SUCCESS != status){
             RT_PRINT("cpaCySymPerformOp failed. (status = %d)\n", status);
         }
+		
+		if (CPA_STATUS_SUCCESS == status){
+            if (!COMPLETION_WAIT(&complete, TIMEOUT_MS)){
+                PRINT_ERR("timeout or interruption in cpaCySymPerformOp\n");
+                status = CPA_STATUS_FAIL;
+            }
+			else {
+				cnt = 0;
+				while (cnt < thisBatch) {
+					memcpy(pWorkDst, pSrcBuffer[cnt], bufferSize);
+					pWorkDst += 256; cnt++;
+				}
+			}
+        }
+		
+		if (rounds == 0)
+			break;
     }
 	
     return status;
