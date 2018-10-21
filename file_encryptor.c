@@ -166,34 +166,31 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
 	
 	RT_PRINT_DBG("cpaCyBufferListGetMetaSize\n");
 	status = cpaCyBufferListGetMetaSize(cyInstHandle, numBuffers, &bufferMetaSize);
-	cnt = 0;
-	while (CPA_STATUS_SUCCESS == status && cnt < batchSize){
+	
+	for (cnt = 0; CPA_STATUS_SUCCESS == status && cnt < batchSize; cnt++){
         status = PHYS_CONTIG_ALLOC(&pBufferMeta[cnt], bufferMetaSize);
-		cnt++;
     }
-	cnt = 0;
-	while (CPA_STATUS_SUCCESS == status && cnt < batchSize){
+	
+	for (cnt = 0; CPA_STATUS_SUCCESS == status && cnt < batchSize; cnt++){
         status = OS_MALLOC(&pBufferList[cnt], bufferListMemSize);
-		cnt++;
     }
-	cnt = 0;
-	while (CPA_STATUS_SUCCESS == status && cnt < batchSize){
+	
+	for (cnt = 0; CPA_STATUS_SUCCESS == status && cnt < batchSize; cnt++){
         status = PHYS_CONTIG_ALLOC(&pSrcBuffer[cnt], bufferSize);
-		cnt++;
     }
+	
 	if (CPA_STATUS_SUCCESS == status){
 		status = OS_MALLOC(&pOpData, sizeof(CpaCySymOpData));
 	}
 	
 	if (CPA_STATUS_SUCCESS == status){
-                        pOpData->sessionCtx = sessionCtx;
-                        pOpData->packetType = CPA_CY_SYM_PACKET_TYPE_FULL;
-                        pOpData->cryptoStartSrcOffsetInBytes = 0;
-                        pOpData->messageLenToCipherInBytes = bufferSize;
-                        pOpData->pIv = NULL;
-		        pOpData->ivLenInBytes = 0;
-
-        }
+        pOpData->sessionCtx = sessionCtx;
+        pOpData->packetType = CPA_CY_SYM_PACKET_TYPE_FULL;
+        pOpData->cryptoStartSrcOffsetInBytes = 0;
+        pOpData->messageLenToCipherInBytes = bufferSize;
+        pOpData->pIv = NULL;
+		pOpData->ivLenInBytes = 0;
+    }
 
 	while (1) {
 		if (rounds < batchSize)
@@ -201,10 +198,12 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
 		else
 			thisBatch = batchSize;
 		rounds -= thisBatch;
-		cnt = 0;
-		while (CPA_STATUS_SUCCESS == status && cnt < thisBatch){
+		
+		COMPLETION_INIT(&complete);
+		
+		for (cnt = 0; CPA_STATUS_SUCCESS == status && cnt < thisBatch; cnt++){
 			memcpy(pSrcBuffer[cnt], pWorkSrc, bufferSize);
-			
+			pWorkSrc += 256;
 			/* increment by sizeof(CpaBufferList) to get at the array of flatbuffers */
 			pFlatBuffer = (CpaFlatBuffer *)(pBufferList[cnt] + 1);
 
@@ -214,19 +213,9 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
 
 			pFlatBuffer->dataLenInBytes = bufferSize;
 			pFlatBuffer->pData = pSrcBuffer[cnt];
-			pWorkSrc += 256;
-			cnt++;
-		}
-
-	
-		cnt = 0;
-		COMPLETION_INIT(&complete);
-		while (CPA_STATUS_SUCCESS == status && cnt < thisBatch){
+		
 			RT_PRINT_DBG("cpaCySymPerformOp\n");
-
 			status = cpaCySymPerformOp(cyInstHandle, (void *)&complete, pOpData, pBufferList[cnt], pBufferList[cnt], NULL);
-			
-			cnt++;
 		}
 		
         if (CPA_STATUS_SUCCESS != status){
@@ -239,16 +228,14 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
                 status = CPA_STATUS_FAIL;
             }
 			else {
-				cnt = 0;
-				while (cnt < thisBatch) {
+				for (cnt = 0; cnt < thisBatch; cnt++) {
 					memcpy(pWorkDst, pSrcBuffer[cnt], bufferSize);
-					pWorkDst += 256; cnt++;
+					pWorkDst += 256;
 				}
 			}
         }
 		
-		if (rounds == 0)
-			break;
+		if (rounds == 0) break;
     }
 	
     return status;
