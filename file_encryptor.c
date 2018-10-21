@@ -17,10 +17,11 @@
 #include "cpa_sample_utils.h"
 #include "icp_sal_user.h"
 #include "rt_utils.h"
+#include "icp_sal_poll.h"
 
 extern int gDebugParam;
 
-#define batchSize 128
+#define batchSize	128
 #define TIMEOUT_MS  5000    // 5 seconds
 #define MAX_PATH    1024
 // Function qatMemAllocNUMA can only allocate a contiguous memory with size up
@@ -30,6 +31,7 @@ extern int gDebugParam;
 // The following definition refers to /etc/dh895xcc_dev0.conf: SSL:
 #define MAX_INSTANCES   8
 #define MAX_THREADS     MAX_INSTANCES
+#define commentout	RT_PRINT_DBG
 
 typedef struct {
     int isEnc;
@@ -138,10 +140,11 @@ static void symCallback(void *pCallbackTag,
                         CpaBoolean verifyResult)
 {
 	static int callBackCnt = 0;
-    RT_PRINT_DBG("Callback called with status = %d.\n", status);
+	RT_PRINT_DBG("Callback called with status = %d.\n", status);
+	commentout("callBackCnt = %d.\n", callBackCnt);
 	callBackCnt++;
 	if (callBackCnt == thisBatch){
-		COMPLETE((struct COMPLETION_STRUCT *)pCallbackTag);
+		//COMPLETE((struct COMPLETION_STRUCT *)pCallbackTag);
 		callBackCnt = 0;
 	}
 }
@@ -199,7 +202,7 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
 			thisBatch = batchSize;
 		rounds -= thisBatch;
 		
-		COMPLETION_INIT(&complete);
+		//COMPLETION_INIT(&complete);
 		
 		for (cnt = 0; CPA_STATUS_SUCCESS == status && cnt < thisBatch; cnt++){
 			memcpy(pSrcBuffer[cnt], pWorkSrc, bufferSize);
@@ -215,30 +218,43 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
 			pFlatBuffer->pData = pSrcBuffer[cnt];
 		
 			RT_PRINT_DBG("cpaCySymPerformOp\n");
+			commentout("cnt = %d.\n", cnt);
 			status = cpaCySymPerformOp(cyInstHandle, (void *)&complete, pOpData, pBufferList[cnt], pBufferList[cnt], NULL);
+			if (cnt%16 == 15)
+				icp_sal_CyPollInstance (cyInstHandle, 0);
+		}
+		icp_sal_CyPollInstance (cyInstHandle, 0);
+		if (CPA_STATUS_SUCCESS != status){
+			RT_PRINT("cpaCySymPerformOp failed. (status = %d)\n", status);
 		}
 		
-        if (CPA_STATUS_SUCCESS != status){
-            RT_PRINT("cpaCySymPerformOp failed. (status = %d)\n", status);
-        }
-		
 		if (CPA_STATUS_SUCCESS == status){
-            if (!COMPLETION_WAIT(&complete, TIMEOUT_MS)){
-                PRINT_ERR("timeout or interruption in cpaCySymPerformOp\n");
-                status = CPA_STATUS_FAIL;
-            }
+			//if (!COMPLETION_WAIT(&complete, TIMEOUT_MS)){
+			if (0){
+				PRINT_ERR("timeout or interruption in cpaCySymPerformOp\n");
+				status = CPA_STATUS_FAIL;
+			}
 			else {
 				for (cnt = 0; cnt < thisBatch; cnt++) {
+					commentout("copy to dst:%d.\n", cnt);
 					memcpy(pWorkDst, pSrcBuffer[cnt], bufferSize);
 					pWorkDst += 256;
 				}
 			}
-        }
+		}
 		
 		if (rounds == 0) break;
-    }
+	}
 	
-    return status;
+	for (cnt = 0; CPA_STATUS_SUCCESS == status && cnt < batchSize; cnt++){
+		PHYS_CONTIG_FREE(pSrcBuffer[cnt]);
+		OS_FREE(pBufferList[cnt]);
+		PHYS_CONTIG_FREE(pBufferMeta[cnt]);
+	}
+	OS_FREE(pOpData);
+	COMPLETION_DESTROY(&complete);
+	
+	return status;
 }
 
 // It's thread-safe.
