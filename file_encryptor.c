@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <getopt.h>
 #include <string.h>
@@ -150,10 +149,10 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
     CpaBufferList *pBufferList[batchSize] = {NULL};
     CpaFlatBuffer *pFlatBuffer = NULL;
     CpaCySymOpData *pOpData = NULL;
-    Cpa32U bufferSize = 256, numBuffers = 1, bufferMetaSize = 0, thisBatch = 0;
+    Cpa32U bufferSize = 32, numBuffers = 1, bufferMetaSize = 0;
     Cpa32U bufferListMemSize =
         sizeof(CpaBufferList) + (numBuffers * sizeof(CpaFlatBuffer));
-	Cpa32U rounds = (srcLen + 255)/256;
+	Cpa32U rounds = srcLen/32;
 	char *pWorkSrc = src, *pWorkDst = dst;
 	
 	RT_PRINT_DBG("cpaCyBufferListGetMetaSize\n");
@@ -185,15 +184,11 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
     }
 
 	while (1) {
-		if (rounds < batchSize)
-			thisBatch = rounds;
-		else
-			thisBatch = batchSize;
-		rounds -= thisBatch;
+		rounds -= batchSize;
 		
-		for (cnt = 0; CPA_STATUS_SUCCESS == status && cnt < thisBatch; cnt++){
+		for (cnt = 0; CPA_STATUS_SUCCESS == status && cnt < batchSize; cnt++){
 			memcpy(pSrcBuffer[cnt], pWorkSrc, bufferSize);
-			pWorkSrc += 256;
+			pWorkSrc += 32;
 			/* increment by sizeof(CpaBufferList) to get at the array of flatbuffers */
 			pFlatBuffer = (CpaFlatBuffer *)(pBufferList[cnt] + 1);
 
@@ -221,10 +216,10 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
 		}
 		
 		if (CPA_STATUS_SUCCESS == status){
-			for (cnt = 0; cnt < thisBatch; cnt++) {
+			for (cnt = 0; cnt < batchSize; cnt++) {
 				commentout("copy to dst:%d.\n", cnt);
 				memcpy(pWorkDst, pSrcBuffer[cnt], bufferSize);
-				pWorkDst += 256;
+				pWorkDst += 32;
 			}
 		}
 		
