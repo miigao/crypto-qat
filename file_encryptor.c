@@ -31,6 +31,11 @@
 #define commentout	RT_PRINT_DBG
 
 typedef struct {
+	int ok;
+	int cnt;
+}callBackArgs;
+
+typedef struct {
     int isEnc;
     int nrThread;
     char fileToEncrypt[MAX_PATH];
@@ -135,7 +140,14 @@ static void symCallback(void *pCallbackTag,
                         CpaBufferList *pDstBuffer,
                         CpaBoolean verifyResult)
 {
+	static int callBackCnt = 0;
+	callBackArgs *myArgs = (callBackArgs *)pCallbackTag;
 	RT_PRINT_DBG("Callback called with status = %d.\n", status);
+	callBackCnt++;
+	if (callBackCnt == (*myArgs).cnt){
+		(*myArgs).ok = 1;
+		callBackCnt = 0;
+	}
 	commentout("synCallback.\n");
 }
 
@@ -144,30 +156,32 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
                                  char *src, unsigned int srcLen,
                                  char *dst, unsigned int dstLen)
 {
-    CpaStatus status = CPA_STATUS_SUCCESS;
-	Cpa8U *pBufferMeta[batchSize] = {NULL}, *pSrcBuffer[batchSize] = {NULL}, cnt = 0;
-    CpaBufferList *pBufferList[batchSize] = {NULL};
-    CpaFlatBuffer *pFlatBuffer = NULL;
-    CpaCySymOpData *pOpData = NULL;
-    Cpa32U bufferSize = 32, numBuffers = 1, bufferMetaSize = 0;
-    Cpa32U bufferListMemSize =
-        sizeof(CpaBufferList) + (numBuffers * sizeof(CpaFlatBuffer));
-	Cpa32U rounds = srcLen/32;
-	char *pWorkSrc = src, *pWorkDst = dst;
+	CpaStatus status = CPA_STATUS_SUCCESS;
+	Cpa32U numBuffers = 1, bufferMetaSize, thisBatch, cnt, bufferSize = 4096, rounds;
+	Cpa8U *pBufferMeta[batchSize] = {NULL}, *pSrcBuffer[batchSize] = {NULL};
+	CpaBufferList *pBufferList[batchSize] = {NULL};
+	CpaFlatBuffer *pFlatBuffer = NULL;
+	CpaCySymOpData *pOpData = NULL;
 	
-	RT_PRINT_DBG("cpaCyBufferListGetMetaSize\n");
+	Cpa32U bufferListMemSize =
+		sizeof(CpaBufferList) + (numBuffers * sizeof(CpaFlatBuffer));
+	
+	char *pWorkSrc = src, *pWorkDst = dst;
+	callBackArgs myArgs;
+	rounds = (srcLen + bufferSize - 1)/bufferSize;
+	
 	status = cpaCyBufferListGetMetaSize(cyInstHandle, numBuffers, &bufferMetaSize);
 	
 	for (cnt = 0; CPA_STATUS_SUCCESS == status && cnt < batchSize; cnt++){
-        status = PHYS_CONTIG_ALLOC(&pBufferMeta[cnt], bufferMetaSize);
+		status = PHYS_CONTIG_ALLOC(&pBufferMeta[cnt], bufferMetaSize);
     }
 	
 	for (cnt = 0; CPA_STATUS_SUCCESS == status && cnt < batchSize; cnt++){
-        status = OS_MALLOC(&pBufferList[cnt], bufferListMemSize);
+		status = OS_MALLOC(&pBufferList[cnt], bufferListMemSize);
     }
 	
 	for (cnt = 0; CPA_STATUS_SUCCESS == status && cnt < batchSize; cnt++){
-        status = PHYS_CONTIG_ALLOC(&pSrcBuffer[cnt], bufferSize);
+		status = PHYS_CONTIG_ALLOC(&pSrcBuffer[cnt], bufferSize);
     }
 	
 	if (CPA_STATUS_SUCCESS == status){
@@ -175,40 +189,44 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
 	}
 	
 	if (CPA_STATUS_SUCCESS == status){
-        pOpData->sessionCtx = sessionCtx;
-        pOpData->packetType = CPA_CY_SYM_PACKET_TYPE_FULL;
-        pOpData->cryptoStartSrcOffsetInBytes = 0;
-        pOpData->messageLenToCipherInBytes = bufferSize;
-        pOpData->pIv = NULL;
+		pOpData->sessionCtx = sessionCtx;
+		pOpData->packetType = CPA_CY_SYM_PACKET_TYPE_FULL;
+		pOpData->cryptoStartSrcOffsetInBytes = 0;
+		pOpData->messageLenToCipherInBytes = bufferSize;
+		pOpData->pIv = NULL;
 		pOpData->ivLenInBytes = 0;
     }
+	for (cnt = 0; CPA_STATUS_SUCCESS == status && cnt < batchSize; cnt++){
+		/* increment by sizeof(CpaBufferList) to get at the array of flatbuffers */
+		pFlatBuffer = (CpaFlatBuffer *)(pBufferList[cnt] + 1);
 
+		pBufferList[cnt]->pBuffers = pFlatBuffer;
+		pBufferList[cnt]->numBuffers = numBuffers;
+		pBufferList[cnt]->pPrivateMetaData = pBufferMeta[cnt];
+
+		pFlatBuffer->dataLenInBytes = bufferSize;
+		pFlatBuffer->pData = pSrcBuffer[cnt];
+	}
 	while (1) {
-		rounds -= batchSize;
+		if (rounds == 0) break;
+		if (rounds < batchSize)
+			thisBatch = rounds;
+		else
+			thisBatch = batchSize;
+		rounds -= thisBatch;
 		
-		for (cnt = 0; CPA_STATUS_SUCCESS == status && cnt < batchSize; cnt++){
+		myArgs.ok = 0; myArgs.cnt = thisBatch;
+		for (cnt = 0; CPA_STATUS_SUCCESS == status && cnt < thisBatch; cnt++){
 			memcpy(pSrcBuffer[cnt], pWorkSrc, bufferSize);
-			pWorkSrc += 32;
-			/* increment by sizeof(CpaBufferList) to get at the array of flatbuffers */
-			pFlatBuffer = (CpaFlatBuffer *)(pBufferList[cnt] + 1);
-
-			pBufferList[cnt]->pBuffers = pFlatBuffer;
-			pBufferList[cnt]->numBuffers = 1;
-			pBufferList[cnt]->pPrivateMetaData = pBufferMeta[cnt];
-
-			pFlatBuffer->dataLenInBytes = bufferSize;
-			pFlatBuffer->pData = pSrcBuffer[cnt];
-		
+                	pWorkSrc += bufferSize;
 			RT_PRINT_DBG("cpaCySymPerformOp\n");
 			commentout("cnt = %d.\n", cnt);
-			status = cpaCySymPerformOp(cyInstHandle, NULL, pOpData, pBufferList[cnt], pBufferList[cnt], NULL);
-			/*if (cnt%32 == 31){
-				icp_sal_CyPollInstance (cyInstHandle, 0);
-			}*/
+			status = cpaCySymPerformOp(cyInstHandle, (void *)&myArgs, pOpData, pBufferList[cnt], pBufferList[cnt], NULL);
 		}
 		
 		if (CPA_STATUS_SUCCESS == status){
-			icp_sal_CyPollInstance (cyInstHandle, 0);
+			while (myArgs.ok == 0)
+				icp_sal_CyPollInstance (cyInstHandle, 0);
 		}
 		
 		if (CPA_STATUS_SUCCESS != status){
@@ -216,14 +234,12 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
 		}
 		
 		if (CPA_STATUS_SUCCESS == status){
-			for (cnt = 0; cnt < batchSize; cnt++) {
-				commentout("copy to dst:%d.\n", cnt);
+			commentout("copy to dst:%d.\n", cnt);
+			for (cnt = 0; CPA_STATUS_SUCCESS == status && cnt < thisBatch; cnt++){
 				memcpy(pWorkDst, pSrcBuffer[cnt], bufferSize);
-				pWorkDst += 32;
+				pWorkDst += bufferSize;
 			}
 		}
-		
-		if (rounds == 0) break;
 	}
 	
 	for (cnt = 0; CPA_STATUS_SUCCESS == status && cnt < batchSize; cnt++){
