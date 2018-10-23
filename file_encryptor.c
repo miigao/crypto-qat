@@ -18,7 +18,7 @@
 #include "rt_utils.h"
 #include "icp_sal_poll.h"
 
-#define batchSize	32
+#define batchSize	16
 #define TIMEOUT_MS  5000    // 5 seconds
 #define MAX_PATH    1024
 // Function qatMemAllocNUMA can only allocate a contiguous memory with size up
@@ -31,12 +31,11 @@
 #define commentout	RT_PRINT_DBG
 
 typedef struct {
-	int *ok;
-	int cnt;
-	int size;
+	Cpa32U *cnt;
+	Cpa32U size;
 	char *pSrc;
 	char *pDst;
-}callBackArgs;
+}callbackArgs;
 
 typedef struct {
     int isEnc;
@@ -143,15 +142,11 @@ static void symCallback(void *pCallbackTag,
                         CpaBufferList *pDstBuffer,
                         CpaBoolean verifyResult)
 {
-	static int callBackCnt = 0;
-	callBackArgs *myArgs = (callBackArgs *)pCallbackTag;
+	callbackArgs *myArgs = (callbackArgs *)pCallbackTag;
 	RT_PRINT_DBG("Callback called with status = %d.\n", status);
-	callBackCnt++;
+	//Plus by one to indicate a task is done.
+	*(myArgs->cnt) = *(myArgs->cnt) + 1;
 	memcpy(myArgs->pDst, myArgs->pSrc, myArgs->size);
-	if (callBackCnt == myArgs->cnt){
-		*(myArgs->ok) = 1;
-		callBackCnt = 0;
-	}
 }
 
 static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
@@ -160,24 +155,20 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
                                  char *dst, unsigned int dstLen)
 {
 	CpaStatus status = CPA_STATUS_SUCCESS;
-	Cpa32U numBuffers = 1, bufferMetaSize, thisBatch, cnt, bufferSize = 1024*64, rounds, tail;
-	Cpa8U *pBufferMeta[batchSize] = {NULL}, *pSrcBuffer[batchSize] = {NULL}, *pTailSrcBuffer = NULL;
+	Cpa32U numBuffers = 1, bufferMetaSize, thisBatch, cnt, numTaskDone, bufferSize = 1024*128, rounds, tail;
+	Cpa8U *pBufferMeta = NULL, *pSrcBuffer[batchSize] = {NULL}, *pTailSrcBuffer = NULL;
 	CpaBufferList *pBufferList[batchSize] = {NULL};
 	CpaFlatBuffer *pFlatBuffer = NULL;
 	CpaCySymOpData *pOpData = NULL;
+	Cpa32U bufferListMemSize = sizeof(CpaBufferList) + (numBuffers * sizeof(CpaFlatBuffer));
+	callbackArgs myArgs[batchSize];
 	
-	Cpa32U bufferListMemSize =
-		sizeof(CpaBufferList) + (numBuffers * sizeof(CpaFlatBuffer));
-	
-	int ck;
-	char *pWorkSrc = src, *pWorkDst = dst;
-	callBackArgs myArgs[batchSize];
 	rounds = srcLen/bufferSize; tail = srcLen%bufferSize;
 	
 	status = cpaCyBufferListGetMetaSize(cyInstHandle, numBuffers, &bufferMetaSize);
 	
-	for (cnt = 0; CPA_STATUS_SUCCESS == status && cnt < batchSize; cnt++){
-		status = PHYS_CONTIG_ALLOC(&pBufferMeta[cnt], bufferMetaSize);
+	if (CPA_STATUS_SUCCESS == status){
+		status = PHYS_CONTIG_ALLOC(&pBufferMeta, bufferMetaSize);
     }
 	
 	for (cnt = 0; CPA_STATUS_SUCCESS == status && cnt < batchSize; cnt++){
@@ -210,12 +201,12 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
 
 		pBufferList[cnt]->pBuffers = pFlatBuffer;
 		pBufferList[cnt]->numBuffers = numBuffers;
-		pBufferList[cnt]->pPrivateMetaData = pBufferMeta[cnt];
+		pBufferList[cnt]->pPrivateMetaData = pBufferMeta;
 
 		pFlatBuffer->dataLenInBytes = bufferSize;
 		pFlatBuffer->pData = pSrcBuffer[cnt];
-		
-		myArgs[cnt].ok = &ck; myArgs[cnt].size = bufferSize; myArgs[cnt].pSrc = (char *)pSrcBuffer[cnt];
+		//Initialize some args for callback function.
+		myArgs[cnt].cnt = &numTaskDone; myArgs[cnt].size = bufferSize; myArgs[cnt].pSrc = (char *)pSrcBuffer[cnt];
 	}
 	while (1) {
 		if (rounds == 0) break;
@@ -224,18 +215,19 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
 		else
 			thisBatch = batchSize;
 		rounds -= thisBatch;
-		
-		ck = 0;
+		//Cipher.
+		numTaskDone = 0;
 		for (cnt = 0; CPA_STATUS_SUCCESS == status && cnt < thisBatch; cnt++){
-			memcpy(pSrcBuffer[cnt], pWorkSrc, bufferSize);
-			myArgs[cnt].cnt = thisBatch; myArgs[cnt].pDst = pWorkDst;
-			pWorkSrc += bufferSize; pWorkDst += bufferSize;
+			memcpy(pSrcBuffer[cnt], src, bufferSize);
+			myArgs[cnt].pDst = dst;
+			src += bufferSize; dst += bufferSize;
+			
 			RT_PRINT_DBG("cpaCySymPerformOp\n");
 			status = cpaCySymPerformOp(cyInstHandle, (void *)&myArgs[cnt], pOpData, pBufferList[cnt], pBufferList[cnt], NULL);
 		}
-		
+		//Keep polling till all tasks callback.And copy-to-dst is implemented in the callback function.
 		if (CPA_STATUS_SUCCESS == status){
-			while (ck == 0)
+			while (numTaskDone < thisBatch)
 				icp_sal_CyPollInstance (cyInstHandle, 0);
 		}
 		
@@ -243,31 +235,38 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
 			RT_PRINT("cpaCySymPerformOp failed. (status = %d)\n", status);
 		}
 	}
-	
+	// If input data is not bufferSize-aligned, cipher its "tail"----the last bytes here.
 	if (tail && CPA_STATUS_SUCCESS == status){
 		pOpData->messageLenToCipherInBytes = tail;
+		
 		pFlatBuffer = (CpaFlatBuffer *)(pBufferList[0] + 1);
 		pFlatBuffer->dataLenInBytes = tail;
                 pFlatBuffer->pData = pTailSrcBuffer;
+		
 		myArgs[0].size = tail;
 		myArgs[0].pSrc = (char *)pTailSrcBuffer;
-		ck = 0;
-		memcpy(pTailSrcBuffer, pWorkSrc, tail);
-		myArgs[0].cnt = 1; myArgs[0].pDst = pWorkDst;
+		myArgs[0].pDst = dst;
+		
+		numTaskDone = 0;
+		memcpy(pTailSrcBuffer, src, tail);
 		status = cpaCySymPerformOp(cyInstHandle, (void *)&myArgs[0], pOpData, pBufferList[0], pBufferList[0], NULL);
 	}
-	
+	//Polling.
 	if (CPA_STATUS_SUCCESS == status){
-		//sampleCyStartPolling()in qatAes256EcbSessionInit() is commented out.
-		while (ck == 0)
+		while (numTaskDone < 1)
 			icp_sal_CyPollInstance (cyInstHandle, 0);
 	}
 	
-	for (cnt = 0; CPA_STATUS_SUCCESS == status && cnt < batchSize; cnt++){
+	if (CPA_STATUS_SUCCESS != status){
+		RT_PRINT("cpaCySymPerformOp failed. (status = %d)\n", status);
+	}
+	//Free memory.
+	for (cnt = 0; cnt < batchSize; cnt++){
 		PHYS_CONTIG_FREE(pSrcBuffer[cnt]);
 		OS_FREE(pBufferList[cnt]);
-		PHYS_CONTIG_FREE(pBufferMeta[cnt]);
 	}
+	PHYS_CONTIG_FREE(pBufferMeta);
+	PHYS_CONTIG_FREE(pTailSrcBuffer);
 	OS_FREE(pOpData);
 	
 	return status;
