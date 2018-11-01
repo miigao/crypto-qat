@@ -1,0 +1,902 @@
+<?xml version="1.0" standalone="no"?> 
+<!DOCTYPE svg SYSTEM "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="1000" height="480" version="1.1" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <style type="text/css">
+    <![CDATA[
+      rect          { stroke-width: 1; }
+      rect.process  { fill:rgb(180,180,180); fill-opacity:0.9; stroke-width:1;   stroke:rgb(  0,  0,  0); } 
+      rect.process2 { fill:rgb(180,180,180); fill-opacity:0.9; stroke-width:0;   stroke:rgb(  0,  0,  0); } 
+      rect.process3 { fill:rgb(180,180,180); fill-opacity:0.5; stroke-width:0;   stroke:rgb(  0,  0,  0); } 
+      rect.sample   { fill:rgb(  0,  0,255); fill-opacity:0.8; stroke-width:0;   stroke:rgb(  0,  0,  0); } 
+      rect.sample_hi{ fill:rgb(255,128,  0); fill-opacity:0.8; stroke-width:0;   stroke:rgb(  0,  0,  0); } 
+      rect.error    { fill:rgb(255,  0,  0); fill-opacity:0.5; stroke-width:0;   stroke:rgb(  0,  0,  0); } 
+      rect.net      { fill:rgb(  0,128,  0); fill-opacity:0.5; stroke-width:0;   stroke:rgb(  0,  0,  0); } 
+      rect.disk     { fill:rgb(  0,  0,255); fill-opacity:0.5; stroke-width:0;   stroke:rgb(  0,  0,  0); } 
+      rect.sync     { fill:rgb(128,128,  0); fill-opacity:0.5; stroke-width:0;   stroke:rgb(  0,  0,  0); } 
+      rect.poll     { fill:rgb(  0,128,128); fill-opacity:0.2; stroke-width:0;   stroke:rgb(  0,  0,  0); } 
+      rect.blocked  { fill:rgb(255,  0,  0); fill-opacity:0.5; stroke-width:0;   stroke:rgb(  0,  0,  0); } 
+      rect.waiting  { fill:rgb(224,214,  0); fill-opacity:0.8; stroke-width:0;   stroke:rgb(  0,  0,  0); } 
+      rect.WAITING  { fill:rgb(255,214, 48); fill-opacity:0.6; stroke-width:0;   stroke:rgb(  0,  0,  0); } 
+      rect.cpu      { fill:rgb(192,192,192); fill-opacity:0.2; stroke-width:0.5; stroke:rgb(128,128,128); } 
+      rect.pstate   { fill:rgb(128,128,128); fill-opacity:0.8; stroke-width:0; } 
+      rect.c1       { fill:rgb(255,214,214); fill-opacity:0.5; stroke-width:0; } 
+      rect.c2       { fill:rgb(255,172,172); fill-opacity:0.5; stroke-width:0; } 
+      rect.c3       { fill:rgb(255,130,130); fill-opacity:0.5; stroke-width:0; } 
+      rect.c4       { fill:rgb(255, 88, 88); fill-opacity:0.5; stroke-width:0; } 
+      rect.c5       { fill:rgb(255, 44, 44); fill-opacity:0.5; stroke-width:0; } 
+      rect.c6       { fill:rgb(255,  0,  0); fill-opacity:0.5; stroke-width:0; } 
+      line.pstate   { stroke:rgb(255,255,  0); stroke-opacity:0.8; stroke-width:2; } 
+    ]]>
+   </style>
+</defs>
+<line x1="0.00000000" y1="15.00" x2="0.00000000" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="24.99099505" y1="15.00" x2="24.99099505" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="49.98199010" y1="15.00" x2="49.98199010" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="74.97298515" y1="15.00" x2="74.97298515" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="99.96398020" y1="15.00" x2="99.96398020" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="124.95497525" y1="15.00" x2="124.95497525" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="149.94597031" y1="15.00" x2="149.94597031" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="174.93696536" y1="15.00" x2="174.93696536" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="199.92796041" y1="15.00" x2="199.92796041" y2="480" style="stroke:rgb(128,128,128);stroke-width:2.000"/>
+<line x1="224.91895546" y1="15.00" x2="224.91895546" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="249.90995051" y1="15.00" x2="249.90995051" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="274.90094556" y1="15.00" x2="274.90094556" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="299.89194061" y1="15.00" x2="299.89194061" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="324.88293566" y1="15.00" x2="324.88293566" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="349.87393071" y1="15.00" x2="349.87393071" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="374.86492576" y1="15.00" x2="374.86492576" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="399.85592082" y1="15.00" x2="399.85592082" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="424.84691587" y1="15.00" x2="424.84691587" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="449.83791092" y1="15.00" x2="449.83791092" y2="480" style="stroke:rgb(128,128,128);stroke-width:2.000"/>
+<line x1="474.82890597" y1="15.00" x2="474.82890597" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="499.81990102" y1="15.00" x2="499.81990102" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="524.81089607" y1="15.00" x2="524.81089607" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="549.80189112" y1="15.00" x2="549.80189112" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="574.79288617" y1="15.00" x2="574.79288617" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="599.78388122" y1="15.00" x2="599.78388122" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="624.77487627" y1="15.00" x2="624.77487627" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="649.76587133" y1="15.00" x2="649.76587133" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="674.75686638" y1="15.00" x2="674.75686638" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="699.74786143" y1="15.00" x2="699.74786143" y2="480" style="stroke:rgb(128,128,128);stroke-width:2.000"/>
+<line x1="724.73885648" y1="15.00" x2="724.73885648" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="749.72985153" y1="15.00" x2="749.72985153" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="774.72084658" y1="15.00" x2="774.72084658" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="799.71184163" y1="15.00" x2="799.71184163" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="824.70283668" y1="15.00" x2="824.70283668" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="849.69383173" y1="15.00" x2="849.69383173" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="874.68482678" y1="15.00" x2="874.68482678" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="899.67582184" y1="15.00" x2="899.67582184" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="924.66681689" y1="15.00" x2="924.66681689" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="949.65781194" y1="15.00" x2="949.65781194" y2="480" style="stroke:rgb(128,128,128);stroke-width:2.000"/>
+<line x1="974.64880699" y1="15.00" x2="974.64880699" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<line x1="999.63980204" y1="15.00" x2="999.63980204" y2="480" style="stroke:rgb(192,192,192);stroke-width:0.500"/>
+<g>
+<rect x="0" width="12.50000000" y="0" height="12.5" class="disk"/>
+<text transform="translate(17.50000000, 12.50000000)" font-size="10.00000000pt">Disk</text>
+<rect x="100" width="12.50000000" y="0" height="12.5" class="net"/>
+<text transform="translate(117.50000000, 12.50000000)" font-size="10.00000000pt">Network</text>
+<rect x="200" width="12.50000000" y="0" height="12.5" class="sync"/>
+<text transform="translate(217.50000000, 12.50000000)" font-size="10.00000000pt">Sync</text>
+<rect x="300" width="12.50000000" y="0" height="12.5" class="poll"/>
+<text transform="translate(317.50000000, 12.50000000)" font-size="10.00000000pt">Poll</text>
+<rect x="400" width="12.50000000" y="0" height="12.5" class="error"/>
+<text transform="translate(417.50000000, 12.50000000)" font-size="10.00000000pt">Error</text>
+</g>
+<rect x="16.59230158" width="983.40769842" y="30.0" height="25.0" class="process3"/>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="917.33096295" width="4609954227025.50000000" y="52.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=3 error=-11 merges=0</title>
+<rect x="917.32673547" width="0.24990995" y="30.0" height="1.2" class="error"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="692.40673364" width="224.91622194" y="52.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=3 error=-11 merges=0</title>
+<rect x="692.15682369" width="0.24990995" y="30.0" height="1.2" class="error"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="467.23118864" width="224.92177869" y="52.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=3 error=-11 merges=0</title>
+<rect x="466.98127869" width="0.24990995" y="30.0" height="1.2" class="error"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="242.05551718" width="224.92179644" y="52.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=3 error=-11 merges=0</title>
+<rect x="241.80560723" width="0.24990995" y="30.0" height="1.2" class="error"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="16.84854350" width="224.95314889" y="52.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=3 error=-11 merges=0</title>
+<rect x="16.59863355" width="0.24990995" y="30.0" height="1.2" class="error"/>
+</g>
+<g>
+<title>fd=3 error=0 merges=0</title>
+<rect x="16.59230158" width="0.00633197" y="30.0" height="1.2" class="disk"/>
+</g>
+<text x="16.59230158" y="42.50000000">in:imjournal:1148 (32.0 bytes)</text>
+<rect x="16.63924667" width="983.36075333" y="60.0" height="25.0" class="process3"/>
+<g>
+<title>fd=7 error=0 merges=0</title>
+<rect x="16.63924667" width="0.24990995" y="83.8" height="1.2" class="disk"/>
+</g>
+<text x="16.63924667" y="72.50000000">rs:main Q:Reg:1149 (142.0 bytes)</text>
+<rect x="41.72589175" width="958.27410825" y="90.0" height="25.0" class="process3"/>
+<g>
+<title>fd=1 error=0 merges=0</title>
+<rect x="133.21672882" width="0.24990995" y="113.8" height="1.2" class="disk"/>
+</g>
+<g>
+<title>fd=51 error=0 merges=0</title>
+<rect x="43.41749897" width="0.24990995" y="90.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=50 error=0 merges=0</title>
+<rect x="43.28488525" width="0.13261372" y="90.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=49 error=0 merges=0</title>
+<rect x="43.14804281" width="0.13684244" y="90.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=48 error=0 merges=0</title>
+<rect x="42.99722416" width="0.15081866" y="90.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=1 error=0 merges=0</title>
+<rect x="41.72589175" width="0.24990995" y="105.6" height="9.4" class="disk"/>
+</g>
+<text x="41.72589175" y="102.50000000">:29740 (152.0 bytes)</text>
+<rect x="42.41762575" width="957.58237425" y="120.0" height="25.0" class="process3"/>
+<g>
+<title>fd=1 error=0 merges=0</title>
+<rect x="131.76440938" width="0.24990995" y="143.8" height="1.2" class="disk"/>
+</g>
+<g>
+<title>fd=47 error=0 merges=0</title>
+<rect x="42.83005814" width="0.24990995" y="120.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=46 error=0 merges=0</title>
+<rect x="42.68848141" width="0.14157674" y="120.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=45 error=0 merges=0</title>
+<rect x="42.55047938" width="0.13800202" y="120.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=44 error=0 merges=0</title>
+<rect x="42.41762575" width="0.13285363" y="120.0" height="3.1" class="disk"/>
+</g>
+<text x="42.41762575" y="132.50000000">:29741 (101.0 bytes)</text>
+<rect x="41.97489353" width="958.02510647" y="150.0" height="25.0" class="process3"/>
+<g>
+<title>fd=1 error=0 merges=0</title>
+<rect x="127.45219694" width="0.24990995" y="173.8" height="1.2" class="disk"/>
+</g>
+<g>
+<title>fd=43 error=0 merges=0</title>
+<rect x="42.24782719" width="0.24990995" y="150.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=42 error=0 merges=0</title>
+<rect x="42.13068440" width="0.11714279" y="150.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=41 error=0 merges=0</title>
+<rect x="41.97489353" width="0.15579086" y="150.0" height="3.1" class="disk"/>
+</g>
+<text x="41.97489353" y="162.50000000">:29742 (93.0 bytes)</text>
+<rect x="44.98015265" width="955.01984735" y="180.0" height="25.0" class="process3"/>
+<g>
+<title>fd=1 error=0 merges=0</title>
+<rect x="132.14478882" width="0.24990995" y="203.8" height="1.2" class="disk"/>
+</g>
+<g>
+<title>fd=63 error=0 merges=0</title>
+<rect x="45.50927375" width="0.24990995" y="180.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=62 error=0 merges=0</title>
+<rect x="45.37651158" width="0.13276216" y="180.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=61 error=0 merges=0</title>
+<rect x="45.19834928" width="0.17816230" y="180.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=60 error=0 merges=0</title>
+<rect x="44.98015265" width="0.21819663" y="180.0" height="3.1" class="disk"/>
+</g>
+<text x="44.98015265" y="192.50000000">:29743 (101.0 bytes)</text>
+<rect x="50.05500379" width="949.94499621" y="210.0" height="25.0" class="process3"/>
+<g>
+<title>fd=1 error=0 merges=0</title>
+<rect x="133.43774043" width="0.24990995" y="233.8" height="1.2" class="disk"/>
+</g>
+<g>
+<title>fd=71 error=0 merges=0</title>
+<rect x="50.78386366" width="0.24990995" y="210.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=70 error=0 merges=0</title>
+<rect x="50.43499287" width="0.24990995" y="210.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=69 error=0 merges=0</title>
+<rect x="50.25539809" width="0.17959479" y="210.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=68 error=0 merges=0</title>
+<rect x="50.05500379" width="0.20039429" y="210.0" height="3.1" class="disk"/>
+</g>
+<text x="50.05500379" y="222.50000000">:29744 (101.0 bytes)</text>
+<rect x="44.31984658" width="955.68015342" y="240.0" height="25.0" class="process3"/>
+<g>
+<title>fd=1 error=0 merges=0</title>
+<rect x="128.67286760" width="0.24990995" y="263.8" height="1.2" class="disk"/>
+</g>
+<g>
+<title>fd=59 error=0 merges=0</title>
+<rect x="44.83071475" width="0.24990995" y="240.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=58 error=0 merges=0</title>
+<rect x="44.69815851" width="0.13255624" y="240.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=57 error=0 merges=0</title>
+<rect x="44.53054341" width="0.16761510" y="240.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=56 error=0 merges=0</title>
+<rect x="44.31984658" width="0.21069683" y="240.0" height="3.1" class="disk"/>
+</g>
+<text x="44.31984658" y="252.50000000">:29745 (101.0 bytes)</text>
+<rect x="43.58703763" width="956.41296237" y="270.0" height="25.0" class="process3"/>
+<g>
+<title>fd=1 error=0 merges=0</title>
+<rect x="130.80755341" width="0.24990995" y="293.8" height="1.2" class="disk"/>
+</g>
+<g>
+<title>fd=55 error=0 merges=0</title>
+<rect x="44.14406367" width="0.24990995" y="270.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=54 error=0 merges=0</title>
+<rect x="43.95120516" width="0.19285851" y="270.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=53 error=0 merges=0</title>
+<rect x="43.75519679" width="0.19600837" y="270.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=52 error=0 merges=0</title>
+<rect x="43.58703763" width="0.16815916" y="270.0" height="3.1" class="disk"/>
+</g>
+<text x="43.58703763" y="282.50000000">:29746 (101.0 bytes)</text>
+<rect x="16.35070089" width="983.64929911" y="300.0" height="25.0" class="process3"/>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="16.58443267" width="4609954227926.24707031" y="322.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=14 error=0 merges=11</title>
+<rect x="16.61984666" width="0.13261122" y="300.0" height="1.2" class="disk"/>
+</g>
+<g>
+<title>fd=5 error=-2 merges=0</title>
+<rect x="16.36993671" width="0.24990995" y="323.8" height="1.2" class="error"/>
+</g>
+<g>
+<title>fd=5 error=0 merges=0</title>
+<rect x="16.35070089" width="0.01923582" y="300.0" height="3.1" class="net"/>
+</g>
+<text x="16.35070089" y="312.50000000">systemd-journal:538 (1.7 Kbytes)</text>
+<rect x="16.42042477" width="983.57957523" y="330.0" height="25.0" class="process3"/>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="999.10539860" width="4609954226943.72558594" y="352.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=5 error=0 merges=0</title>
+<rect x="999.09985060" width="0.24990995" y="353.8" height="1.2" class="disk"/>
+</g>
+<g>
+<title>fd=3 error=0 merges=0</title>
+<rect x="999.09388650" width="0.00596410" y="330.0" height="1.2" class="net"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="999.00961111" width="0.08427538" y="352.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=5 error=0 merges=0</title>
+<rect x="998.99879876" width="0.01081235" y="353.8" height="1.2" class="disk"/>
+</g>
+<g>
+<title>fd=3 error=0 merges=0</title>
+<rect x="998.99143991" width="0.00735885" y="330.0" height="1.2" class="net"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="16.61246032" width="982.37451595" y="352.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=5 error=0 merges=0</title>
+<rect x="16.60797194" width="0.00448838" y="353.8" height="1.2" class="disk"/>
+</g>
+<g>
+<title>fd=3 error=0 merges=0</title>
+<rect x="16.60497502" width="0.00299692" y="330.0" height="1.2" class="net"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="16.53266632" width="0.07230870" y="352.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=5 error=0 merges=0</title>
+<rect x="16.52685941" width="0.00580691" y="353.8" height="1.2" class="disk"/>
+</g>
+<g>
+<title>fd=3 error=0 merges=0</title>
+<rect x="16.52176900" width="0.00509042" y="330.0" height="1.2" class="net"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="16.43634803" width="0.08542097" y="352.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=5 error=0 merges=0</title>
+<rect x="16.42667501" width="0.00967301" y="353.8" height="1.2" class="disk"/>
+</g>
+<g>
+<title>fd=3 error=0 merges=0</title>
+<rect x="16.42042477" width="0.00625025" y="330.0" height="1.2" class="net"/>
+</g>
+<text x="16.42042477" y="342.50000000">auditd:786 (2.7 Kbytes)</text>
+<rect x="41.74569137" width="958.25430863" y="360.0" height="25.0" class="process3"/>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="134.81711490" width="4609954227808.01367188" y="382.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=3 error=0 merges=0</title>
+<rect x="134.81628220" width="0.24990995" y="378.8" height="6.2" class="disk"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="134.81508413" width="0.00119807" y="382.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=3 error=0 merges=0</title>
+<rect x="134.81364890" width="0.00143523" y="383.8" height="1.2" class="disk"/>
+</g>
+<g>
+<title>fd=13 error=0 merges=0</title>
+<rect x="134.81287668" width="0.00077222" y="360.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="134.81161663" width="0.00126005" y="382.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=13 error=0 merges=0</title>
+<rect x="134.80891561" width="0.00270103" y="360.0" height="9.4" class="disk"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="134.79861782" width="0.01029779" y="382.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=3 error=0 merges=0</title>
+<rect x="134.79661504" width="0.00200278" y="383.8" height="1.2" class="disk"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="134.79511933" width="0.00149571" y="382.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=13 error=0 merges=0</title>
+<rect x="134.79142441" width="0.00369492" y="360.0" height="9.4" class="disk"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="133.45803986" width="1.33106638" y="382.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=3 error=0 merges=0</title>
+<rect x="133.45492999" width="0.00310988" y="383.8" height="1.2" class="disk"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="133.45345677" width="0.00147322" y="382.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=13 error=0 merges=0</title>
+<rect x="133.45022543" width="0.00323134" y="360.0" height="9.4" class="disk"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="133.24571387" width="0.20451156" y="382.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=3 error=0 merges=0</title>
+<rect x="133.23974302" width="0.00597085" y="383.8" height="1.2" class="disk"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="133.23812111" width="0.00162192" y="382.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=13 error=0 merges=0</title>
+<rect x="133.23314415" width="0.00497696" y="360.0" height="9.4" class="disk"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="132.16601042" width="1.06368747" y="382.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=3 error=0 merges=0</title>
+<rect x="132.16245720" width="0.00355322" y="383.8" height="1.2" class="disk"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="132.16086777" width="0.00158943" y="382.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=13 error=0 merges=0</title>
+<rect x="132.15715061" width="0.00371716" y="360.0" height="9.4" class="disk"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="131.79812948" width="0.35680118" y="382.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=3 error=0 merges=0</title>
+<rect x="131.79103903" width="0.00709045" y="383.8" height="1.2" class="disk"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="131.78920869" width="0.00183034" y="382.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=13 error=0 merges=0</title>
+<rect x="131.78150422" width="0.00770447" y="360.0" height="9.4" class="disk"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="130.84017790" width="0.93759666" y="382.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=3 error=0 merges=0</title>
+<rect x="130.83334262" width="0.00683529" y="383.8" height="1.2" class="disk"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="130.83156226" width="0.00178036" y="382.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=13 error=0 merges=0</title>
+<rect x="130.82580458" width="0.00575768" y="360.0" height="9.4" class="disk"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="128.71116505" width="2.11087464" y="382.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=3 error=0 merges=0</title>
+<rect x="128.70307246" width="0.00809258" y="383.8" height="1.2" class="disk"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="128.70102095" width="0.00205151" y="382.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=13 error=0 merges=0</title>
+<rect x="128.69443682" width="0.00658413" y="360.0" height="9.4" class="disk"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="127.48778161" width="1.20193841" y="382.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=3 error=0 merges=0</title>
+<rect x="127.47960206" width="0.00817955" y="383.8" height="1.2" class="disk"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="127.47751656" width="0.00208550" y="382.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=13 error=0 merges=0</title>
+<rect x="127.47051983" width="0.00699673" y="360.0" height="9.4" class="disk"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="41.77154630" width="85.69494048" y="382.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=3 error=0 merges=0</title>
+<rect x="41.76003395" width="0.01151235" y="375.6" height="9.4" class="disk"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="41.75591519" width="0.00411877" y="382.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=13 error=0 merges=0</title>
+<rect x="41.74569137" width="0.01022382" y="360.0" height="6.2" class="disk"/>
+</g>
+<text x="41.74569137" y="372.50000000">sshd:29707 (1.8 Kbytes)</text>
+<rect x="13.61966546" width="985.86367496" y="390.0" height="25.0" class="process3"/>
+<g>
+<title>fd=8 error=0 merges=1</title>
+<rect x="999.06967322" width="0.25158085" y="390.0" height="3.1" class="net"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="999.06781014" width="0.00186308" y="412.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=8 error=0 merges=0</title>
+<rect x="999.04891545" width="0.01889469" y="411.9" height="3.1" class="net"/>
+</g>
+<g>
+<title>fd=8 error=0 merges=3</title>
+<rect x="998.99645311" width="0.05246235" y="390.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=8 error=0 merges=1</title>
+<rect x="998.97524675" width="0.02120636" y="390.0" height="3.1" class="net"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="998.97299231" width="0.00225444" y="412.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=8 error=0 merges=0</title>
+<rect x="998.94128324" width="0.03170907" y="411.9" height="3.1" class="net"/>
+</g>
+<g>
+<title>fd=4 error=0 merges=0</title>
+<rect x="998.89193352" width="0.04934972" y="390.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="998.88986301" width="0.00207050" y="412.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=5 error=0 merges=0</title>
+<rect x="998.88377896" width="0.00608406" y="411.9" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=0 error=-516 merges=0</title>
+<rect x="16.97397681" width="981.90562341" y="412.5" height="2.5" class="error"/>
+</g>
+<g>
+<title>fd=7 error=0 merges=0</title>
+<rect x="16.97239313" width="0.00158368" y="390.0" height="3.1" class="net"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="16.69914733" width="0.27174983" y="412.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=9 error=0 merges=1</title>
+<rect x="16.60190262" width="0.09724471" y="390.0" height="3.1" class="net"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="16.60063558" width="0.00126704" y="412.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=9 error=0 merges=0</title>
+<rect x="16.58789892" width="0.01273666" y="411.9" height="3.1" class="net"/>
+</g>
+<g>
+<title>fd=9 error=0 merges=5</title>
+<rect x="16.51550026" width="0.07239866" y="390.0" height="6.2" class="disk"/>
+</g>
+<g>
+<title>fd=9 error=0 merges=1</title>
+<rect x="16.50484210" width="0.01065816" y="390.0" height="3.1" class="net"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="16.50355856" width="0.00128354" y="412.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=9 error=0 merges=0</title>
+<rect x="16.49035057" width="0.01320799" y="411.9" height="3.1" class="net"/>
+</g>
+<g>
+<title>fd=9 error=0 merges=3</title>
+<rect x="16.68121055" width="-0.19085998" y="390.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=4 error=-11 merges=0</title>
+<rect x="16.43130060" width="0.24990995" y="390.0" height="1.2" class="error"/>
+</g>
+<g>
+<title>fd=7 error=0 merges=1</title>
+<rect x="16.41395210" width="0.01734850" y="390.0" height="6.2" class="disk"/>
+</g>
+<g>
+<title>fd=6 error=0 merges=1</title>
+<rect x="16.39837171" width="0.01558039" y="390.0" height="3.1" class="net"/>
+</g>
+<g>
+<title>fd=0 error=0 merges=0</title>
+<rect x="16.39644391" width="0.00192781" y="412.5" height="2.5" class="poll"/>
+</g>
+<g>
+<title>fd=6 error=0 merges=0</title>
+<rect x="16.38028023" width="0.01616368" y="411.9" height="3.1" class="net"/>
+</g>
+<g>
+<title>fd=7 error=0 merges=0</title>
+<rect x="16.33349534" width="0.04678489" y="411.9" height="3.1" class="net"/>
+</g>
+<g>
+<title>fd=7 error=0 merges=3</title>
+<rect x="16.27126226" width="0.06223308" y="390.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=8 error=0 merges=2</title>
+<rect x="16.21532892" width="0.05593335" y="390.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=9 error=0 merges=2</title>
+<rect x="16.11479214" width="0.10053677" y="390.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=8 error=0 merges=1</title>
+<rect x="16.10032211" width="0.01447004" y="390.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=9 error=0 merges=1</title>
+<rect x="16.05388284" width="0.04643927" y="390.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=8 error=0 merges=1</title>
+<rect x="16.03722334" width="0.01665950" y="390.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=9 error=0 merges=5</title>
+<rect x="15.82236876" width="0.21485458" y="390.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=8 error=0 merges=0</title>
+<rect x="15.81429167" width="0.00807709" y="390.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=7 error=0 merges=1</title>
+<rect x="15.76750753" width="0.04678414" y="390.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=6 error=0 merges=8</title>
+<rect x="15.55459800" width="0.21290953" y="390.0" height="9.4" class="disk"/>
+</g>
+<g>
+<title>fd=6 error=0 merges=26</title>
+<rect x="14.37748164" width="0.67514148" y="390.0" height="1.2" class="disk"/>
+</g>
+<g>
+<title>fd=6 error=0 merges=2</title>
+<rect x="14.35229022" width="0.02519142" y="390.0" height="3.1" class="net"/>
+</g>
+<g>
+<title>fd=6 error=0 merges=0</title>
+<rect x="14.34978437" width="0.00250585" y="411.9" height="3.1" class="net"/>
+</g>
+<g>
+<title>fd=6 error=0 merges=1</title>
+<rect x="14.34476268" width="0.00502169" y="390.0" height="3.1" class="net"/>
+</g>
+<g>
+<title>fd=6 error=0 merges=0</title>
+<rect x="14.30964459" width="0.03511810" y="411.9" height="3.1" class="net"/>
+</g>
+<g>
+<title>fd=6 error=0 merges=8</title>
+<rect x="14.15042121" width="0.15922338" y="390.0" height="6.2" class="disk"/>
+</g>
+<g>
+<title>fd=4 error=0 merges=3</title>
+<rect x="14.09889703" width="0.05152418" y="390.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=4 error=0 merges=8</title>
+<rect x="13.61966546" width="0.46011871" y="390.0" height="6.2" class="disk"/>
+</g>
+<text x="13.61966546" y="402.50000000">sudo:29738 (101.6 Kbytes)</text>
+<rect x="17.01597517" width="981.84182389" y="420.0" height="25.0" class="process3"/>
+<g>
+<title>fd=3 error=0 merges=2</title>
+<rect x="956.10945173" width="0.26518570" y="441.9" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=39 error=0 merges=0</title>
+<rect x="134.81126151" width="758.01078643" y="443.8" height="1.2" class="disk"/>
+</g>
+<g>
+<title>fd=1 error=0 merges=2</title>
+<rect x="134.77731624" width="0.03394527" y="441.9" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=67 error=0 merges=0</title>
+<rect x="49.73908613" width="0.24990995" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=66 error=0 merges=0</title>
+<rect x="49.49663749" width="0.24244864" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=65 error=0 merges=0</title>
+<rect x="49.30335613" width="0.19328136" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=64 error=0 merges=0</title>
+<rect x="49.08668845" width="0.21666768" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=37 error=0 merges=0</title>
+<rect x="29.01168104" width="0.24990995" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=36 error=0 merges=0</title>
+<rect x="28.66724290" width="0.24990995" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=35 error=0 merges=0</title>
+<rect x="28.36108596" width="0.24990995" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=34 error=0 merges=0</title>
+<rect x="28.06088388" width="0.24990995" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=33 error=0 merges=0</title>
+<rect x="27.69961306" width="0.24990995" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=32 error=0 merges=0</title>
+<rect x="27.36528228" width="0.24990995" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=31 error=0 merges=0</title>
+<rect x="27.06583568" width="0.24990995" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=30 error=0 merges=2</title>
+<rect x="26.82447265" width="0.24136303" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=29 error=0 merges=4</title>
+<rect x="26.62362327" width="0.20084938" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=28 error=0 merges=0</title>
+<rect x="26.25966591" width="0.24990995" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=27 error=0 merges=0</title>
+<rect x="25.93514110" width="0.24990995" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=26 error=0 merges=0</title>
+<rect x="25.55078734" width="0.24990995" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=25 error=0 merges=0</title>
+<rect x="25.18617347" width="0.24990995" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=24 error=0 merges=0</title>
+<rect x="24.86468107" width="0.24990995" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=23 error=0 merges=2</title>
+<rect x="24.50850690" width="0.26993548" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=22 error=0 merges=4</title>
+<rect x="24.38802357" width="0.12048334" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=21 error=0 merges=0</title>
+<rect x="24.00913209" width="0.24990995" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=20 error=0 merges=0</title>
+<rect x="23.66304455" width="0.24990995" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=19 error=0 merges=0</title>
+<rect x="23.31240564" width="0.24990995" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=18 error=0 merges=0</title>
+<rect x="22.90145197" width="0.24990995" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=17 error=0 merges=0</title>
+<rect x="22.51281976" width="0.24990995" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=16 error=0 merges=0</title>
+<rect x="22.16978036" width="0.24990995" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=15 error=0 merges=2</title>
+<rect x="21.86805758" width="0.27152666" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=14 error=0 merges=4</title>
+<rect x="21.65347740" width="0.21458018" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=13 error=0 merges=0</title>
+<rect x="21.24841985" width="0.24990995" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=12 error=0 merges=0</title>
+<rect x="20.86975580" width="0.24990995" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=11 error=0 merges=0</title>
+<rect x="20.41956451" width="0.24990995" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=10 error=0 merges=0</title>
+<rect x="19.97829427" width="0.24990995" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=9 error=0 merges=0</title>
+<rect x="19.61434666" width="0.24990995" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=8 error=0 merges=0</title>
+<rect x="19.21890190" width="0.24990995" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=7 error=0 merges=2</title>
+<rect x="18.92147057" width="0.27418170" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=6 error=0 merges=13</title>
+<rect x="18.53809721" width="0.38337336" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=5 error=0 merges=1</title>
+<rect x="18.04620170" width="0.25347742" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=4 error=0 merges=0</title>
+<rect x="18.02125394" width="0.02494776" y="420.0" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=4 error=0 merges=0</title>
+<rect x="18.01707645" width="0.00417749" y="441.9" height="3.1" class="disk"/>
+</g>
+<g>
+<title>fd=3 error=0 merges=16</title>
+<rect x="17.01597517" width="0.58841373" y="420.0" height="3.1" class="disk"/>
+</g>
+<text x="17.01597517" y="432.50000000">file_encryptor:29739 (1020.4 Mbytes)</text>
+</svg>
