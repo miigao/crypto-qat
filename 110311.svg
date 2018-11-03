@@ -1,0 +1,2091 @@
+<?xml version="1.0" standalone="no"?> 
+<!DOCTYPE svg SYSTEM "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="1000" height="1020" version="1.1" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <style type="text/css">
+    <![CDATA[
+      rect          { stroke-width: 1; }
+      rect.process  { fill:rgb(180,180,180); fill-opacity:0.9; stroke-width:1;   stroke:rgb(  0,  0,  0); } 
+      rect.process2 { fill:rgb(180,180,180); fill-opacity:0.9; stroke-width:0;   stroke:rgb(  0,  0,  0); } 
+      rect.process3 { fill:rgb(180,180,180); fill-opacity:0.5; stroke-width:0;   stroke:rgb(  0,  0,  0); } 
+      rect.sample   { fill:rgb(  0,  0,255); fill-opacity:0.8; stroke-width:0;   stroke:rgb(  0,  0,  0); } 
+      rect.sample_hi{ fill:rgb(255,128,  0); fill-opacity:0.8; stroke-width:0;   stroke:rgb(  0,  0,  0); } 
+      rect.error    { fill:rgb(255,  0,  0); fill-opacity:0.5; stroke-width:0;   stroke:rgb(  0,  0,  0); } 
+      rect.net      { fill:rgb(  0,128,  0); fill-opacity:0.5; stroke-width:0;   stroke:rgb(  0,  0,  0); } 
+      rect.disk     { fill:rgb(  0,  0,255); fill-opacity:0.5; stroke-width:0;   stroke:rgb(  0,  0,  0); } 
+      rect.sync     { fill:rgb(128,128,  0); fill-opacity:0.5; stroke-width:0;   stroke:rgb(  0,  0,  0); } 
+      rect.poll     { fill:rgb(  0,128,128); fill-opacity:0.2; stroke-width:0;   stroke:rgb(  0,  0,  0); } 
+      rect.blocked  { fill:rgb(255,  0,  0); fill-opacity:0.5; stroke-width:0;   stroke:rgb(  0,  0,  0); } 
+      rect.waiting  { fill:rgb(224,214,  0); fill-opacity:0.8; stroke-width:0;   stroke:rgb(  0,  0,  0); } 
+      rect.WAITING  { fill:rgb(255,214, 48); fill-opacity:0.6; stroke-width:0;   stroke:rgb(  0,  0,  0); } 
+      rect.cpu      { fill:rgb(192,192,192); fill-opacity:0.2; stroke-width:0.5; stroke:rgb(128,128,128); } 
+      rect.pstate   { fill:rgb(128,128,128); fill-opacity:0.8; stroke-width:0; } 
+      rect.c1       { fill:rgb(255,214,214); fill-opacity:0.5; stroke-width:0; } 
+      rect.c2       { fill:rgb(255,172,172); fill-opacity:0.5; stroke-width:0; } 
+      rect.c3       { fill:rgb(255,130,130); fill-opacity:0.5; stroke-width:0; } 
+      rect.c4       { fill:rgb(255, 88, 88); fill-opacity:0.5; stroke-width:0; } 
+      rect.c5       { fill:rgb(255, 44, 44); fill-opacity:0.5; stroke-width:0; } 
+      rect.c6       { fill:rgb(255,  0,  0); fill-opacity:0.5; stroke-width:0; } 
+      line.pstate   { stroke:rgb(255,255,  0); stroke-opacity:0.8; stroke-width:2; } 
+    ]]>
+   </style>
+</defs>
+<line x1="0.00000000" y1="15.00" x2="0.00000000" y2="1020" style="stroke:rgb(128,128,128);stroke-width:2.000"/>
+<line x1="332.85324800" y1="15.00" x2="332.85324800" y2="1020" style="stroke:rgb(220,220,220);stroke-width:0.075"/>
+<line x1="665.70649600" y1="15.00" x2="665.70649600" y2="1020" style="stroke:rgb(220,220,220);stroke-width:0.075"/>
+<line x1="998.55974400" y1="15.00" x2="998.55974400" y2="1020" style="stroke:rgb(220,220,220);stroke-width:0.075"/>
+<g>
+<rect x="0" width="12.50000000" y="0" height="12.5" class="sample"/>
+<text transform="translate(17.50000000, 12.50000000)" font-size="10.00000000pt">Running</text>
+<rect x="100" width="12.50000000" y="0" height="12.5" class="c1"/>
+<text transform="translate(117.50000000, 12.50000000)" font-size="10.00000000pt">Idle</text>
+<rect x="200" width="12.50000000" y="0" height="12.5" class="c3"/>
+<text transform="translate(217.50000000, 12.50000000)" font-size="10.00000000pt">Deeper Idle</text>
+<rect x="350" width="12.50000000" y="0" height="12.5" class="c6"/>
+<text transform="translate(367.50000000, 12.50000000)" font-size="10.00000000pt">Deepest Idle</text>
+<rect x="550" width="12.50000000" y="0" height="12.5" class="process2"/>
+<text transform="translate(567.50000000, 12.50000000)" font-size="10.00000000pt">Sleeping</text>
+<rect x="650" width="12.50000000" y="0" height="12.5" class="waiting"/>
+<text transform="translate(667.50000000, 12.50000000)" font-size="10.00000000pt">Waiting for cpu</text>
+<rect x="800" width="12.50000000" y="0" height="12.5" class="blocked"/>
+<text transform="translate(817.50000000, 12.50000000)" font-size="10.00000000pt">Blocked on IO</text>
+</g>
+<g>
+<rect x="0.00000000" width="1000.00000000" y="30.0" height="55.0" class="cpu"/>
+<text x="10.00000000" y="42.50000000">CPU 0</text>
+<text transform="translate(10.00000000,81.00000000)" font-size="1.25pt">Intel(R) Xeon(R) CPU D-1541 @ 2.10GHz
+</text>
+</g>
+<g>
+<rect x="0.00000000" width="1000.00000000" y="90.0" height="55.0" class="cpu"/>
+<text x="10.00000000" y="102.50000000">CPU 1</text>
+<text transform="translate(10.00000000,141.00000000)" font-size="1.25pt">Intel(R) Xeon(R) CPU D-1541 @ 2.10GHz
+</text>
+</g>
+<g>
+<rect x="0.00000000" width="1000.00000000" y="150.0" height="55.0" class="cpu"/>
+<text x="10.00000000" y="162.50000000">CPU 2</text>
+<text transform="translate(10.00000000,201.00000000)" font-size="1.25pt">Intel(R) Xeon(R) CPU D-1541 @ 2.10GHz
+</text>
+</g>
+<g>
+<rect x="0.00000000" width="1000.00000000" y="210.0" height="55.0" class="cpu"/>
+<text x="10.00000000" y="222.50000000">CPU 3</text>
+<text transform="translate(10.00000000,261.00000000)" font-size="1.25pt">Intel(R) Xeon(R) CPU D-1541 @ 2.10GHz
+</text>
+</g>
+<g>
+<rect x="0.00000000" width="1000.00000000" y="270.0" height="55.0" class="cpu"/>
+<text x="10.00000000" y="282.50000000">CPU 4</text>
+<text transform="translate(10.00000000,321.00000000)" font-size="1.25pt">Intel(R) Xeon(R) CPU D-1541 @ 2.10GHz
+</text>
+</g>
+<g>
+<rect x="0.00000000" width="1000.00000000" y="330.0" height="55.0" class="cpu"/>
+<text x="10.00000000" y="342.50000000">CPU 5</text>
+<text transform="translate(10.00000000,381.00000000)" font-size="1.25pt">Intel(R) Xeon(R) CPU D-1541 @ 2.10GHz
+</text>
+</g>
+<g>
+<rect x="0.00000000" width="1000.00000000" y="390.0" height="55.0" class="cpu"/>
+<text x="10.00000000" y="402.50000000">CPU 6</text>
+<text transform="translate(10.00000000,441.00000000)" font-size="1.25pt">Intel(R) Xeon(R) CPU D-1541 @ 2.10GHz
+</text>
+</g>
+<g>
+<rect x="0.00000000" width="1000.00000000" y="450.0" height="55.0" class="cpu"/>
+<text x="10.00000000" y="462.50000000">CPU 7</text>
+<text transform="translate(10.00000000,501.00000000)" font-size="1.25pt">Intel(R) Xeon(R) CPU D-1541 @ 2.10GHz
+</text>
+</g>
+<g transform="translate(758.94578054,330.00000000)">
+<title>1148 in:imjournal running 756.2 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="25.16876492" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="5.00000000pt">in:imjournal</text>
+</g>
+<g transform="translate(765.00131311,210.00000000)">
+<title>1149 rs:main Q:Reg running 60.7 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="2.01955380" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="1.25000000pt">rs:main Q:Reg</text>
+</g>
+<g transform="translate(745.37914814,270.00000000)">
+<title>538 systemd-journal running 379.1 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="12.61806721" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="5.00000000pt">systemd-journal</text>
+</g>
+<g transform="translate(962.53510354,210.00000000)">
+<title>9 rcu_sched running 10.9 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.36124563" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.31250000pt">rcu_sched</text>
+</g>
+<g transform="translate(862.70765466,210.00000000)">
+<title>9 rcu_sched running 7.8 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.26062409" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.15625000pt">rcu_sched</text>
+</g>
+<g transform="translate(762.91292526,210.00000000)">
+<title>9 rcu_sched running 6.9 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.22980188" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.15625000pt">rcu_sched</text>
+</g>
+<g transform="translate(662.92360985,210.00000000)">
+<title>9 rcu_sched running 8.0 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.26718130" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.15625000pt">rcu_sched</text>
+</g>
+<g transform="translate(563.37805439,210.00000000)">
+<title>9 rcu_sched running 12.1 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.40341814" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.31250000pt">rcu_sched</text>
+</g>
+<g transform="translate(463.09795838,210.00000000)">
+<title>9 rcu_sched running 8.6 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.28508881" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.15625000pt">rcu_sched</text>
+</g>
+<g transform="translate(430.04769454,210.00000000)">
+<title>9 rcu_sched running 7.1 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.23645895" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.15625000pt">rcu_sched</text>
+</g>
+<g transform="translate(329.80794035,210.00000000)">
+<title>9 rcu_sched running 8.7 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.28894990" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.15625000pt">rcu_sched</text>
+</g>
+<g transform="translate(296.91817835,210.00000000)">
+<title>9 rcu_sched running 7.2 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.23978748" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.15625000pt">rcu_sched</text>
+</g>
+<g transform="translate(761.52033384,30.00000000)">
+<title>11 watchdog/0 running 6.2 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.20550360" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.15625000pt">watchdog/0</text>
+</g>
+<g transform="translate(763.20407199,90.00000000)">
+<title>12 watchdog/1 running 10.8 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.36067978" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.31250000pt">watchdog/1</text>
+</g>
+<g transform="translate(862.79679276,150.00000000)">
+<title>17 watchdog/2 running 11.1 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.37016610" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.31250000pt">watchdog/2</text>
+</g>
+<g transform="translate(995.76707196,210.00000000)">
+<title>22 watchdog/3 running 5.2 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.17454824" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.15625000pt">watchdog/3</text>
+</g>
+<g transform="translate(251.31235714,330.00000000)">
+<title>33 migration/5 running 15.1 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.50244198" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.31250000pt">migration/5</text>
+</g>
+<g transform="translate(812.38250696,450.00000000)">
+<title>43 migration/7 running 15.9 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.53010208" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.31250000pt">migration/7</text>
+</g>
+<g transform="translate(975.40830276,450.00000000)">
+<title>138 kauditd running 21.4 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.71064168" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.62500000pt">kauditd</text>
+</g>
+<g transform="translate(956.94653079,450.00000000)">
+<title>138 kauditd running 12.7 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.42189149" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.31250000pt">kauditd</text>
+</g>
+<g transform="translate(948.35059566,450.00000000)">
+<title>138 kauditd running 21.1 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.70348534" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.62500000pt">kauditd</text>
+</g>
+<g transform="translate(933.69473429,450.00000000)">
+<title>138 kauditd running 22.1 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.73530611" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.62500000pt">kauditd</text>
+</g>
+<g transform="translate(785.94706901,450.00000000)">
+<title>138 kauditd running 21.2 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.70485004" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.62500000pt">kauditd</text>
+</g>
+<g transform="translate(772.13073011,450.00000000)">
+<title>138 kauditd running 20.8 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.69200190" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.62500000pt">kauditd</text>
+</g>
+<g transform="translate(755.02137417,450.00000000)">
+<title>138 kauditd running 27.6 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.91887468" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.62500000pt">kauditd</text>
+</g>
+<g transform="translate(930.41859292,30.00000000)">
+<title>23951 kworker/0:2 running 4.1 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.13746839" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.07812500pt">kworker/0:2</text>
+</g>
+<g transform="translate(928.74197782,30.00000000)">
+<title>23951 kworker/0:2 running 34.0 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="1.13003678" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.62500000pt">kworker/0:2</text>
+</g>
+<g transform="translate(928.23151408,30.00000000)">
+<title>23951 kworker/0:2 running 4.3 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.14379260" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.07812500pt">kworker/0:2</text>
+</g>
+<g transform="translate(926.00153046,30.00000000)">
+<title>23951 kworker/0:2 running 3.8 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.12665066" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.07812500pt">kworker/0:2</text>
+</g>
+<g transform="translate(925.66035588,30.00000000)">
+<title>23951 kworker/0:2 running 3.7 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.12249000" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.07812500pt">kworker/0:2</text>
+</g>
+<g transform="translate(925.19299663,30.00000000)">
+<title>23951 kworker/0:2 running 3.9 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.13131061" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.07812500pt">kworker/0:2</text>
+</g>
+<g transform="translate(924.12953051,30.00000000)">
+<title>23951 kworker/0:2 running 13.9 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.46283244" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.31250000pt">kworker/0:2</text>
+</g>
+<g transform="translate(977.39264068,90.00000000)">
+<title>786 auditd running 70.2 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="2.33699594" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="1.25000000pt">auditd</text>
+</g>
+<g transform="translate(957.37627762,90.00000000)">
+<title>786 auditd running 30.1 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="1.00238756" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.62500000pt">auditd</text>
+</g>
+<g transform="translate(950.20012802,90.00000000)">
+<title>786 auditd running 62.1 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="2.06588697" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="1.25000000pt">auditd</text>
+</g>
+<g transform="translate(934.50343455,90.00000000)">
+<title>786 auditd running 73.3 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="2.43868261" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="1.25000000pt">auditd</text>
+</g>
+<g transform="translate(787.82842214,30.00000000)">
+<title>786 auditd running 57.7 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="1.92126223" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="1.25000000pt">auditd</text>
+</g>
+<g transform="translate(774.02969118,30.00000000)">
+<title>786 auditd running 83.9 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="2.79370388" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="2.50000000pt">auditd</text>
+</g>
+<g transform="translate(756.91813841,30.00000000)">
+<title>786 auditd running 74.5 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="2.48035583" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="1.25000000pt">auditd</text>
+</g>
+<g transform="translate(929.85706949,390.00000000)">
+<title>22908 sshd running 80.5 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="2.68093320" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="2.50000000pt">sshd</text>
+</g>
+<g transform="translate(925.68152535,390.00000000)">
+<title>22908 sshd running 118.5 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="3.94287972" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="2.50000000pt">sshd</text>
+</g>
+<g transform="translate(939.38932080,390.00000000)">
+<title>23966 sudo running 1.6 ms</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="52.84544592" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="5.00000000pt">sudo</text>
+</g>
+<g transform="translate(835.44564224,390.00000000)">
+<title>23966 sudo running 17.5 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.58169434" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.31250000pt">sudo</text>
+</g>
+<g transform="translate(245.07738339,330.00000000)">
+<title>23966 perf running 187.3 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="6.23497376" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="5.00000000pt">perf</text>
+</g>
+<g transform="translate(930.55606131,30.00000000)">
+<title>23967 test running 266.1 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="8.85739136" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="5.00000000pt">test</text>
+</g>
+<g transform="translate(929.87201460,30.00000000)">
+<title>23967 test running 16.4 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.54657832" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.31250000pt">test</text>
+</g>
+<g transform="translate(928.37530668,30.00000000)">
+<title>23967 test running 11.0 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.36667114" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.31250000pt">test</text>
+</g>
+<g transform="translate(926.12818112,30.00000000)">
+<title>23967 test running 63.2 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="2.10333296" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="1.25000000pt">test</text>
+</g>
+<g transform="translate(925.78284588,30.00000000)">
+<title>23967 test running 6.6 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.21868458" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.15625000pt">test</text>
+</g>
+<g transform="translate(925.32430724,30.00000000)">
+<title>23967 test running 10.1 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.33604864" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.31250000pt">test</text>
+</g>
+<g transform="translate(924.59236295,30.00000000)">
+<title>23967 test running 18.0 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.60063369" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.31250000pt">test</text>
+</g>
+<g transform="translate(923.95175359,30.00000000)">
+<title>23967 test running 5.3 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="0.17777692" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="0.15625000pt">test</text>
+</g>
+<g transform="translate(797.83602118,450.00000000)">
+<title>23967 sudo running 437.0 us</title>
+<desc>Switched because:
+</desc>
+<rect x="0" width="14.54648579" y="0" height="55.0" class="sample"/>
+<text transform="rotate(90)" font-size="5.00000000pt">sudo</text>
+</g>
+<rect x="757.66339683" width="242.33660317" y="540.0" height="25.0" class="process"/>
+<g>
+<title>#5 running 756.2 us</title>
+<desc>Switched because:
+</desc>
+<rect x="758.94578054" width="25.16876492" y="540.0" height="25.0" class="sample"/>
+<text x="758.94578054" y="564.00000000" font-size="1.25000000pt">6</text>
+</g>
+<g transform="translate(757.66339683,540.00000000)">
+<title>#5 waiting 38.5 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="1.28238371" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="1.25000000pt"> 38.5 us</text>
+</g>
+<text x="757.66339683" y="552.50000000">in:imjournal:1148 (0.8ms)</text>
+<rect x="764.90561780" width="235.09438220" y="570.0" height="25.0" class="process"/>
+<g>
+<title>#3 running 60.7 us</title>
+<desc>Switched because:
+</desc>
+<rect x="765.00131311" width="2.01955380" y="570.0" height="25.0" class="sample"/>
+<text x="765.00131311" y="594.00000000" font-size="1.25000000pt">4</text>
+</g>
+<g transform="translate(764.90561780,570.00000000)">
+<title>#3 waiting 2.9 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.09569531" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.07812500pt"> 2.9 us</text>
+</g>
+<text x="764.90561780" y="582.50000000">rs:main Q:Reg:1149 (0.1ms)</text>
+<rect x="744.45138628" width="255.54861372" y="600.0" height="25.0" class="process"/>
+<g>
+<title>#4 running 379.1 us</title>
+<desc>Switched because:
+</desc>
+<rect x="745.37914814" width="12.61806721" y="600.0" height="25.0" class="sample"/>
+<text x="745.37914814" y="624.00000000" font-size="1.25000000pt">5</text>
+</g>
+<g transform="translate(744.45138628,600.00000000)">
+<title>#4 waiting 27.9 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.92776186" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.62500000pt"> 27.9 us</text>
+</g>
+<text x="744.45138628" y="612.50000000">systemd-journal:538 (0.4ms)</text>
+<rect x="296.56695160" width="703.43304840" y="630.0" height="25.0" class="process"/>
+<g>
+<title>#3 running 10.9 us</title>
+<desc>Switched because:
+</desc>
+<rect x="962.53510354" width="0.36124563" y="630.0" height="25.0" class="sample"/>
+<text x="962.53510354" y="654.00000000" font-size="0.31250000pt">4</text>
+</g>
+<g transform="translate(962.21732854,630.00000000)">
+<title>#3 waiting 9.5 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.31777500" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.31250000pt"> 9.5 us</text>
+</g>
+<g>
+<title>#3 running 7.8 us</title>
+<desc>Switched because:
+</desc>
+<rect x="862.70765466" width="0.26062409" y="630.0" height="25.0" class="sample"/>
+<text x="862.70765466" y="654.00000000" font-size="0.15625000pt">4</text>
+</g>
+<g transform="translate(862.42459626,630.00000000)">
+<title>#3 waiting 8.5 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.28305840" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.15625000pt"> 8.5 us</text>
+</g>
+<g>
+<title>#3 running 6.9 us</title>
+<desc>Switched because:
+</desc>
+<rect x="762.91292526" width="0.22980188" y="630.0" height="25.0" class="sample"/>
+<text x="762.91292526" y="654.00000000" font-size="0.15625000pt">4</text>
+</g>
+<g transform="translate(762.44949368,630.00000000)">
+<title>#3 waiting 13.9 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.46343158" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.31250000pt"> 13.9 us</text>
+</g>
+<g>
+<title>#3 running 8.0 us</title>
+<desc>Switched because:
+</desc>
+<rect x="662.92360985" width="0.26718130" y="630.0" height="25.0" class="sample"/>
+<text x="662.92360985" y="654.00000000" font-size="0.15625000pt">4</text>
+</g>
+<g transform="translate(662.59874508,630.00000000)">
+<title>#3 waiting 9.8 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.32486477" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.31250000pt"> 9.8 us</text>
+</g>
+<g>
+<title>#3 running 12.1 us</title>
+<desc>Switched because:
+</desc>
+<rect x="563.37805439" width="0.40341814" y="630.0" height="25.0" class="sample"/>
+<text x="563.37805439" y="654.00000000" font-size="0.31250000pt">4</text>
+</g>
+<g transform="translate(562.84668746,630.00000000)">
+<title>#3 waiting 16.0 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.53136693" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.31250000pt"> 16.0 us</text>
+</g>
+<g>
+<title>#3 running 8.6 us</title>
+<desc>Switched because:
+</desc>
+<rect x="463.09795838" width="0.28508881" y="630.0" height="25.0" class="sample"/>
+<text x="463.09795838" y="654.00000000" font-size="0.15625000pt">4</text>
+</g>
+<g transform="translate(461.93060875,630.00000000)">
+<title>#3 waiting 35.1 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="1.16734963" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.62500000pt"> 35.1 us</text>
+</g>
+<g>
+<title>#3 running 7.1 us</title>
+<desc>Switched because:
+</desc>
+<rect x="430.04769454" width="0.23645895" y="630.0" height="25.0" class="sample"/>
+<text x="430.04769454" y="654.00000000" font-size="0.15625000pt">4</text>
+</g>
+<g transform="translate(429.69992947,630.00000000)">
+<title>#3 waiting 10.4 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.34776507" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.31250000pt"> 10.4 us</text>
+</g>
+<g>
+<title>#3 running 8.7 us</title>
+<desc>Switched because:
+</desc>
+<rect x="329.80794035" width="0.28894990" y="630.0" height="25.0" class="sample"/>
+<text x="329.80794035" y="654.00000000" font-size="0.15625000pt">4</text>
+</g>
+<g transform="translate(328.84446334,630.00000000)">
+<title>#3 waiting 28.9 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.96347701" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.62500000pt"> 28.9 us</text>
+</g>
+<g>
+<title>#3 running 7.2 us</title>
+<desc>Switched because:
+</desc>
+<rect x="296.91817835" width="0.23978748" y="630.0" height="25.0" class="sample"/>
+<text x="296.91817835" y="654.00000000" font-size="0.15625000pt">4</text>
+</g>
+<g transform="translate(296.56695160,630.00000000)">
+<title>#3 waiting 10.6 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.35122675" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.31250000pt"> 10.6 us</text>
+</g>
+<text x="296.56695160" y="642.50000000">rcu_sched:9 (0.1ms)</text>
+<rect x="762.48577468" width="237.51422532" y="660.0" height="25.0" class="process"/>
+<g>
+<title>#1 running 10.8 us</title>
+<desc>Switched because:
+</desc>
+<rect x="763.20407199" width="0.36067978" y="660.0" height="25.0" class="sample"/>
+<text x="763.20407199" y="684.00000000" font-size="0.31250000pt">2</text>
+</g>
+<g transform="translate(762.48577468,660.00000000)">
+<title>#1 waiting 21.6 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.71829731" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.62500000pt"> 21.6 us</text>
+</g>
+<text x="762.48577468" y="672.50000000">watchdog/1:12 (0.0ms)</text>
+<rect x="862.35210082" width="137.64789918" y="690.0" height="25.0" class="process"/>
+<g>
+<title>#2 running 11.1 us</title>
+<desc>Switched because:
+</desc>
+<rect x="862.79679276" width="0.37016610" y="690.0" height="25.0" class="sample"/>
+<text x="862.79679276" y="714.00000000" font-size="0.31250000pt">3</text>
+</g>
+<g transform="translate(862.35210082,690.00000000)">
+<title>#2 waiting 13.4 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.44469194" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.31250000pt"> 13.4 us</text>
+</g>
+<text x="862.35210082" y="702.50000000">watchdog/2:17 (0.0ms)</text>
+<rect x="251.06351606" width="748.93648394" y="720.0" height="25.0" class="process"/>
+<g>
+<title>#5 running 15.1 us</title>
+<desc>Switched because:
+</desc>
+<rect x="251.31235714" width="0.50244198" y="720.0" height="25.0" class="sample"/>
+<text x="251.31235714" y="744.00000000" font-size="0.31250000pt">6</text>
+</g>
+<g transform="translate(251.06351606,720.00000000)">
+<title>#5 waiting 7.5 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.24884109" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.15625000pt"> 7.5 us</text>
+</g>
+<text x="251.06351606" y="732.50000000">migration/5:33 (0.0ms)</text>
+<rect x="812.21308466" width="187.78691534" y="750.0" height="25.0" class="process"/>
+<g>
+<title>#7 running 15.9 us</title>
+<desc>Switched because:
+</desc>
+<rect x="812.38250696" width="0.53010208" y="750.0" height="25.0" class="sample"/>
+<text x="812.38250696" y="774.00000000" font-size="0.31250000pt">8</text>
+</g>
+<g transform="translate(812.21308466,750.00000000)">
+<title>#7 waiting 5.1 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.16942230" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.15625000pt"> 5.1 us</text>
+</g>
+<text x="812.21308466" y="762.50000000">migration/7:43 (0.0ms)</text>
+<rect x="753.59027163" width="246.40972837" y="780.0" height="25.0" class="process"/>
+<g>
+<title>#7 running 21.4 us</title>
+<desc>Switched because:
+</desc>
+<rect x="975.40830276" width="0.71064168" y="780.0" height="25.0" class="sample"/>
+<text x="975.40830276" y="804.00000000" font-size="0.62500000pt">8</text>
+</g>
+<g transform="translate(974.09935736,780.00000000)">
+<title>#7 waiting 39.3 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="1.30894540" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="1.25000000pt"> 39.3 us</text>
+</g>
+<g>
+<title>#7 running 12.7 us</title>
+<desc>Switched because:
+</desc>
+<rect x="956.94653079" width="0.42189149" y="780.0" height="25.0" class="sample"/>
+<text x="956.94653079" y="804.00000000" font-size="0.31250000pt">8</text>
+</g>
+<g transform="translate(956.28055801,780.00000000)">
+<title>#7 waiting 20.0 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.66597278" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.62500000pt"> 20.0 us</text>
+</g>
+<g>
+<title>#7 running 21.1 us</title>
+<desc>Switched because:
+</desc>
+<rect x="948.35059566" width="0.70348534" y="780.0" height="25.0" class="sample"/>
+<text x="948.35059566" y="804.00000000" font-size="0.62500000pt">8</text>
+</g>
+<g transform="translate(947.03326236,780.00000000)">
+<title>#7 waiting 39.6 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="1.31733330" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="1.25000000pt"> 39.6 us</text>
+</g>
+<g>
+<title>#7 running 22.1 us</title>
+<desc>Switched because:
+</desc>
+<rect x="933.69473429" width="0.73530611" y="780.0" height="25.0" class="sample"/>
+<text x="933.69473429" y="804.00000000" font-size="0.62500000pt">8</text>
+</g>
+<g transform="translate(933.51932063,780.00000000)">
+<title>#7 waiting 5.3 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.17541366" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.15625000pt"> 5.3 us</text>
+</g>
+<g>
+<title>#7 running 21.2 us</title>
+<desc>Switched because:
+</desc>
+<rect x="785.94706901" width="0.70485004" y="780.0" height="25.0" class="sample"/>
+<text x="785.94706901" y="804.00000000" font-size="0.62500000pt">8</text>
+</g>
+<g transform="translate(784.53946591,780.00000000)">
+<title>#7 waiting 42.3 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="1.40760310" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="1.25000000pt"> 42.3 us</text>
+</g>
+<g>
+<title>#7 running 20.8 us</title>
+<desc>Switched because:
+</desc>
+<rect x="772.13073011" width="0.69200190" y="780.0" height="25.0" class="sample"/>
+<text x="772.13073011" y="804.00000000" font-size="0.62500000pt">8</text>
+</g>
+<g transform="translate(770.68714557,780.00000000)">
+<title>#7 waiting 43.4 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="1.44358454" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="1.25000000pt"> 43.4 us</text>
+</g>
+<g>
+<title>#7 running 27.6 us</title>
+<desc>Switched because:
+</desc>
+<rect x="755.02137417" width="0.91887468" y="780.0" height="25.0" class="sample"/>
+<text x="755.02137417" y="804.00000000" font-size="0.62500000pt">8</text>
+</g>
+<g transform="translate(753.59027163,780.00000000)">
+<title>#7 waiting 43.0 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="1.43110254" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="1.25000000pt"> 43.0 us</text>
+</g>
+<text x="753.59027163" y="792.50000000">kauditd:138 (0.1ms)</text>
+<rect x="923.83691922" width="76.16308078" y="810.0" height="25.0" class="process"/>
+<g>
+<title>#0 running 4.1 us</title>
+<desc>Switched because:
+</desc>
+<rect x="930.41859292" width="0.13746839" y="810.0" height="25.0" class="sample"/>
+<text x="930.41859292" y="834.00000000" font-size="0.07812500pt">1</text>
+</g>
+<g transform="translate(930.27343561,810.00000000)">
+<title>#0 waiting 4.4 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.14515730" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.07812500pt"> 4.4 us</text>
+</g>
+<g>
+<title>#0 running 34.0 us</title>
+<desc>Switched because:
+</desc>
+<rect x="928.74197782" width="1.13003678" y="810.0" height="25.0" class="sample"/>
+<text x="928.74197782" y="834.00000000" font-size="0.62500000pt">1</text>
+</g>
+<g transform="translate(928.60497542,810.00000000)">
+<title>#0 waiting 4.1 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.13700240" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.07812500pt"> 4.1 us</text>
+</g>
+<g>
+<title>#0 running 4.3 us</title>
+<desc>Switched because:
+</desc>
+<rect x="928.23151408" width="0.14379260" y="810.0" height="25.0" class="sample"/>
+<text x="928.23151408" y="834.00000000" font-size="0.07812500pt">1</text>
+</g>
+<g transform="translate(928.08139726,810.00000000)">
+<title>#0 waiting 4.5 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.15011681" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.07812500pt"> 4.5 us</text>
+</g>
+<g>
+<title>#0 running 3.8 us</title>
+<desc>Switched because:
+</desc>
+<rect x="926.00153046" width="0.12665066" y="810.0" height="25.0" class="sample"/>
+<text x="926.00153046" y="834.00000000" font-size="0.07812500pt">1</text>
+</g>
+<g transform="translate(925.90400446,810.00000000)">
+<title>#0 waiting 2.9 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.09752600" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.07812500pt"> 2.9 us</text>
+</g>
+<g>
+<title>#0 running 3.7 us</title>
+<desc>Switched because:
+</desc>
+<rect x="925.66035588" width="0.12249000" y="810.0" height="25.0" class="sample"/>
+<text x="925.66035588" y="834.00000000" font-size="0.07812500pt">1</text>
+</g>
+<g transform="translate(925.52718130,810.00000000)">
+<title>#0 waiting 4.0 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.13317458" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.07812500pt"> 4.0 us</text>
+</g>
+<g>
+<title>#0 running 3.9 us</title>
+<desc>Switched because:
+</desc>
+<rect x="925.19299663" width="0.13131061" y="810.0" height="25.0" class="sample"/>
+<text x="925.19299663" y="834.00000000" font-size="0.07812500pt">1</text>
+</g>
+<g transform="translate(925.03805345,810.00000000)">
+<title>#0 waiting 4.7 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.15494319" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.07812500pt"> 4.7 us</text>
+</g>
+<g>
+<title>#0 running 13.9 us</title>
+<desc>Switched because:
+</desc>
+<rect x="924.12953051" width="0.46283244" y="810.0" height="25.0" class="sample"/>
+<text x="924.12953051" y="834.00000000" font-size="0.31250000pt">1</text>
+</g>
+<g transform="translate(923.83691922,810.00000000)">
+<title>#0 waiting 8.8 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.29261129" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.15625000pt"> 8.8 us</text>
+</g>
+<text x="923.83691922" y="822.50000000">kworker/0:2:23951 (0.1ms)</text>
+<rect x="755.58556043" width="244.41443957" y="840.0" height="25.0" class="process"/>
+<g>
+<title>#1 running 70.2 us</title>
+<desc>Switched because:
+</desc>
+<rect x="977.39264068" width="2.33699594" y="840.0" height="25.0" class="sample"/>
+<text x="977.39264068" y="864.00000000" font-size="1.25000000pt">2</text>
+</g>
+<g transform="translate(975.87346517,840.00000000)">
+<title>#1 waiting 45.6 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="1.51917551" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="1.25000000pt"> 45.6 us</text>
+</g>
+<g>
+<title>#1 running 30.1 us</title>
+<desc>Switched because:
+</desc>
+<rect x="957.37627762" width="1.00238756" y="840.0" height="25.0" class="sample"/>
+<text x="957.37627762" y="864.00000000" font-size="0.62500000pt">2</text>
+</g>
+<g transform="translate(957.23295101,840.00000000)">
+<title>#1 waiting 4.3 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.14332661" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.07812500pt"> 4.3 us</text>
+</g>
+<g>
+<title>#1 running 62.1 us</title>
+<desc>Switched because:
+</desc>
+<rect x="950.20012802" width="2.06588697" y="840.0" height="25.0" class="sample"/>
+<text x="950.20012802" y="864.00000000" font-size="1.25000000pt">2</text>
+</g>
+<g transform="translate(948.81109813,840.00000000)">
+<title>#1 waiting 41.7 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="1.38902989" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="1.25000000pt"> 41.7 us</text>
+</g>
+<g>
+<title>#1 running 73.3 us</title>
+<desc>Switched because:
+</desc>
+<rect x="934.50343455" width="2.43868261" y="840.0" height="25.0" class="sample"/>
+<text x="934.50343455" y="864.00000000" font-size="1.25000000pt">2</text>
+</g>
+<g transform="translate(934.18888823,840.00000000)">
+<title>#1 waiting 9.4 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.31454632" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.31250000pt"> 9.4 us</text>
+</g>
+<g>
+<title>#0 running 57.7 us</title>
+<desc>Switched because:
+</desc>
+<rect x="787.82842214" width="1.92126223" y="840.0" height="25.0" class="sample"/>
+<text x="787.82842214" y="864.00000000" font-size="1.25000000pt">1</text>
+</g>
+<g transform="translate(786.41276399,840.00000000)">
+<title>#0 waiting 42.5 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="1.41565815" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="1.25000000pt"> 42.5 us</text>
+</g>
+<g>
+<title>#0 running 83.9 us</title>
+<desc>Switched because:
+</desc>
+<rect x="774.02969118" width="2.79370388" y="840.0" height="25.0" class="sample"/>
+<text x="774.02969118" y="864.00000000" font-size="1.25000000pt">1</text>
+</g>
+<g transform="translate(772.58507479,840.00000000)">
+<title>#0 waiting 43.4 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="1.44461638" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="1.25000000pt"> 43.4 us</text>
+</g>
+<g>
+<title>#0 running 74.5 us</title>
+<desc>Switched because:
+</desc>
+<rect x="756.91813841" width="2.48035583" y="840.0" height="25.0" class="sample"/>
+<text x="756.91813841" y="864.00000000" font-size="1.25000000pt">1</text>
+</g>
+<g transform="translate(755.58556043,840.00000000)">
+<title>#0 waiting 40.0 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="1.33257798" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="1.25000000pt"> 40.0 us</text>
+</g>
+<text x="755.58556043" y="852.50000000">auditd:786 (0.5ms)</text>
+<rect x="924.41761499" width="75.58238501" y="870.0" height="25.0" class="process"/>
+<g>
+<title>#6 running 80.5 us</title>
+<desc>Switched because:
+</desc>
+<rect x="929.85706949" width="2.68093320" y="870.0" height="25.0" class="sample"/>
+<text x="929.85706949" y="894.00000000" font-size="1.25000000pt">7</text>
+</g>
+<g transform="translate(929.77582001,870.00000000)">
+<title>#6 waiting 2.4 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.08124948" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.07812500pt"> 2.4 us</text>
+</g>
+<g>
+<title>#0 blocked 4.5 us</title>
+<rect x="929.62440507" width="0.15141494" y="870.0" height="25.0" class="blocked"/>
+</g>
+<g>
+<title>#6 running 118.5 us</title>
+<desc>Switched because:
+</desc>
+<rect x="925.68152535" width="3.94287972" y="870.0" height="25.0" class="sample"/>
+<text x="925.68152535" y="894.00000000" font-size="1.25000000pt">7</text>
+</g>
+<g transform="translate(924.41761499,870.00000000)">
+<title>#6 waiting 38.0 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="1.26391035" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="1.25000000pt"> 38.0 us</text>
+</g>
+<text x="924.41761499" y="882.50000000">sshd:22908 (0.2ms)</text>
+<rect x="835.31243437" width="156.17084958" y="900.0" height="25.0" class="process"/>
+<g>
+<title>#6 running 1.6 ms</title>
+<desc>Switched because:
+</desc>
+<rect x="939.38932080" width="52.84544592" y="900.0" height="25.0" class="sample"/>
+<text x="939.38932080" y="924.00000000" font-size="1.25000000pt">7</text>
+</g>
+<g transform="translate(939.27332145,900.00000000)">
+<title>#6 waiting 3.5 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.11599936" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.07812500pt"> 3.5 us</text>
+</g>
+<g>
+<title>#6 running 17.5 us</title>
+<desc>Switched because:
+</desc>
+<rect x="835.44564224" width="0.58169434" y="900.0" height="25.0" class="sample"/>
+<text x="835.44564224" y="924.00000000" font-size="0.31250000pt">7</text>
+</g>
+<g transform="translate(835.31243437,900.00000000)">
+<title>#6 waiting 4.0 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.13320787" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.07812500pt"> 4.0 us</text>
+</g>
+<text x="835.31243437" y="912.50000000">sudo:23966 (1.6ms)</text>
+<rect x="244.83173769" width="755.16826231" y="930.0" height="25.0" class="process"/>
+<g transform="translate(251.31235714,930.00000000)">
+<title>#6 waiting 49.7 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="1.65274952" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="1.25000000pt"> 49.7 us</text>
+</g>
+<g>
+<title>#5 running 187.3 us</title>
+<desc>Switched because:
+</desc>
+<rect x="245.07738339" width="6.23497376" y="930.0" height="25.0" class="sample"/>
+<text x="245.07738339" y="954.00000000" font-size="1.25000000pt">6</text>
+</g>
+<g transform="translate(244.83173769,930.00000000)">
+<title>#5 waiting 7.4 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.24564570" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.15625000pt"> 7.4 us</text>
+</g>
+<text x="244.83173769" y="942.50000000">perf:23966 (0.2ms)</text>
+<rect x="923.95175359" width="14.73175190" y="960.0" height="25.0" class="process"/>
+<g>
+<title>#0 running 266.1 us</title>
+<desc>Switched because:
+</desc>
+<rect x="930.55606131" width="8.85739136" y="960.0" height="25.0" class="sample"/>
+<text x="930.55606131" y="984.00000000" font-size="1.25000000pt">1</text>
+</g>
+<g transform="translate(930.41859292,960.00000000)">
+<title>#0 waiting 4.1 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.13746839" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.07812500pt"> 4.1 us</text>
+</g>
+<g>
+<title>#0 running 16.4 us</title>
+<desc>Switched because:
+</desc>
+<rect x="929.87201460" width="0.54657832" y="960.0" height="25.0" class="sample"/>
+<text x="929.87201460" y="984.00000000" font-size="0.31250000pt">1</text>
+</g>
+<g transform="translate(928.74197782,960.00000000)">
+<title>#0 waiting 34.0 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="1.13003678" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.62500000pt"> 34.0 us</text>
+</g>
+<g>
+<title>#0 running 11.0 us</title>
+<desc>Switched because:
+</desc>
+<rect x="928.37530668" width="0.36667114" y="960.0" height="25.0" class="sample"/>
+<text x="928.37530668" y="984.00000000" font-size="0.31250000pt">1</text>
+</g>
+<g transform="translate(928.23151408,960.00000000)">
+<title>#0 waiting 4.3 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.14379260" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.07812500pt"> 4.3 us</text>
+</g>
+<g>
+<title>#0 running 63.2 us</title>
+<desc>Switched because:
+</desc>
+<rect x="926.12818112" width="2.10333296" y="960.0" height="25.0" class="sample"/>
+<text x="926.12818112" y="984.00000000" font-size="1.25000000pt">1</text>
+</g>
+<g transform="translate(926.00153046,960.00000000)">
+<title>#0 waiting 3.8 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.12665066" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.07812500pt"> 3.8 us</text>
+</g>
+<g>
+<title>#0 running 6.6 us</title>
+<desc>Switched because:
+</desc>
+<rect x="925.78284588" width="0.21868458" y="960.0" height="25.0" class="sample"/>
+<text x="925.78284588" y="984.00000000" font-size="0.15625000pt">1</text>
+</g>
+<g transform="translate(925.66035588,960.00000000)">
+<title>#0 waiting 3.7 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.12249000" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.07812500pt"> 3.7 us</text>
+</g>
+<g>
+<title>#0 running 10.1 us</title>
+<desc>Switched because:
+</desc>
+<rect x="925.32430724" width="0.33604864" y="960.0" height="25.0" class="sample"/>
+<text x="925.32430724" y="984.00000000" font-size="0.31250000pt">1</text>
+</g>
+<g transform="translate(925.19299663,960.00000000)">
+<title>#0 waiting 3.9 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.13131061" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.07812500pt"> 3.9 us</text>
+</g>
+<g>
+<title>#0 running 18.0 us</title>
+<desc>Switched because:
+</desc>
+<rect x="924.59236295" width="0.60063369" y="960.0" height="25.0" class="sample"/>
+<text x="924.59236295" y="984.00000000" font-size="0.31250000pt">1</text>
+</g>
+<g transform="translate(924.12953051,960.00000000)">
+<title>#0 waiting 13.9 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="0.46283244" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="0.31250000pt"> 13.9 us</text>
+</g>
+<g>
+<title>#0 running 5.3 us</title>
+<desc>Switched because:
+</desc>
+<rect x="923.95175359" width="0.17777692" y="960.0" height="25.0" class="sample"/>
+<text x="923.95175359" y="984.00000000" font-size="0.15625000pt">1</text>
+</g>
+<text x="923.95175359" y="972.50000000">test:23967 (0.4ms)</text>
+<rect x="797.45147582" width="202.54852418" y="990.0" height="25.0" class="process"/>
+<g transform="translate(812.38250696,990.00000000)">
+<title>#0 waiting 51.8 us</title>
+<desc>Waiting on:
+</desc>
+<rect x="0" width="1.72354740" y="0" height="25.0" class="waiting"/>
+<text transform="rotate(90)" font-size="1.25000000pt"> 51.8 us</text>
+</g>
+<g>
+<title>#7 running 437.0 us</title>
+<desc>Switched because:
+</desc>
+<rect x="797.83602118" width="14.54648579" y="990.0" height="25.0" class="sample"/>
+<text x="797.83602118" y="1014.00000000" font-size="1.25000000pt">8</text>
+</g>
+<text x="797.45147582" y="1002.50000000">sudo:23967 (0.4ms)</text>
+<g>
+<rect class="c4" x="998.95763677" width="0.92320177" y="450.0" height="55.0"/>
+<text x="998.95763677" y="450.31250000" font-size="0.31250000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="998.77809573" width="0.93881259" y="390.0" height="55.0"/>
+<text x="998.77809573" y="390.31250000" font-size="0.31250000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="998.63759837" width="0.94333939" y="330.0" height="55.0"/>
+<text x="998.63759837" y="330.31250000" font-size="0.31250000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="998.44504277" width="0.96341044" y="210.0" height="55.0"/>
+<text x="998.44504277" y="210.31250000" font-size="0.31250000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="998.39095411" width="0.91171833" y="150.0" height="55.0"/>
+<text x="998.39095411" y="150.31250000" font-size="0.31250000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="998.22386178" width="0.92519889" y="90.0" height="55.0"/>
+<text x="998.22386178" y="90.31250000" font-size="0.31250000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="998.07540923" width="0.91371545" y="30.0" height="55.0"/>
+<text x="998.07540923" y="30.31250000" font-size="0.31250000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="997.93461231" width="0.90539412" y="450.0" height="55.0"/>
+<text x="997.93461231" y="450.31250000" font-size="0.31250000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="997.68064528" width="0.99802718" y="390.0" height="55.0"/>
+<text x="997.68064528" y="390.31250000" font-size="0.31250000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="997.48842253" width="1.05158327" y="330.0" height="55.0"/>
+<text x="997.48842253" y="330.31250000" font-size="0.31250000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="997.22733244" width="1.13958967" y="210.0" height="55.0"/>
+<text x="997.22733244" y="210.31250000" font-size="0.31250000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="997.36889493" width="0.89840420" y="150.0" height="55.0"/>
+<text x="997.36889493" y="150.31250000" font-size="0.31250000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="995.84559204" width="2.26110540" y="90.0" height="55.0"/>
+<text x="995.84559204" y="90.62500000" font-size="0.62500000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="996.04480471" width="1.90561813" y="30.0" height="55.0"/>
+<text x="996.04480471" y="30.62500000" font-size="0.62500000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="995.81377127" width="1.99685321" y="450.0" height="55.0"/>
+<text x="995.81377127" y="450.62500000" font-size="0.62500000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="995.07726689" width="2.49749778" y="390.0" height="55.0"/>
+<text x="995.07726689" y="390.62500000" font-size="0.62500000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="996.04939808" width="1.33637251" y="330.0" height="55.0"/>
+<text x="996.04939808" y="330.62500000" font-size="0.62500000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="996.13610636" width="1.00611551" y="210.0" height="55.0"/>
+<text x="996.13610636" y="210.31250000" font-size="0.31250000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="895.98951779" width="101.12394556" y="150.0" height="55.0"/>
+<text x="895.98951779" y="155.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="962.44353561" width="33.40348770" y="330.0" height="55.0"/>
+<text x="962.44353561" y="335.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="962.09087759" width="33.70045937" y="30.0" height="55.0"/>
+<text x="962.09087759" y="35.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="995.37856565" width="0.34500239" y="90.0" height="55.0"/>
+<text x="995.37856565" y="90.15625000" font-size="0.15625000pt">C4</text>
+</g>
+<g>
+<rect class="c3" x="976.36941651" width="19.29723362" y="450.0" height="55.0"/>
+<text x="976.36941651" y="455.00000000" font-size="5.00000000pt">C3</text>
+</g>
+<g>
+<rect class="c4" x="963.11350262" width="32.47825553" y="210.0" height="55.0"/>
+<text x="963.11350262" y="215.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c3" x="980.06485313" width="15.16692424" y="90.0" height="55.0"/>
+<text x="980.06485313" y="95.00000000" font-size="5.00000000pt">C3</text>
+</g>
+<g>
+<rect class="c1" x="992.52045466" width="2.42603418" y="390.0" height="55.0"/>
+<text x="992.52045466" y="390.62500000" font-size="0.62500000pt">C1</text>
+</g>
+<g>
+<rect class="c4" x="961.96113139" width="30.95029269" y="270.0" height="55.0"/>
+<text x="961.96113139" y="275.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="961.16221703" width="15.84697671" y="90.0" height="55.0"/>
+<text x="961.16221703" y="95.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="961.29352764" width="13.86526833" y="450.0" height="55.0"/>
+<text x="961.29352764" y="455.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="895.75402411" width="66.63192788" y="210.0" height="55.0"/>
+<text x="895.75402411" y="215.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="929.76849724" width="32.47496028" y="330.0" height="55.0"/>
+<text x="929.76849724" y="335.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c3" x="939.73798458" width="22.18613353" y="30.0" height="55.0"/>
+<text x="939.73798458" y="35.00000000" font-size="5.00000000pt">C3</text>
+</g>
+<g>
+<rect class="c4" x="928.67564017" width="33.18447027" y="270.0" height="55.0"/>
+<text x="928.67564017" y="275.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c2" x="957.53638003" width="3.63332620" y="450.0" height="55.0"/>
+<text x="957.53638003" y="451.25000000" font-size="1.25000000pt">C2</text>
+</g>
+<g>
+<rect class="c2" x="958.57138720" width="2.46800698" y="90.0" height="55.0"/>
+<text x="958.57138720" y="90.62500000" font-size="0.62500000pt">C2</text>
+</g>
+<g>
+<rect class="c3" x="952.59354258" width="4.67668799" y="90.0" height="55.0"/>
+<text x="952.59354258" y="91.25000000" font-size="1.25000000pt">C3</text>
+</g>
+<g>
+<rect class="c3" x="949.30189024" width="7.54345316" y="450.0" height="55.0"/>
+<text x="949.30189024" y="452.50000000" font-size="2.50000000pt">C3</text>
+</g>
+<g>
+<rect class="c4" x="937.21758650" width="12.66000672" y="90.0" height="55.0"/>
+<text x="937.21758650" y="95.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="934.61627180" width="13.48731346" y="450.0" height="55.0"/>
+<text x="934.61627180" y="455.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c3" x="932.76197964" width="6.53946791" y="390.0" height="55.0"/>
+<text x="932.76197964" y="392.50000000" font-size="2.50000000pt">C3</text>
+</g>
+<g>
+<rect class="c4" x="933.54827887" width="0.66773690" y="90.0" height="55.0"/>
+<text x="933.54827887" y="90.31250000" font-size="0.31250000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="930.02213141" width="3.53180596" y="450.0" height="55.0"/>
+<text x="930.02213141" y="451.25000000" font-size="1.25000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="796.02310268" width="137.27403841" y="90.0" height="55.0"/>
+<text x="796.02310268" y="95.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="896.22634287" width="33.54648146" y="450.0" height="55.0"/>
+<text x="896.22634287" y="455.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="895.96951331" width="33.59660916" y="330.0" height="55.0"/>
+<text x="895.96951331" y="335.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="895.46460821" width="33.11041042" y="270.0" height="55.0"/>
+<text x="895.46460821" y="275.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="896.21968581" width="29.23799573" y="390.0" height="55.0"/>
+<text x="896.21968581" y="395.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="862.70698895" width="33.29384584" y="390.0" height="55.0"/>
+<text x="862.70698895" y="395.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="862.84512305" width="33.13157988" y="450.0" height="55.0"/>
+<text x="862.84512305" y="455.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="862.60034277" width="33.16905916" y="330.0" height="55.0"/>
+<text x="862.60034277" y="335.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="863.42908079" width="32.31279418" y="150.0" height="55.0"/>
+<text x="863.42908079" y="155.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="863.17820930" width="32.39194668" y="210.0" height="55.0"/>
+<text x="863.17820930" y="215.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="862.13634534" width="33.22491194" y="270.0" height="55.0"/>
+<text x="862.13634534" y="275.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="829.99680128" width="32.59834898" y="450.0" height="55.0"/>
+<text x="829.99680128" y="455.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="242.73183312" width="619.83918528" y="150.0" height="55.0"/>
+<text x="242.73183312" y="155.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="795.74383880" width="66.81146892" y="210.0" height="55.0"/>
+<text x="795.74383880" y="215.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="836.17259373" width="26.31371352" y="390.0" height="55.0"/>
+<text x="836.17259373" y="395.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="829.23370192" width="33.16599691" y="330.0" height="55.0"/>
+<text x="829.23370192" y="335.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="828.79443549" width="33.23959076" y="270.0" height="55.0"/>
+<text x="828.79443549" y="275.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="829.07736075" width="6.22006193" y="390.0" height="55.0"/>
+<text x="829.07736075" y="392.50000000" font-size="2.50000000pt">C4</text>
+</g>
+<g>
+<rect class="c3" x="813.17306671" width="16.67877698" y="450.0" height="55.0"/>
+<text x="813.17306671" y="455.00000000" font-size="5.00000000pt">C3</text>
+</g>
+<g>
+<rect class="c4" x="795.77659156" width="33.25500187" y="330.0" height="55.0"/>
+<text x="795.77659156" y="335.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c3" x="801.69998139" width="27.23981111" y="390.0" height="55.0"/>
+<text x="801.69998139" y="395.00000000" font-size="5.00000000pt">C3</text>
+</g>
+<g>
+<rect class="c4" x="795.58200555" width="33.10997771" y="270.0" height="55.0"/>
+<text x="795.58200555" y="275.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="794.73043380" width="19.00049495" y="30.0" height="55.0"/>
+<text x="794.73043380" y="35.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="794.71895037" width="2.96578901" y="450.0" height="55.0"/>
+<text x="794.71895037" y="451.25000000" font-size="1.25000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="763.85812863" width="31.91433556" y="90.0" height="55.0"/>
+<text x="763.85812863" y="95.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c3" x="784.37979621" width="11.26179008" y="330.0" height="55.0"/>
+<text x="784.37979621" y="335.00000000" font-size="5.00000000pt">C3</text>
+</g>
+<g>
+<rect class="c4" x="767.19441659" width="28.36631964" y="210.0" height="55.0"/>
+<text x="767.19441659" y="215.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="761.34591874" width="34.13549857" y="270.0" height="55.0"/>
+<text x="761.34591874" y="275.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c3" x="790.08536687" width="4.50976209" y="30.0" height="55.0"/>
+<text x="790.08536687" y="31.25000000" font-size="1.25000000pt">C3</text>
+</g>
+<g>
+<rect class="c3" x="786.97012675" width="7.62317151" y="450.0" height="55.0"/>
+<text x="786.97012675" y="452.50000000" font-size="2.50000000pt">C3</text>
+</g>
+<g>
+<rect class="c4" x="777.15891113" width="10.34581122" y="30.0" height="55.0"/>
+<text x="777.15891113" y="35.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="773.13694548" width="12.49374652" y="450.0" height="55.0"/>
+<text x="773.13694548" y="455.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="761.89446089" width="11.81369405" y="30.0" height="55.0"/>
+<text x="761.89446089" y="35.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="761.45622630" width="10.31618729" y="450.0" height="55.0"/>
+<text x="761.45622630" y="455.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="763.35375610" width="1.56144787" y="210.0" height="55.0"/>
+<text x="763.35375610" y="210.62500000" font-size="0.62500000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="242.53831224" width="520.40263926" y="90.0" height="55.0"/>
+<text x="242.53831224" y="95.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="695.94744513" width="66.67067200" y="210.0" height="55.0"/>
+<text x="695.94744513" y="215.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c2" x="759.68208521" width="1.67315342" y="30.0" height="55.0"/>
+<text x="759.68208521" y="30.62500000" font-size="0.62500000pt">C2</text>
+</g>
+<g>
+<rect class="c3" x="756.24747240" width="5.08509893" y="450.0" height="55.0"/>
+<text x="756.24747240" y="452.50000000" font-size="2.50000000pt">C3</text>
+</g>
+<g>
+<rect class="c4" x="758.12712797" width="3.16666595" y="270.0" height="55.0"/>
+<text x="758.12712797" y="271.25000000" font-size="1.25000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="529.51363151" width="229.13590964" y="330.0" height="55.0"/>
+<text x="529.51363151" y="335.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c2" x="242.30245243" width="514.30177208" y="30.0" height="55.0"/>
+<text x="242.30245243" y="35.00000000" font-size="5.00000000pt">C2</text>
+</g>
+<g>
+<rect class="c2" x="243.72260410" width="510.93596003" y="450.0" height="55.0"/>
+<text x="243.72260410" y="455.00000000" font-size="5.00000000pt">C2</text>
+</g>
+<g>
+<rect class="c4" x="529.13750734" width="216.07478147" y="270.0" height="55.0"/>
+<text x="529.13750734" y="275.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="663.40614720" width="32.35922721" y="210.0" height="55.0"/>
+<text x="663.40614720" y="215.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="596.03558468" width="66.73634395" y="210.0" height="55.0"/>
+<text x="596.03558468" y="215.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="564.01779833" width="31.83491677" y="210.0" height="55.0"/>
+<text x="564.01779833" y="215.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="496.22274806" width="66.98967855" y="210.0" height="55.0"/>
+<text x="496.22274806" y="215.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="496.56988071" width="32.77852244" y="330.0" height="55.0"/>
+<text x="496.56988071" y="335.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="496.04750082" width="33.00502908" y="270.0" height="55.0"/>
+<text x="496.04750082" y="275.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="463.21412416" width="33.15441362" y="330.0" height="55.0"/>
+<text x="463.21412416" y="335.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="463.61764215" width="32.40486139" y="210.0" height="55.0"/>
+<text x="463.61764215" y="215.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="462.77352632" width="33.17601579" y="270.0" height="55.0"/>
+<text x="462.77352632" y="275.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="429.84685089" width="33.16639633" y="330.0" height="55.0"/>
+<text x="429.84685089" y="335.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="430.51502050" width="32.31828626" y="210.0" height="55.0"/>
+<text x="430.51502050" y="215.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="429.40588691" width="33.26864885" y="270.0" height="55.0"/>
+<text x="429.40588691" y="275.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="363.15431043" width="66.72962031" y="210.0" height="55.0"/>
+<text x="363.15431043" y="215.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="396.60456402" width="33.04347363" y="330.0" height="55.0"/>
+<text x="396.60456402" y="335.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="396.15388072" width="33.15338177" y="270.0" height="55.0"/>
+<text x="396.15388072" y="275.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="363.34307151" width="33.06321183" y="330.0" height="55.0"/>
+<text x="363.34307151" y="335.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="362.99387517" width="33.06058229" y="270.0" height="55.0"/>
+<text x="362.99387517" y="275.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="329.92214230" width="33.22055156" y="330.0" height="55.0"/>
+<text x="329.92214230" y="335.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="330.32988753" width="32.62657494" y="210.0" height="55.0"/>
+<text x="330.32988753" y="215.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="329.49326089" width="33.40095802" y="270.0" height="55.0"/>
+<text x="329.49326089" y="275.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="296.76992551" width="32.95170599" y="330.0" height="55.0"/>
+<text x="296.76992551" y="335.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="297.38803399" width="32.15295805" y="210.0" height="55.0"/>
+<text x="297.38803399" y="215.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="296.27404074" width="33.11833233" y="270.0" height="55.0"/>
+<text x="296.27404074" y="275.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="242.91540169" width="53.83927915" y="210.0" height="55.0"/>
+<text x="242.91540169" y="215.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="263.30342869" width="33.26385577" y="330.0" height="55.0"/>
+<text x="263.30342869" y="335.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="263.20563640" width="32.96531969" y="270.0" height="55.0"/>
+<text x="263.20563640" y="275.00000000" font-size="5.00000000pt">C4</text>
+</g>
+<g>
+<rect class="c3" x="252.01387865" width="11.17278512" y="330.0" height="55.0"/>
+<text x="252.01387865" y="335.00000000" font-size="5.00000000pt">C3</text>
+</g>
+<g>
+<rect class="c2" x="247.60044429" width="15.50353873" y="270.0" height="55.0"/>
+<text x="247.60044429" y="275.00000000" font-size="5.00000000pt">C2</text>
+</g>
+<g>
+<rect class="c4" x="243.44736775" width="9.20322588" y="390.0" height="55.0"/>
+<text x="243.44736775" y="392.50000000" font-size="2.50000000pt">C4</text>
+</g>
+<g>
+<rect class="c4" x="243.23647193" width="1.61603580" y="330.0" height="55.0"/>
+<text x="243.23647193" y="330.62500000" font-size="0.62500000pt">C4</text>
+</g>
+<g>
+<rect class="c0" x="613990893258608.37500000" width="-613990893258364.87500000" y="450.0" height="55.0"/>
+</g>
+<g>
+<rect class="c0" x="613990893258608.37500000" width="-613990893258365.12500000" y="390.0" height="55.0"/>
+</g>
+<g>
+<rect class="c0" x="613990893258608.37500000" width="-613990893258365.25000000" y="330.0" height="55.0"/>
+</g>
+<g>
+<rect class="c0" x="613990893258608.37500000" width="-613990893258365.62500000" y="210.0" height="55.0"/>
+</g>
+<g>
+<rect class="c0" x="613990893258608.37500000" width="-613990893258365.75000000" y="150.0" height="55.0"/>
+</g>
+<g>
+<rect class="c0" x="613990893258608.37500000" width="-613990893258366.00000000" y="90.0" height="55.0"/>
+</g>
+<g>
+<rect class="c0" x="613990893258608.37500000" width="-613990893258366.25000000" y="30.0" height="55.0"/>
+</g>
+<g>
+<line x1="242.13589266" x2="1000.00000000" y1="546.0" y2="546.0" class="pstate"/>
+<text x="242.13589266" y="546.90000000" font-size="0.25pt">    800 Mhz</text>
+</g>
+<g>
+<line x1="755.82454906" x2="1000.00000000" y1="486.0" y2="486.0" class="pstate"/>
+<text x="755.82454906" y="486.90000000" font-size="0.25pt">    800 Mhz</text>
+</g>
+<g>
+<line x1="991.61209815" x2="1000.00000000" y1="421.0" y2="421.0" class="pstate"/>
+<text x="991.61209815" y="421.90000000" font-size="0.25pt">   1000 Mhz</text>
+</g>
+<g>
+<line x1="761.27701811" x2="1000.00000000" y1="361.0" y2="361.0" class="pstate"/>
+<text x="761.27701811" y="361.90000000" font-size="0.25pt">   1000 Mhz</text>
+</g>
+<g>
+<line x1="757.94116286" x2="1000.00000000" y1="271.0" y2="271.0" class="pstate"/>
+<text x="757.94116286" y="271.90000000" font-size="0.25pt">   2.21 Ghz</text>
+</g>
+<g>
+<line x1="962.77519058" x2="1000.00000000" y1="236.0" y2="236.0" class="pstate"/>
+<text x="962.77519058" y="236.90000000" font-size="0.25pt">   1200 Mhz</text>
+</g>
+<g>
+<line x1="863.00675659" x2="1000.00000000" y1="186.0" y2="186.0" class="pstate"/>
+<text x="863.00675659" y="186.90000000" font-size="0.25pt">    800 Mhz</text>
+</g>
+<g>
+<line x1="763.42358871" x2="1000.00000000" y1="126.0" y2="126.0" class="pstate"/>
+<text x="763.42358871" y="126.90000000" font-size="0.25pt">    800 Mhz</text>
+</g>
+<g>
+<line x1="759.22980421" x2="1000.00000000" y1="66.0" y2="66.0" class="pstate"/>
+<text x="759.22980421" y="66.90000000" font-size="0.25pt">    800 Mhz</text>
+</g>
+<g>
+<line x1="628.23191350" x2="991.61209815" y1="423.5" y2="423.5" class="pstate"/>
+<text x="628.23191350" y="424.40000000" font-size="0.25pt">    900 Mhz</text>
+</g>
+<g>
+<line x1="563.65232546" x2="962.77519058" y1="238.5" y2="238.5" class="pstate"/>
+<text x="563.65232546" y="239.40000000" font-size="0.25pt">   1100 Mhz</text>
+</g>
+<g>
+<line x1="242.13589266" x2="863.00675659" y1="186.0" y2="186.0" class="pstate"/>
+<text x="242.13589266" y="186.90000000" font-size="0.25pt">    800 Mhz</text>
+</g>
+<g>
+<line x1="242.13589266" x2="763.42358871" y1="126.0" y2="126.0" class="pstate"/>
+<text x="242.13589266" y="126.90000000" font-size="0.25pt">    800 Mhz</text>
+</g>
+<g>
+<line x1="251.19772248" x2="761.27701811" y1="361.0" y2="361.0" class="pstate"/>
+<text x="251.19772248" y="361.90000000" font-size="0.25pt">   1000 Mhz</text>
+</g>
+<g>
+<line x1="242.13589266" x2="759.22980421" y1="66.0" y2="66.0" class="pstate"/>
+<text x="242.13589266" y="66.90000000" font-size="0.25pt">    800 Mhz</text>
+</g>
+<g>
+<line x1="242.13589266" x2="757.94116286" y1="306.0" y2="306.0" class="pstate"/>
+<text x="242.13589266" y="306.90000000" font-size="0.25pt">    800 Mhz</text>
+</g>
+<g>
+<line x1="242.13589266" x2="755.82454906" y1="486.0" y2="486.0" class="pstate"/>
+<text x="242.13589266" y="486.90000000" font-size="0.25pt">    800 Mhz</text>
+</g>
+<g>
+<line x1="262.06711187" x2="628.23191350" y1="426.0" y2="426.0" class="pstate"/>
+<text x="262.06711187" y="426.90000000" font-size="0.25pt">    800 Mhz</text>
+</g>
+<g>
+<line x1="242.13589266" x2="563.65232546" y1="246.0" y2="246.0" class="pstate"/>
+<text x="242.13589266" y="246.90000000" font-size="0.25pt">    800 Mhz</text>
+</g>
+<g>
+<line x1="242.13589266" x2="262.06711187" y1="426.0" y2="426.0" class="pstate"/>
+<text x="242.13589266" y="426.90000000" font-size="0.25pt">    800 Mhz</text>
+</g>
+<g>
+<line x1="242.13589266" x2="251.19772248" y1="366.0" y2="366.0" class="pstate"/>
+<text x="242.13589266" y="366.90000000" font-size="0.25pt">    800 Mhz</text>
+</g>
+<g>
+<title>[0] wakes up kthreadd</title>
+<desc></desc>
+</g>
+<g>
+<title>[0] wakes up sudo</title>
+<desc></desc>
+</g>
+<g>
+<title>[0] wakes up auditd</title>
+<desc></desc>
+<line x1="975.87346517" y1="839.06" x2="975.87346517" y2="840.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(975.87346517,839.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up kauditd</title>
+<desc></desc>
+<line x1="974.09935736" y1="779.06" x2="974.09935736" y2="780.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(974.09935736,779.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up rcu_sched</title>
+<desc></desc>
+<line x1="962.21732854" y1="629.06" x2="962.21732854" y2="630.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(962.21732854,629.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up auditd</title>
+<desc></desc>
+<line x1="957.23295101" y1="839.06" x2="957.23295101" y2="840.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(957.23295101,839.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up kauditd</title>
+<desc></desc>
+<line x1="956.28055801" y1="779.06" x2="956.28055801" y2="780.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(956.28055801,779.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up auditd</title>
+<desc></desc>
+<line x1="948.81109813" y1="839.06" x2="948.81109813" y2="840.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(948.81109813,839.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up kauditd</title>
+<desc></desc>
+<line x1="947.03326236" y1="779.06" x2="947.03326236" y2="780.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(947.03326236,779.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up sudo</title>
+<desc></desc>
+<line x1="939.27332145" y1="899.06" x2="939.27332145" y2="900.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(939.27332145,899.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up auditd</title>
+<desc></desc>
+<line x1="934.18888823" y1="839.06" x2="934.18888823" y2="840.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(934.18888823,839.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up kauditd</title>
+<desc></desc>
+<line x1="933.51932063" y1="779.06" x2="933.51932063" y2="780.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(933.51932063,779.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up test</title>
+<desc></desc>
+<line x1="930.33517989" y1="959.06" x2="930.33517989" y2="960.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(930.33517989,959.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up kworker/0:2</title>
+<desc></desc>
+<line x1="930.27343561" y1="809.06" x2="930.27343561" y2="810.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(930.27343561,809.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up sshd</title>
+<desc></desc>
+<line x1="929.77582001" y1="869.06" x2="929.77582001" y2="870.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(929.77582001,869.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up test</title>
+<desc></desc>
+<line x1="928.66072834" y1="959.06" x2="928.66072834" y2="960.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(928.66072834,959.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up kworker/0:2</title>
+<desc></desc>
+<line x1="928.60497542" y1="809.06" x2="928.60497542" y2="810.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(928.60497542,809.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up test</title>
+<desc></desc>
+<line x1="928.14280869" y1="959.06" x2="928.14280869" y2="960.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(928.14280869,959.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up kworker/0:2</title>
+<desc></desc>
+<line x1="928.08139726" y1="809.06" x2="928.08139726" y2="810.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(928.08139726,809.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up kworker/0:2</title>
+<desc></desc>
+<line x1="925.90400446" y1="809.06" x2="925.90400446" y2="810.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(925.90400446,809.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up test</title>
+<desc></desc>
+<line x1="925.58526419" y1="959.06" x2="925.58526419" y2="960.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(925.58526419,959.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up kworker/0:2</title>
+<desc></desc>
+<line x1="925.52718130" y1="809.06" x2="925.52718130" y2="810.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(925.52718130,809.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up test</title>
+<desc></desc>
+<line x1="925.10578908" y1="959.06" x2="925.10578908" y2="960.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(925.10578908,959.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up kworker/0:2</title>
+<desc></desc>
+<line x1="925.03805345" y1="809.06" x2="925.03805345" y2="810.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(925.03805345,809.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up sshd</title>
+<desc></desc>
+<line x1="924.41761499" y1="869.06" x2="924.41761499" y2="870.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(924.41761499,869.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up test</title>
+<desc></desc>
+<line x1="923.95175359" y1="959.06" x2="923.95175359" y2="960.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(923.95175359,959.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up kworker/0:2</title>
+<desc></desc>
+<line x1="923.83691922" y1="809.06" x2="923.83691922" y2="810.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(923.83691922,809.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up rcu_sched</title>
+<desc></desc>
+<line x1="862.42459626" y1="629.06" x2="862.42459626" y2="630.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(862.42459626,629.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up watchdog/2</title>
+<desc></desc>
+<line x1="862.35210082" y1="689.06" x2="862.35210082" y2="690.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(862.35210082,689.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up sudo</title>
+<desc></desc>
+<line x1="835.31243437" y1="899.06" x2="835.31243437" y2="900.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(835.31243437,899.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up migration/7</title>
+<desc></desc>
+<line x1="812.21308466" y1="749.06" x2="812.21308466" y2="750.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(812.21308466,749.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up auditd</title>
+<desc></desc>
+<line x1="786.41276399" y1="839.06" x2="786.41276399" y2="840.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(786.41276399,839.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up kauditd</title>
+<desc></desc>
+<line x1="784.53946591" y1="779.06" x2="784.53946591" y2="780.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(784.53946591,779.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up auditd</title>
+<desc></desc>
+<line x1="772.58507479" y1="839.06" x2="772.58507479" y2="840.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(772.58507479,839.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up kauditd</title>
+<desc></desc>
+<line x1="770.68714557" y1="779.06" x2="770.68714557" y2="780.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(770.68714557,779.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up rs:main Q:Reg</title>
+<desc></desc>
+<line x1="764.90561780" y1="569.06" x2="764.90561780" y2="570.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(764.90561780,569.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up watchdog/1</title>
+<desc></desc>
+<line x1="762.48577468" y1="659.06" x2="762.48577468" y2="660.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(762.48577468,659.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up rcu_sched</title>
+<desc></desc>
+<line x1="762.44949368" y1="629.06" x2="762.44949368" y2="630.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(762.44949368,629.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up kthreadd</title>
+<desc></desc>
+</g>
+<g>
+<title>[0] wakes up in:imjournal</title>
+<desc></desc>
+<line x1="757.66339683" y1="539.06" x2="757.66339683" y2="540.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(757.66339683,539.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up auditd</title>
+<desc></desc>
+<line x1="755.58556043" y1="839.06" x2="755.58556043" y2="840.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(755.58556043,839.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up kauditd</title>
+<desc></desc>
+<line x1="753.59027163" y1="779.06" x2="753.59027163" y2="780.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(753.59027163,779.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up systemd-journal</title>
+<desc></desc>
+<line x1="744.45138628" y1="599.06" x2="744.45138628" y2="600.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(744.45138628,599.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up rcu_sched</title>
+<desc></desc>
+<line x1="662.59874508" y1="629.06" x2="662.59874508" y2="630.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(662.59874508,629.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up rcu_sched</title>
+<desc></desc>
+<line x1="562.84668746" y1="629.06" x2="562.84668746" y2="630.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(562.84668746,629.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up rcu_sched</title>
+<desc></desc>
+<line x1="461.93060875" y1="629.06" x2="461.93060875" y2="630.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(461.93060875,629.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up rcu_sched</title>
+<desc></desc>
+<line x1="429.69992947" y1="629.06" x2="429.69992947" y2="630.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(429.69992947,629.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up rcu_sched</title>
+<desc></desc>
+<line x1="328.84446334" y1="629.06" x2="328.84446334" y2="630.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(328.84446334,629.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up rcu_sched</title>
+<desc></desc>
+<line x1="296.56695160" y1="629.06" x2="296.56695160" y2="630.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(296.56695160,629.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up migration/5</title>
+<desc></desc>
+<line x1="251.06351606" y1="719.06" x2="251.06351606" y2="720.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(251.06351606,719.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+<g>
+<title>[0] wakes up perf</title>
+<desc></desc>
+<line x1="244.83173769" y1="929.06" x2="244.83173769" y2="930.00" style="stroke:rgb(32,255,32);stroke-width:0.009"/>
+<g transform="translate(244.83173769,929.06250000)"><text transform="rotate(90)" font-size="0.02pt">[0] &gt;</text></g>
+</g>
+</svg>
