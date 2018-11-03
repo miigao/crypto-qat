@@ -18,7 +18,7 @@
 #include "rt_utils.h"
 #include "icp_sal_poll.h"
 
-#define batchSize	16
+#define batchSize	64
 #define TIMEOUT_MS  5000    // 5 seconds
 #define MAX_PATH    1024
 // Function qatMemAllocNUMA can only allocate a contiguous memory with size up
@@ -94,11 +94,29 @@ static pthread_mutex_t gMutex = PTHREAD_MUTEX_INITIALIZER;
 void runTimePush(RunTime *pNode)
 {
     pthread_mutex_lock(&gMutex);
-    pNode->next = gRunTimeHead;
+    pNode->next = NULL;//gRunTimeHead;
     gRunTimeHead = pNode;
     pthread_mutex_unlock(&gMutex);
 }
+void showTime(RunTime *pHead)
+{
+    unsigned long usBegin = 0;
+    unsigned long usEnd   = 0;
+    double usDiff = 0;
 
+    for (RunTime *pCurr = pHead; pCurr != NULL; pCurr = pCurr->next) {
+        usBegin = pCurr->timeS.tv_sec * 1e6 + pCurr->timeS.tv_usec;
+        usEnd   = pCurr->timeE.tv_sec * 1e6 + pCurr->timeE.tv_usec;
+        usDiff  += (usEnd - usBegin);
+    }
+
+    if (usDiff == 0) {
+        RT_PRINT("Too fast to calculate throughput. Try larger workload or refine this counter.\n")
+        return;
+    }
+
+    RT_PRINT("Time taken:     %9.3lf ms\n", usDiff / 1000);
+}
 void showStats(RunTime *pHead, unsigned int totalBytes)
 {
     unsigned long usBegin = 0;
@@ -152,21 +170,20 @@ static void symCallback(void *pCallbackTag,
 static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
                                  CpaCySymSessionCtx sessionCtx,
                                  char *src, unsigned int srcLen,
-                                 char *dst, unsigned int dstLen)
+                                 char *dst, unsigned int dstLen, int threadId)
 {
 	CpaStatus status = CPA_STATUS_SUCCESS;
-	Cpa32U numBuffers = 1, bufferMetaSize, thisBatch, cnt, numTaskDone, bufferSize = 1024*128, rounds, tail;
+	Cpa32U numBuffers = 1, bufferMetaSize, thisBatch, cnt, numTaskDone, bufferSize = 1024*1024, rounds, tail;
 	Cpa8U *pBufferMeta = NULL, *pSrcBuffer[batchSize] = {NULL}, *pTailSrcBuffer = NULL;
 	CpaBufferList *pBufferList[batchSize] = {NULL};
 	CpaFlatBuffer *pFlatBuffer = NULL;
 	CpaCySymOpData *pOpData = NULL;
 	Cpa32U bufferListMemSize = sizeof(CpaBufferList) + (numBuffers * sizeof(CpaFlatBuffer));
 	callbackArgs myArgs[batchSize];
-	
+
 	rounds = srcLen/bufferSize; tail = srcLen%bufferSize;
 	
 	status = cpaCyBufferListGetMetaSize(cyInstHandle, numBuffers, &bufferMetaSize);
-	
 	if (CPA_STATUS_SUCCESS == status){
 		status = PHYS_CONTIG_ALLOC(&pBufferMeta, bufferMetaSize);
     }
@@ -208,12 +225,8 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
 		//Initialize some args for callback function.
 		myArgs[cnt].cnt = &numTaskDone; myArgs[cnt].size = bufferSize; myArgs[cnt].pSrc = (char *)pSrcBuffer[cnt];
 	}
-	while (1) {
-		if (rounds == 0) break;
-		if (rounds < batchSize)
-			thisBatch = rounds;
-		else
-			thisBatch = batchSize;
+	while (rounds) {
+		thisBatch = rounds < batchSize ? rounds : batchSize;
 		rounds -= thisBatch;
 		//Cipher.
 		numTaskDone = 0;
@@ -227,8 +240,9 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
 		}
 		//Keep polling till all tasks callback.And copy-to-dst is implemented in the callback function.
 		if (CPA_STATUS_SUCCESS == status){
-			while (numTaskDone < thisBatch)
-				icp_sal_CyPollInstance (cyInstHandle, 0);
+			while (numTaskDone < thisBatch){
+				icp_sal_CyPollInstance(cyInstHandle, 0);
+			}
 		}
 		
 		if (CPA_STATUS_SUCCESS != status){
@@ -253,8 +267,9 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
 	}
 	//Polling.
 	if (CPA_STATUS_SUCCESS == status){
-		while (numTaskDone < 1)
+		while (numTaskDone < 1) {
 			icp_sal_CyPollInstance (cyInstHandle, 0);
+		}
 	}
 	
 	if (CPA_STATUS_SUCCESS != status){
@@ -268,7 +283,7 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
 	PHYS_CONTIG_FREE(pBufferMeta);
 	PHYS_CONTIG_FREE(pTailSrcBuffer);
 	OS_FREE(pOpData);
-	
+        
 	return status;
 }
 
@@ -359,7 +374,7 @@ void qatAes256EcbSessionFree(QatAes256EcbSession *sess)
 }
 
 CpaStatus qatAes256EcbEnc(char *src, unsigned int srcLen, char *dst,
-        unsigned int dstLen, int isEnc)
+        unsigned int dstLen, int isEnc, int threadId)
 {
     //extern int gDebugParam;
     CpaStatus rc = CPA_STATUS_SUCCESS;
@@ -369,7 +384,7 @@ CpaStatus qatAes256EcbEnc(char *src, unsigned int srcLen, char *dst,
     // Acquire a QAT_CY instance & initialize a QAT_CY_SYM_AES_256_ECB session
     qatAes256EcbSessionInit(sess, isEnc);
     // Perform Cipher operation (sync / async / batch, etc.)
-    rc = cipherPerformOp(sess->cyInstHandle, sess->ctx, src, srcLen, dst, dstLen);
+    rc = cipherPerformOp(sess->cyInstHandle, sess->ctx, src, srcLen, dst, dstLen, threadId);
     // Wait for inflight requests before free resources
     symSessionWaitForInflightReq(sess->ctx);
 
@@ -404,7 +419,7 @@ void *workerThreadStart(void *threadArgs)
     char *dst = args->dst + offInBytes;
     unsigned int dstLen = srcLen;
 
-    CHECK(qatAes256EcbEnc(src, srcLen, dst, dstLen, args->isEnc));
+    CHECK(qatAes256EcbEnc(src, srcLen, dst, dstLen, args->isEnc, args->threadId));
 
     return NULL;
 }
