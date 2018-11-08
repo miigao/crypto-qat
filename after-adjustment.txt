@@ -1,0 +1,960 @@
+batchSize: 1, bufferSize: 2
+INFO: showStats(): Time taken:      1451.363 ms
+INFO: showStats(): Throughput:      5897.805 Mbit/s
+batchSize: 1, bufferSize: 4
+INFO: showStats(): Time taken:       583.902 ms
+INFO: showStats(): Throughput:     14659.748 Mbit/s
+batchSize: 1, bufferSize: 8
+INFO: showStats(): Time taken:       490.892 ms
+INFO: showStats(): Throughput:     17437.351 Mbit/s
+batchSize: 1, bufferSize: 16
+INFO: showStats(): Time taken:       441.689 ms
+INFO: showStats(): Throughput:     19379.827 Mbit/s
+batchSize: 1, bufferSize: 32
+INFO: showStats(): Time taken:       422.812 ms
+INFO: showStats(): Throughput:     20245.064 Mbit/s
+batchSize: 1, bufferSize: 64
+INFO: showStats(): Time taken:       416.661 ms
+INFO: showStats(): Throughput:     20543.934 Mbit/s
+batchSize: 1, bufferSize: 128
+INFO: showStats(): Time taken:       419.869 ms
+INFO: showStats(): Throughput:     20386.969 Mbit/s
+batchSize: 1, bufferSize: 256
+INFO: showStats(): Time taken:       415.402 ms
+INFO: showStats(): Throughput:     20606.199 Mbit/s
+batchSize: 1, bufferSize: 512
+INFO: showStats(): Time taken:       404.770 ms
+INFO: showStats(): Throughput:     21147.457 Mbit/s
+batchSize: 1, bufferSize: 1024
+INFO: showStats(): Time taken:       416.571 ms
+INFO: showStats(): Throughput:     20548.373 Mbit/s
+batchSize: 2, bufferSize: 2
+INFO: showStats(): Time taken:       479.336 ms
+INFO: showStats(): Throughput:     17857.737 Mbit/s
+batchSize: 2, bufferSize: 4
+INFO: showStats(): Time taken:       403.734 ms
+INFO: showStats(): Throughput:     21201.722 Mbit/s
+batchSize: 2, bufferSize: 8
+INFO: showStats(): Time taken:       398.232 ms
+INFO: showStats(): Throughput:     21494.647 Mbit/s
+batchSize: 2, bufferSize: 16
+INFO: showStats(): Time taken:       397.879 ms
+INFO: showStats(): Throughput:     21513.717 Mbit/s
+batchSize: 2, bufferSize: 32
+INFO: showStats(): Time taken:       396.922 ms
+INFO: showStats(): Throughput:     21565.588 Mbit/s
+batchSize: 2, bufferSize: 64
+INFO: showStats(): Time taken:       396.554 ms
+INFO: showStats(): Throughput:     21585.600 Mbit/s
+batchSize: 2, bufferSize: 128
+INFO: showStats(): Time taken:       395.129 ms
+INFO: showStats(): Throughput:     21663.447 Mbit/s
+batchSize: 2, bufferSize: 256
+INFO: showStats(): Time taken:       397.352 ms
+INFO: showStats(): Throughput:     21542.250 Mbit/s
+batchSize: 2, bufferSize: 512
+INFO: showStats(): Time taken:       398.811 ms
+INFO: showStats(): Throughput:     21463.441 Mbit/s
+batchSize: 2, bufferSize: 1024
+INFO: showStats(): Time taken:       401.603 ms
+INFO: showStats(): Throughput:     21314.224 Mbit/s
+batchSize: 3, bufferSize: 2
+INFO: showStats(): Time taken:       377.376 ms
+INFO: showStats(): Throughput:     22682.566 Mbit/s
+batchSize: 3, bufferSize: 4
+INFO: showStats(): Time taken:       372.717 ms
+INFO: showStats(): Throughput:     22966.101 Mbit/s
+batchSize: 3, bufferSize: 8
+INFO: showStats(): Time taken:       361.935 ms
+INFO: showStats(): Throughput:     23650.258 Mbit/s
+batchSize: 3, bufferSize: 16
+INFO: showStats(): Time taken:       348.566 ms
+INFO: showStats(): Throughput:     24557.347 Mbit/s
+batchSize: 3, bufferSize: 32
+INFO: showStats(): Time taken:       330.419 ms
+INFO: showStats(): Throughput:     25906.065 Mbit/s
+batchSize: 3, bufferSize: 64
+INFO: showStats(): Time taken:       333.580 ms
+INFO: showStats(): Throughput:     25660.580 Mbit/s
+batchSize: 3, bufferSize: 128
+INFO: showStats(): Time taken:       395.797 ms
+INFO: showStats(): Throughput:     21626.885 Mbit/s
+batchSize: 3, bufferSize: 256
+INFO: showStats(): Time taken:       331.406 ms
+INFO: showStats(): Throughput:     25828.911 Mbit/s
+batchSize: 3, bufferSize: 512
+INFO: showStats(): Time taken:       389.829 ms
+INFO: showStats(): Throughput:     21957.977 Mbit/s
+batchSize: 3, bufferSize: 1024
+INFO: showStats(): Time taken:       387.711 ms
+INFO: showStats(): Throughput:     22077.930 Mbit/s
+batchSize: 4, bufferSize: 2
+INFO: showStats(): Time taken:       334.675 ms
+INFO: showStats(): Throughput:     25576.623 Mbit/s
+batchSize: 4, bufferSize: 4
+INFO: showStats(): Time taken:       300.708 ms
+INFO: showStats(): Throughput:     28465.675 Mbit/s
+batchSize: 4, bufferSize: 8
+INFO: showStats(): Time taken:       291.188 ms
+INFO: showStats(): Throughput:     29396.322 Mbit/s
+batchSize: 4, bufferSize: 16
+INFO: showStats(): Time taken:       284.909 ms
+INFO: showStats(): Throughput:     30044.176 Mbit/s
+batchSize: 4, bufferSize: 32
+INFO: showStats(): Time taken:       291.166 ms
+INFO: showStats(): Throughput:     29398.543 Mbit/s
+batchSize: 4, bufferSize: 64
+INFO: showStats(): Time taken:       305.258 ms
+INFO: showStats(): Throughput:     28041.382 Mbit/s
+batchSize: 4, bufferSize: 128
+INFO: showStats(): Time taken:       282.260 ms
+INFO: showStats(): Throughput:     30326.140 Mbit/s
+batchSize: 4, bufferSize: 256
+INFO: showStats(): Time taken:       297.160 ms
+INFO: showStats(): Throughput:     28805.547 Mbit/s
+batchSize: 4, bufferSize: 512
+INFO: showStats(): Time taken:       312.237 ms
+INFO: showStats(): Throughput:     27414.612 Mbit/s
+batchSize: 4, bufferSize: 1024
+INFO: showStats(): Time taken:       343.960 ms
+INFO: showStats(): Throughput:     24886.197 Mbit/s
+batchSize: 5, bufferSize: 2
+INFO: showStats(): Time taken:       292.591 ms
+INFO: showStats(): Throughput:     29255.364 Mbit/s
+batchSize: 5, bufferSize: 4
+INFO: showStats(): Time taken:       269.126 ms
+INFO: showStats(): Throughput:     31806.129 Mbit/s
+batchSize: 5, bufferSize: 8
+INFO: showStats(): Time taken:       260.045 ms
+INFO: showStats(): Throughput:     32916.827 Mbit/s
+batchSize: 5, bufferSize: 16
+INFO: showStats(): Time taken:       254.628 ms
+INFO: showStats(): Throughput:     33617.105 Mbit/s
+batchSize: 5, bufferSize: 32
+INFO: showStats(): Time taken:       254.556 ms
+INFO: showStats(): Throughput:     33626.613 Mbit/s
+batchSize: 5, bufferSize: 64
+INFO: showStats(): Time taken:       253.407 ms
+INFO: showStats(): Throughput:     33779.083 Mbit/s
+batchSize: 5, bufferSize: 128
+INFO: showStats(): Time taken:       267.758 ms
+INFO: showStats(): Throughput:     31968.629 Mbit/s
+batchSize: 5, bufferSize: 256
+INFO: showStats(): Time taken:       268.957 ms
+INFO: showStats(): Throughput:     31826.114 Mbit/s
+batchSize: 5, bufferSize: 512
+INFO: showStats(): Time taken:       304.588 ms
+INFO: showStats(): Throughput:     28103.064 Mbit/s
+batchSize: 5, bufferSize: 1024
+INFO: showStats(): Time taken:       338.396 ms
+INFO: showStats(): Throughput:     25295.382 Mbit/s
+batchSize: 6, bufferSize: 2
+INFO: showStats(): Time taken:       272.819 ms
+INFO: showStats(): Throughput:     31375.587 Mbit/s
+batchSize: 6, bufferSize: 4
+INFO: showStats(): Time taken:       243.353 ms
+INFO: showStats(): Throughput:     35174.648 Mbit/s
+batchSize: 6, bufferSize: 8
+INFO: showStats(): Time taken:       236.885 ms
+INFO: showStats(): Throughput:     36135.071 Mbit/s
+batchSize: 6, bufferSize: 16
+INFO: showStats(): Time taken:       242.066 ms
+INFO: showStats(): Throughput:     35361.663 Mbit/s
+batchSize: 6, bufferSize: 32
+INFO: showStats(): Time taken:       235.153 ms
+INFO: showStats(): Throughput:     36401.220 Mbit/s
+batchSize: 6, bufferSize: 64
+INFO: showStats(): Time taken:       237.344 ms
+INFO: showStats(): Throughput:     36065.189 Mbit/s
+batchSize: 6, bufferSize: 128
+INFO: showStats(): Time taken:       255.019 ms
+INFO: showStats(): Throughput:     33565.563 Mbit/s
+batchSize: 6, bufferSize: 256
+INFO: showStats(): Time taken:       274.292 ms
+INFO: showStats(): Throughput:     31207.094 Mbit/s
+batchSize: 6, bufferSize: 512
+INFO: showStats(): Time taken:       305.077 ms
+INFO: showStats(): Throughput:     28058.019 Mbit/s
+batchSize: 6, bufferSize: 1024
+INFO: showStats(): Time taken:       342.084 ms
+INFO: showStats(): Throughput:     25022.673 Mbit/s
+batchSize: 7, bufferSize: 2
+INFO: showStats(): Time taken:       261.127 ms
+INFO: showStats(): Throughput:     32780.433 Mbit/s
+batchSize: 7, bufferSize: 4
+INFO: showStats(): Time taken:       238.696 ms
+INFO: showStats(): Throughput:     35860.912 Mbit/s
+batchSize: 7, bufferSize: 8
+INFO: showStats(): Time taken:       232.707 ms
+INFO: showStats(): Throughput:     36783.836 Mbit/s
+batchSize: 7, bufferSize: 16
+INFO: showStats(): Time taken:       228.613 ms
+INFO: showStats(): Throughput:     37442.561 Mbit/s
+batchSize: 7, bufferSize: 32
+INFO: showStats(): Time taken:       229.584 ms
+INFO: showStats(): Throughput:     37284.202 Mbit/s
+batchSize: 7, bufferSize: 64
+INFO: showStats(): Time taken:       235.086 ms
+INFO: showStats(): Throughput:     36411.595 Mbit/s
+batchSize: 7, bufferSize: 128
+INFO: showStats(): Time taken:       244.850 ms
+INFO: showStats(): Throughput:     34959.592 Mbit/s
+batchSize: 7, bufferSize: 256
+INFO: showStats(): Time taken:       277.180 ms
+INFO: showStats(): Throughput:     30881.940 Mbit/s
+batchSize: 7, bufferSize: 512
+INFO: showStats(): Time taken:       305.794 ms
+INFO: showStats(): Throughput:     27992.231 Mbit/s
+batchSize: 7, bufferSize: 1024
+INFO: showStats(): Time taken:       335.361 ms
+INFO: showStats(): Throughput:     25524.304 Mbit/s
+batchSize: 8, bufferSize: 2
+INFO: showStats(): Time taken:       240.494 ms
+INFO: showStats(): Throughput:     35592.806 Mbit/s
+batchSize: 8, bufferSize: 4
+INFO: showStats(): Time taken:       226.303 ms
+INFO: showStats(): Throughput:     37824.758 Mbit/s
+batchSize: 8, bufferSize: 8
+INFO: showStats(): Time taken:       219.021 ms
+INFO: showStats(): Throughput:     39082.354 Mbit/s
+batchSize: 8, bufferSize: 16
+INFO: showStats(): Time taken:       216.032 ms
+INFO: showStats(): Throughput:     39623.094 Mbit/s
+batchSize: 8, bufferSize: 32
+INFO: showStats(): Time taken:       219.689 ms
+INFO: showStats(): Throughput:     38963.518 Mbit/s
+batchSize: 8, bufferSize: 64
+INFO: showStats(): Time taken:       217.654 ms
+INFO: showStats(): Throughput:     39327.815 Mbit/s
+batchSize: 8, bufferSize: 128
+INFO: showStats(): Time taken:       240.868 ms
+INFO: showStats(): Throughput:     35537.540 Mbit/s
+batchSize: 8, bufferSize: 256
+INFO: showStats(): Time taken:       277.667 ms
+INFO: showStats(): Throughput:     30827.776 Mbit/s
+batchSize: 8, bufferSize: 512
+INFO: showStats(): Time taken:       302.568 ms
+INFO: showStats(): Throughput:     28290.686 Mbit/s
+batchSize: 8, bufferSize: 1024
+INFO: showStats(): Time taken:       330.643 ms
+INFO: showStats(): Throughput:     25888.515 Mbit/s
+batchSize: 9, bufferSize: 2
+INFO: showStats(): Time taken:       234.768 ms
+INFO: showStats(): Throughput:     36460.915 Mbit/s
+batchSize: 9, bufferSize: 4
+INFO: showStats(): Time taken:       220.584 ms
+INFO: showStats(): Throughput:     38805.427 Mbit/s
+batchSize: 9, bufferSize: 8
+INFO: showStats(): Time taken:       216.046 ms
+INFO: showStats(): Throughput:     39620.526 Mbit/s
+batchSize: 9, bufferSize: 16
+INFO: showStats(): Time taken:       219.958 ms
+INFO: showStats(): Throughput:     38915.867 Mbit/s
+batchSize: 9, bufferSize: 32
+INFO: showStats(): Time taken:       215.931 ms
+INFO: showStats(): Throughput:     39641.627 Mbit/s
+batchSize: 9, bufferSize: 64
+INFO: showStats(): Time taken:       218.575 ms
+INFO: showStats(): Throughput:     39162.101 Mbit/s
+batchSize: 9, bufferSize: 128
+INFO: showStats(): Time taken:       245.645 ms
+INFO: showStats(): Throughput:     34846.450 Mbit/s
+batchSize: 9, bufferSize: 256
+INFO: showStats(): Time taken:       275.874 ms
+INFO: showStats(): Throughput:     31028.137 Mbit/s
+batchSize: 9, bufferSize: 512
+INFO: showStats(): Time taken:       305.713 ms
+INFO: showStats(): Throughput:     27999.647 Mbit/s
+batchSize: 9, bufferSize: 1024
+INFO: showStats(): Time taken:       346.699 ms
+INFO: showStats(): Throughput:     24689.590 Mbit/s
+batchSize: 10, bufferSize: 2
+INFO: showStats(): Time taken:       234.701 ms
+INFO: showStats(): Throughput:     36471.324 Mbit/s
+batchSize: 10, bufferSize: 4
+INFO: showStats(): Time taken:       220.772 ms
+INFO: showStats(): Throughput:     38772.381 Mbit/s
+batchSize: 10, bufferSize: 8
+INFO: showStats(): Time taken:       214.471 ms
+INFO: showStats(): Throughput:     39911.485 Mbit/s
+batchSize: 10, bufferSize: 16
+INFO: showStats(): Time taken:       212.667 ms
+INFO: showStats(): Throughput:     40250.044 Mbit/s
+batchSize: 10, bufferSize: 32
+INFO: showStats(): Time taken:       209.112 ms
+INFO: showStats(): Throughput:     40934.314 Mbit/s
+batchSize: 10, bufferSize: 64
+INFO: showStats(): Time taken:       214.929 ms
+INFO: showStats(): Throughput:     39826.437 Mbit/s
+batchSize: 10, bufferSize: 128
+INFO: showStats(): Time taken:       248.845 ms
+INFO: showStats(): Throughput:     34398.345 Mbit/s
+batchSize: 10, bufferSize: 256
+INFO: showStats(): Time taken:       276.166 ms
+INFO: showStats(): Throughput:     30995.330 Mbit/s
+batchSize: 10, bufferSize: 512
+INFO: showStats(): Time taken:       307.906 ms
+INFO: showStats(): Throughput:     27800.225 Mbit/s
+batchSize: 10, bufferSize: 1024
+INFO: showStats(): Time taken:       356.779 ms
+INFO: showStats(): Throughput:     23992.040 Mbit/s
+batchSize: 11, bufferSize: 2
+INFO: showStats(): Time taken:       240.427 ms
+INFO: showStats(): Throughput:     35602.724 Mbit/s
+batchSize: 11, bufferSize: 4
+INFO: showStats(): Time taken:       221.295 ms
+INFO: showStats(): Throughput:     38680.748 Mbit/s
+batchSize: 11, bufferSize: 8
+INFO: showStats(): Time taken:       215.072 ms
+INFO: showStats(): Throughput:     39799.956 Mbit/s
+batchSize: 11, bufferSize: 16
+INFO: showStats(): Time taken:       216.603 ms
+INFO: showStats(): Throughput:     39518.641 Mbit/s
+batchSize: 11, bufferSize: 32
+INFO: showStats(): Time taken:       207.950 ms
+INFO: showStats(): Throughput:     41163.050 Mbit/s
+batchSize: 11, bufferSize: 64
+INFO: showStats(): Time taken:       213.836 ms
+INFO: showStats(): Throughput:     40030.005 Mbit/s
+batchSize: 11, bufferSize: 128
+INFO: showStats(): Time taken:       249.886 ms
+INFO: showStats(): Throughput:     34255.045 Mbit/s
+batchSize: 11, bufferSize: 256
+INFO: showStats(): Time taken:       287.979 ms
+INFO: showStats(): Throughput:     29723.890 Mbit/s
+batchSize: 11, bufferSize: 512
+INFO: showStats(): Time taken:       314.524 ms
+INFO: showStats(): Throughput:     27215.272 Mbit/s
+batchSize: 11, bufferSize: 1024
+INFO: showStats(): Time taken:       345.364 ms
+INFO: showStats(): Throughput:     24785.027 Mbit/s
+batchSize: 12, bufferSize: 2
+INFO: showStats(): Time taken:       235.490 ms
+INFO: showStats(): Throughput:     36349.128 Mbit/s
+batchSize: 12, bufferSize: 4
+INFO: showStats(): Time taken:       215.491 ms
+INFO: showStats(): Throughput:     39722.569 Mbit/s
+batchSize: 12, bufferSize: 8
+INFO: showStats(): Time taken:       209.005 ms
+INFO: showStats(): Throughput:     40955.270 Mbit/s
+batchSize: 12, bufferSize: 16
+INFO: showStats(): Time taken:       208.939 ms
+INFO: showStats(): Throughput:     40968.207 Mbit/s
+batchSize: 12, bufferSize: 32
+INFO: showStats(): Time taken:       210.323 ms
+INFO: showStats(): Throughput:     40698.622 Mbit/s
+batchSize: 12, bufferSize: 64
+INFO: showStats(): Time taken:       214.822 ms
+INFO: showStats(): Throughput:     39846.274 Mbit/s
+batchSize: 12, bufferSize: 128
+INFO: showStats(): Time taken:       255.405 ms
+INFO: showStats(): Throughput:     33514.834 Mbit/s
+batchSize: 12, bufferSize: 256
+INFO: showStats(): Time taken:       287.060 ms
+INFO: showStats(): Throughput:     29819.049 Mbit/s
+batchSize: 12, bufferSize: 512
+INFO: showStats(): Time taken:       317.319 ms
+INFO: showStats(): Throughput:     26975.555 Mbit/s
+batchSize: 12, bufferSize: 1024
+INFO: showStats(): Time taken:       364.104 ms
+INFO: showStats(): Throughput:     23509.371 Mbit/s
+batchSize: 13, bufferSize: 2
+INFO: showStats(): Time taken:       232.682 ms
+INFO: showStats(): Throughput:     36787.788 Mbit/s
+batchSize: 13, bufferSize: 4
+INFO: showStats(): Time taken:       218.165 ms
+INFO: showStats(): Throughput:     39235.699 Mbit/s
+batchSize: 13, bufferSize: 8
+INFO: showStats(): Time taken:       208.134 ms
+INFO: showStats(): Throughput:     41126.660 Mbit/s
+batchSize: 13, bufferSize: 16
+INFO: showStats(): Time taken:       210.944 ms
+INFO: showStats(): Throughput:     40578.809 Mbit/s
+batchSize: 13, bufferSize: 32
+INFO: showStats(): Time taken:       203.715 ms
+INFO: showStats(): Throughput:     42018.782 Mbit/s
+batchSize: 13, bufferSize: 64
+INFO: showStats(): Time taken:       221.662 ms
+INFO: showStats(): Throughput:     38616.706 Mbit/s
+batchSize: 13, bufferSize: 128
+INFO: showStats(): Time taken:       257.957 ms
+INFO: showStats(): Throughput:     33183.268 Mbit/s
+batchSize: 13, bufferSize: 256
+INFO: showStats(): Time taken:       287.083 ms
+INFO: showStats(): Throughput:     29816.660 Mbit/s
+batchSize: 13, bufferSize: 512
+INFO: showStats(): Time taken:       315.786 ms
+INFO: showStats(): Throughput:     27106.509 Mbit/s
+batchSize: 13, bufferSize: 1024
+INFO: showStats(): Time taken:       360.137 ms
+INFO: showStats(): Throughput:     23768.333 Mbit/s
+batchSize: 14, bufferSize: 2
+INFO: showStats(): Time taken:       231.467 ms
+INFO: showStats(): Throughput:     36980.892 Mbit/s
+batchSize: 14, bufferSize: 4
+INFO: showStats(): Time taken:       216.704 ms
+INFO: showStats(): Throughput:     39500.222 Mbit/s
+batchSize: 14, bufferSize: 8
+INFO: showStats(): Time taken:       212.152 ms
+INFO: showStats(): Throughput:     40347.752 Mbit/s
+batchSize: 14, bufferSize: 16
+INFO: showStats(): Time taken:       208.374 ms
+INFO: showStats(): Throughput:     41079.291 Mbit/s
+batchSize: 14, bufferSize: 32
+INFO: showStats(): Time taken:       212.815 ms
+INFO: showStats(): Throughput:     40222.053 Mbit/s
+batchSize: 14, bufferSize: 64
+INFO: showStats(): Time taken:       225.907 ms
+INFO: showStats(): Throughput:     37891.062 Mbit/s
+batchSize: 14, bufferSize: 128
+INFO: showStats(): Time taken:       261.601 ms
+INFO: showStats(): Throughput:     32721.038 Mbit/s
+batchSize: 14, bufferSize: 256
+INFO: showStats(): Time taken:       285.325 ms
+INFO: showStats(): Throughput:     30000.372 Mbit/s
+batchSize: 14, bufferSize: 512
+INFO: showStats(): Time taken:       318.290 ms
+INFO: showStats(): Throughput:     26893.261 Mbit/s
+batchSize: 14, bufferSize: 1024
+INFO: showStats(): Time taken:       377.785 ms
+INFO: showStats(): Throughput:     22658.010 Mbit/s
+batchSize: 15, bufferSize: 2
+INFO: showStats(): Time taken:       233.478 ms
+INFO: showStats(): Throughput:     36662.367 Mbit/s
+batchSize: 15, bufferSize: 4
+INFO: showStats(): Time taken:       222.949 ms
+INFO: showStats(): Throughput:     38393.786 Mbit/s
+batchSize: 15, bufferSize: 8
+INFO: showStats(): Time taken:       213.324 ms
+INFO: showStats(): Throughput:     40126.081 Mbit/s
+batchSize: 15, bufferSize: 16
+INFO: showStats(): Time taken:       208.554 ms
+INFO: showStats(): Throughput:     41043.836 Mbit/s
+batchSize: 15, bufferSize: 32
+INFO: showStats(): Time taken:       204.401 ms
+INFO: showStats(): Throughput:     41877.761 Mbit/s
+batchSize: 15, bufferSize: 64
+INFO: showStats(): Time taken:       225.733 ms
+INFO: showStats(): Throughput:     37920.270 Mbit/s
+batchSize: 15, bufferSize: 128
+INFO: showStats(): Time taken:       264.199 ms
+INFO: showStats(): Throughput:     32399.276 Mbit/s
+batchSize: 15, bufferSize: 256
+INFO: showStats(): Time taken:       282.850 ms
+INFO: showStats(): Throughput:     30262.882 Mbit/s
+batchSize: 15, bufferSize: 512
+INFO: showStats(): Time taken:       315.674 ms
+INFO: showStats(): Throughput:     27116.127 Mbit/s
+batchSize: 15, bufferSize: 1024
+INFO: showStats(): Time taken:       367.445 ms
+INFO: showStats(): Throughput:     23295.612 Mbit/s
+batchSize: 16, bufferSize: 2
+INFO: showStats(): Time taken:       232.363 ms
+INFO: showStats(): Throughput:     36838.293 Mbit/s
+batchSize: 16, bufferSize: 4
+INFO: showStats(): Time taken:       217.354 ms
+INFO: showStats(): Throughput:     39382.096 Mbit/s
+batchSize: 16, bufferSize: 8
+INFO: showStats(): Time taken:       208.096 ms
+INFO: showStats(): Throughput:     41134.170 Mbit/s
+batchSize: 16, bufferSize: 16
+INFO: showStats(): Time taken:       205.437 ms
+INFO: showStats(): Throughput:     41666.575 Mbit/s
+batchSize: 16, bufferSize: 32
+INFO: showStats(): Time taken:       199.792 ms
+INFO: showStats(): Throughput:     42843.839 Mbit/s
+batchSize: 16, bufferSize: 64
+INFO: showStats(): Time taken:       234.646 ms
+INFO: showStats(): Throughput:     36479.873 Mbit/s
+batchSize: 16, bufferSize: 128
+INFO: showStats(): Time taken:       261.035 ms
+INFO: showStats(): Throughput:     32791.987 Mbit/s
+batchSize: 16, bufferSize: 256
+INFO: showStats(): Time taken:       286.160 ms
+INFO: showStats(): Throughput:     29912.833 Mbit/s
+batchSize: 16, bufferSize: 512
+INFO: showStats(): Time taken:       323.650 ms
+INFO: showStats(): Throughput:     26447.879 Mbit/s
+batchSize: 16, bufferSize: 1024
+INFO: showStats(): Time taken:       364.494 ms
+INFO: showStats(): Throughput:     23484.217 Mbit/s
+batchSize: 17, bufferSize: 2
+INFO: showStats(): Time taken:       232.059 ms
+INFO: showStats(): Throughput:     36886.551 Mbit/s
+batchSize: 17, bufferSize: 4
+INFO: showStats(): Time taken:       214.881 ms
+INFO: showStats(): Throughput:     39835.333 Mbit/s
+batchSize: 17, bufferSize: 8
+INFO: showStats(): Time taken:       208.601 ms
+INFO: showStats(): Throughput:     41034.589 Mbit/s
+batchSize: 17, bufferSize: 16
+INFO: showStats(): Time taken:       206.214 ms
+INFO: showStats(): Throughput:     41509.578 Mbit/s
+batchSize: 17, bufferSize: 32
+INFO: showStats(): Time taken:       203.093 ms
+INFO: showStats(): Throughput:     42147.470 Mbit/s
+batchSize: 17, bufferSize: 64
+INFO: showStats(): Time taken:       234.582 ms
+INFO: showStats(): Throughput:     36489.825 Mbit/s
+batchSize: 17, bufferSize: 128
+INFO: showStats(): Time taken:       266.808 ms
+INFO: showStats(): Throughput:     32082.457 Mbit/s
+batchSize: 17, bufferSize: 256
+INFO: showStats(): Time taken:       279.813 ms
+INFO: showStats(): Throughput:     30591.346 Mbit/s
+batchSize: 17, bufferSize: 512
+INFO: showStats(): Time taken:       322.566 ms
+INFO: showStats(): Throughput:     26536.759 Mbit/s
+batchSize: 17, bufferSize: 1024
+INFO: showStats(): Time taken:       367.597 ms
+INFO: showStats(): Throughput:     23285.979 Mbit/s
+batchSize: 18, bufferSize: 2
+INFO: showStats(): Time taken:       237.057 ms
+INFO: showStats(): Throughput:     36108.852 Mbit/s
+batchSize: 18, bufferSize: 4
+INFO: showStats(): Time taken:       219.667 ms
+INFO: showStats(): Throughput:     38967.420 Mbit/s
+batchSize: 18, bufferSize: 8
+INFO: showStats(): Time taken:       216.997 ms
+INFO: showStats(): Throughput:     39446.887 Mbit/s
+batchSize: 18, bufferSize: 16
+INFO: showStats(): Time taken:       209.469 ms
+INFO: showStats(): Throughput:     40864.549 Mbit/s
+batchSize: 18, bufferSize: 32
+INFO: showStats(): Time taken:       208.677 ms
+INFO: showStats(): Throughput:     41019.644 Mbit/s
+batchSize: 18, bufferSize: 64
+INFO: showStats(): Time taken:       241.607 ms
+INFO: showStats(): Throughput:     35428.842 Mbit/s
+batchSize: 18, bufferSize: 128
+INFO: showStats(): Time taken:       267.480 ms
+INFO: showStats(): Throughput:     32001.855 Mbit/s
+batchSize: 18, bufferSize: 256
+INFO: showStats(): Time taken:       289.239 ms
+INFO: showStats(): Throughput:     29594.405 Mbit/s
+batchSize: 18, bufferSize: 512
+INFO: showStats(): Time taken:       326.252 ms
+INFO: showStats(): Throughput:     26236.946 Mbit/s
+batchSize: 18, bufferSize: 1024
+INFO: showStats(): Time taken:       383.888 ms
+INFO: showStats(): Throughput:     22297.796 Mbit/s
+batchSize: 19, bufferSize: 2
+INFO: showStats(): Time taken:       236.221 ms
+INFO: showStats(): Throughput:     36236.644 Mbit/s
+batchSize: 19, bufferSize: 4
+INFO: showStats(): Time taken:       213.561 ms
+INFO: showStats(): Throughput:     40081.551 Mbit/s
+batchSize: 19, bufferSize: 8
+INFO: showStats(): Time taken:       221.990 ms
+INFO: showStats(): Throughput:     38559.648 Mbit/s
+batchSize: 19, bufferSize: 16
+INFO: showStats(): Time taken:       205.112 ms
+INFO: showStats(): Throughput:     41732.596 Mbit/s
+batchSize: 19, bufferSize: 32
+INFO: showStats(): Time taken:       206.834 ms
+INFO: showStats(): Throughput:     41385.150 Mbit/s
+batchSize: 19, bufferSize: 64
+INFO: showStats(): Time taken:       240.206 ms
+INFO: showStats(): Throughput:     35635.480 Mbit/s
+batchSize: 19, bufferSize: 128
+INFO: showStats(): Time taken:       260.604 ms
+INFO: showStats(): Throughput:     32846.220 Mbit/s
+batchSize: 19, bufferSize: 256
+INFO: showStats(): Time taken:       279.364 ms
+INFO: showStats(): Throughput:     30640.513 Mbit/s
+batchSize: 19, bufferSize: 512
+INFO: showStats(): Time taken:       325.884 ms
+INFO: showStats(): Throughput:     26266.574 Mbit/s
+batchSize: 19, bufferSize: 1024
+INFO: showStats(): Time taken:       385.127 ms
+INFO: showStats(): Throughput:     22226.061 Mbit/s
+batchSize: 20, bufferSize: 2
+INFO: showStats(): Time taken:       236.137 ms
+INFO: showStats(): Throughput:     36249.534 Mbit/s
+batchSize: 20, bufferSize: 4
+INFO: showStats(): Time taken:       218.358 ms
+INFO: showStats(): Throughput:     39201.019 Mbit/s
+batchSize: 20, bufferSize: 8
+INFO: showStats(): Time taken:       208.731 ms
+INFO: showStats(): Throughput:     41009.032 Mbit/s
+batchSize: 20, bufferSize: 16
+INFO: showStats(): Time taken:       206.263 ms
+INFO: showStats(): Throughput:     41499.717 Mbit/s
+batchSize: 20, bufferSize: 32
+INFO: showStats(): Time taken:       207.181 ms
+INFO: showStats(): Throughput:     41315.836 Mbit/s
+batchSize: 20, bufferSize: 64
+INFO: showStats(): Time taken:       245.806 ms
+INFO: showStats(): Throughput:     34823.626 Mbit/s
+batchSize: 20, bufferSize: 128
+INFO: showStats(): Time taken:       258.779 ms
+INFO: showStats(): Throughput:     33077.863 Mbit/s
+batchSize: 20, bufferSize: 256
+INFO: showStats(): Time taken:       281.484 ms
+INFO: showStats(): Throughput:     30409.743 Mbit/s
+batchSize: 20, bufferSize: 512
+INFO: showStats(): Time taken:       324.618 ms
+INFO: showStats(): Throughput:     26369.013 Mbit/s
+batchSize: 20, bufferSize: 1024
+INFO: showStats(): Time taken:       377.408 ms
+INFO: showStats(): Throughput:     22680.643 Mbit/s
+batchSize: 21, bufferSize: 2
+INFO: showStats(): Time taken:       232.523 ms
+INFO: showStats(): Throughput:     36812.944 Mbit/s
+batchSize: 21, bufferSize: 4
+INFO: showStats(): Time taken:       219.314 ms
+INFO: showStats(): Throughput:     39030.140 Mbit/s
+batchSize: 21, bufferSize: 8
+INFO: showStats(): Time taken:       213.506 ms
+INFO: showStats(): Throughput:     40091.877 Mbit/s
+batchSize: 21, bufferSize: 16
+INFO: showStats(): Time taken:       210.291 ms
+INFO: showStats(): Throughput:     40704.815 Mbit/s
+batchSize: 21, bufferSize: 32
+INFO: showStats(): Time taken:       206.411 ms
+INFO: showStats(): Throughput:     41469.961 Mbit/s
+batchSize: 21, bufferSize: 64
+INFO: showStats(): Time taken:       247.270 ms
+INFO: showStats(): Throughput:     34617.447 Mbit/s
+batchSize: 21, bufferSize: 128
+INFO: showStats(): Time taken:       265.994 ms
+INFO: showStats(): Throughput:     32180.636 Mbit/s
+batchSize: 21, bufferSize: 256
+INFO: showStats(): Time taken:       289.714 ms
+INFO: showStats(): Throughput:     29545.884 Mbit/s
+batchSize: 21, bufferSize: 512
+INFO: showStats(): Time taken:       322.424 ms
+INFO: showStats(): Throughput:     26548.446 Mbit/s
+batchSize: 21, bufferSize: 1024
+INFO: showStats(): Time taken:       375.549 ms
+INFO: showStats(): Throughput:     22792.914 Mbit/s
+batchSize: 22, bufferSize: 2
+INFO: showStats(): Time taken:       236.676 ms
+INFO: showStats(): Throughput:     36166.980 Mbit/s
+batchSize: 22, bufferSize: 4
+INFO: showStats(): Time taken:       219.340 ms
+INFO: showStats(): Throughput:     39025.514 Mbit/s
+batchSize: 22, bufferSize: 8
+INFO: showStats(): Time taken:       208.194 ms
+INFO: showStats(): Throughput:     41114.807 Mbit/s
+batchSize: 22, bufferSize: 16
+INFO: showStats(): Time taken:       209.773 ms
+INFO: showStats(): Throughput:     40805.329 Mbit/s
+batchSize: 22, bufferSize: 32
+INFO: showStats(): Time taken:       213.762 ms
+INFO: showStats(): Throughput:     40043.863 Mbit/s
+batchSize: 22, bufferSize: 64
+INFO: showStats(): Time taken:       251.308 ms
+INFO: showStats(): Throughput:     34061.217 Mbit/s
+batchSize: 22, bufferSize: 128
+INFO: showStats(): Time taken:       264.128 ms
+INFO: showStats(): Throughput:     32407.985 Mbit/s
+batchSize: 22, bufferSize: 256
+INFO: showStats(): Time taken:       284.949 ms
+INFO: showStats(): Throughput:     30039.959 Mbit/s
+batchSize: 22, bufferSize: 512
+INFO: showStats(): Time taken:       325.061 ms
+INFO: showStats(): Throughput:     26333.077 Mbit/s
+batchSize: 22, bufferSize: 1024
+INFO: showStats(): Time taken:       375.058 ms
+INFO: showStats(): Throughput:     22822.753 Mbit/s
+batchSize: 23, bufferSize: 2
+INFO: showStats(): Time taken:       233.006 ms
+INFO: showStats(): Throughput:     36736.634 Mbit/s
+batchSize: 23, bufferSize: 4
+INFO: showStats(): Time taken:       213.914 ms
+INFO: showStats(): Throughput:     40015.409 Mbit/s
+batchSize: 23, bufferSize: 8
+INFO: showStats(): Time taken:       212.496 ms
+INFO: showStats(): Throughput:     40282.434 Mbit/s
+batchSize: 23, bufferSize: 16
+INFO: showStats(): Time taken:       204.479 ms
+INFO: showStats(): Throughput:     41861.786 Mbit/s
+batchSize: 23, bufferSize: 32
+INFO: showStats(): Time taken:       212.449 ms
+INFO: showStats(): Throughput:     40291.346 Mbit/s
+batchSize: 23, bufferSize: 64
+INFO: showStats(): Time taken:       243.042 ms
+INFO: showStats(): Throughput:     35219.658 Mbit/s
+batchSize: 23, bufferSize: 128
+INFO: showStats(): Time taken:       265.920 ms
+INFO: showStats(): Throughput:     32189.592 Mbit/s
+batchSize: 23, bufferSize: 256
+INFO: showStats(): Time taken:       292.561 ms
+INFO: showStats(): Throughput:     29258.364 Mbit/s
+batchSize: 23, bufferSize: 512
+INFO: showStats(): Time taken:       330.610 ms
+INFO: showStats(): Throughput:     25891.099 Mbit/s
+batchSize: 23, bufferSize: 1024
+INFO: showStats(): Time taken:       387.671 ms
+INFO: showStats(): Throughput:     22080.208 Mbit/s
+batchSize: 24, bufferSize: 2
+INFO: showStats(): Time taken:       235.705 ms
+INFO: showStats(): Throughput:     36315.972 Mbit/s
+batchSize: 24, bufferSize: 4
+INFO: showStats(): Time taken:       214.189 ms
+INFO: showStats(): Throughput:     39964.033 Mbit/s
+batchSize: 24, bufferSize: 8
+INFO: showStats(): Time taken:       218.746 ms
+INFO: showStats(): Throughput:     39131.487 Mbit/s
+batchSize: 24, bufferSize: 16
+INFO: showStats(): Time taken:       206.207 ms
+INFO: showStats(): Throughput:     41510.988 Mbit/s
+batchSize: 24, bufferSize: 32
+INFO: showStats(): Time taken:       212.605 ms
+INFO: showStats(): Throughput:     40261.782 Mbit/s
+batchSize: 24, bufferSize: 64
+INFO: showStats(): Time taken:       244.877 ms
+INFO: showStats(): Throughput:     34955.738 Mbit/s
+batchSize: 24, bufferSize: 128
+INFO: showStats(): Time taken:       262.903 ms
+INFO: showStats(): Throughput:     32558.990 Mbit/s
+batchSize: 24, bufferSize: 256
+INFO: showStats(): Time taken:       285.153 ms
+INFO: showStats(): Throughput:     30018.468 Mbit/s
+batchSize: 24, bufferSize: 512
+INFO: showStats(): Time taken:       323.346 ms
+INFO: showStats(): Throughput:     26472.745 Mbit/s
+batchSize: 24, bufferSize: 1024
+INFO: showStats(): Time taken:       395.137 ms
+INFO: showStats(): Throughput:     21663.009 Mbit/s
+batchSize: 25, bufferSize: 2
+INFO: showStats(): Time taken:       230.361 ms
+INFO: showStats(): Throughput:     37158.443 Mbit/s
+batchSize: 25, bufferSize: 4
+INFO: showStats(): Time taken:       214.388 ms
+INFO: showStats(): Throughput:     39926.937 Mbit/s
+batchSize: 25, bufferSize: 8
+INFO: showStats(): Time taken:       211.409 ms
+INFO: showStats(): Throughput:     40489.554 Mbit/s
+batchSize: 25, bufferSize: 16
+INFO: showStats(): Time taken:       210.758 ms
+INFO: showStats(): Throughput:     40614.621 Mbit/s
+batchSize: 25, bufferSize: 32
+INFO: showStats(): Time taken:       221.189 ms
+INFO: showStats(): Throughput:     38699.285 Mbit/s
+batchSize: 25, bufferSize: 64
+INFO: showStats(): Time taken:       242.690 ms
+INFO: showStats(): Throughput:     35270.741 Mbit/s
+batchSize: 25, bufferSize: 128
+INFO: showStats(): Time taken:       270.563 ms
+INFO: showStats(): Throughput:     31637.202 Mbit/s
+batchSize: 25, bufferSize: 256
+INFO: showStats(): Time taken:       287.427 ms
+INFO: showStats(): Throughput:     29780.975 Mbit/s
+batchSize: 25, bufferSize: 512
+INFO: showStats(): Time taken:       337.669 ms
+INFO: showStats(): Throughput:     25349.843 Mbit/s
+batchSize: 25, bufferSize: 1024
+INFO: showStats(): Time taken:       388.702 ms
+INFO: showStats(): Throughput:     22021.642 Mbit/s
+batchSize: 26, bufferSize: 2
+INFO: showStats(): Time taken:       239.948 ms
+INFO: showStats(): Throughput:     35673.797 Mbit/s
+batchSize: 26, bufferSize: 4
+INFO: showStats(): Time taken:       212.158 ms
+INFO: showStats(): Throughput:     40346.611 Mbit/s
+batchSize: 26, bufferSize: 8
+INFO: showStats(): Time taken:       208.050 ms
+INFO: showStats(): Throughput:     41143.265 Mbit/s
+batchSize: 26, bufferSize: 16
+INFO: showStats(): Time taken:       209.079 ms
+INFO: showStats(): Throughput:     40940.775 Mbit/s
+batchSize: 26, bufferSize: 32
+INFO: showStats(): Time taken:       216.793 ms
+INFO: showStats(): Throughput:     39484.006 Mbit/s
+batchSize: 26, bufferSize: 64
+INFO: showStats(): Time taken:       249.791 ms
+INFO: showStats(): Throughput:     34268.073 Mbit/s
+batchSize: 26, bufferSize: 128
+INFO: showStats(): Time taken:       268.364 ms
+INFO: showStats(): Throughput:     31896.440 Mbit/s
+batchSize: 26, bufferSize: 256
+INFO: showStats(): Time taken:       294.558 ms
+INFO: showStats(): Throughput:     29060.002 Mbit/s
+batchSize: 26, bufferSize: 512
+INFO: showStats(): Time taken:       335.026 ms
+INFO: showStats(): Throughput:     25549.827 Mbit/s
+batchSize: 26, bufferSize: 1024
+INFO: showStats(): Time taken:       401.613 ms
+INFO: showStats(): Throughput:     21313.693 Mbit/s
+batchSize: 27, bufferSize: 2
+INFO: showStats(): Time taken:       233.342 ms
+INFO: showStats(): Throughput:     36683.735 Mbit/s
+batchSize: 27, bufferSize: 4
+INFO: showStats(): Time taken:       222.704 ms
+INFO: showStats(): Throughput:     38436.024 Mbit/s
+batchSize: 27, bufferSize: 8
+INFO: showStats(): Time taken:       215.432 ms
+INFO: showStats(): Throughput:     39733.448 Mbit/s
+batchSize: 27, bufferSize: 16
+INFO: showStats(): Time taken:       210.736 ms
+INFO: showStats(): Throughput:     40618.861 Mbit/s
+batchSize: 27, bufferSize: 32
+INFO: showStats(): Time taken:       221.162 ms
+INFO: showStats(): Throughput:     38704.010 Mbit/s
+batchSize: 27, bufferSize: 64
+INFO: showStats(): Time taken:       252.319 ms
+INFO: showStats(): Throughput:     33924.739 Mbit/s
+batchSize: 27, bufferSize: 128
+INFO: showStats(): Time taken:       261.733 ms
+INFO: showStats(): Throughput:     32704.536 Mbit/s
+batchSize: 27, bufferSize: 256
+INFO: showStats(): Time taken:       297.835 ms
+INFO: showStats(): Throughput:     28740.263 Mbit/s
+batchSize: 27, bufferSize: 512
+INFO: showStats(): Time taken:       332.169 ms
+INFO: showStats(): Throughput:     25769.582 Mbit/s
+batchSize: 27, bufferSize: 1024
+INFO: showStats(): Time taken:       391.476 ms
+INFO: showStats(): Throughput:     21865.596 Mbit/s
+batchSize: 28, bufferSize: 2
+INFO: showStats(): Time taken:       235.678 ms
+INFO: showStats(): Throughput:     36320.133 Mbit/s
+batchSize: 28, bufferSize: 4
+INFO: showStats(): Time taken:       218.072 ms
+INFO: showStats(): Throughput:     39252.431 Mbit/s
+batchSize: 28, bufferSize: 8
+INFO: showStats(): Time taken:       211.880 ms
+INFO: showStats(): Throughput:     40399.548 Mbit/s
+batchSize: 28, bufferSize: 16
+INFO: showStats(): Time taken:       201.636 ms
+INFO: showStats(): Throughput:     42452.023 Mbit/s
+batchSize: 28, bufferSize: 32
+INFO: showStats(): Time taken:       222.917 ms
+INFO: showStats(): Throughput:     38399.297 Mbit/s
+batchSize: 28, bufferSize: 64
+INFO: showStats(): Time taken:       245.507 ms
+INFO: showStats(): Throughput:     34866.037 Mbit/s
+batchSize: 28, bufferSize: 128
+INFO: showStats(): Time taken:       267.098 ms
+INFO: showStats(): Throughput:     32047.624 Mbit/s
+batchSize: 28, bufferSize: 256
+INFO: showStats(): Time taken:       292.553 ms
+INFO: showStats(): Throughput:     29259.164 Mbit/s
+batchSize: 28, bufferSize: 512
+INFO: showStats(): Time taken:       344.510 ms
+INFO: showStats(): Throughput:     24846.467 Mbit/s
+batchSize: 28, bufferSize: 1024
+INFO: showStats(): Time taken:       413.550 ms
+INFO: showStats(): Throughput:     20698.480 Mbit/s
+batchSize: 29, bufferSize: 2
+INFO: showStats(): Time taken:       231.876 ms
+INFO: showStats(): Throughput:     36915.663 Mbit/s
+batchSize: 29, bufferSize: 4
+INFO: showStats(): Time taken:       219.612 ms
+INFO: showStats(): Throughput:     38977.179 Mbit/s
+batchSize: 29, bufferSize: 8
+INFO: showStats(): Time taken:       209.598 ms
+INFO: showStats(): Throughput:     40839.398 Mbit/s
+batchSize: 29, bufferSize: 16
+INFO: showStats(): Time taken:       206.103 ms
+INFO: showStats(): Throughput:     41531.934 Mbit/s
+batchSize: 29, bufferSize: 32
+INFO: showStats(): Time taken:       230.260 ms
+INFO: showStats(): Throughput:     37174.742 Mbit/s
+batchSize: 29, bufferSize: 64
+INFO: showStats(): Time taken:       250.383 ms
+INFO: showStats(): Throughput:     34187.050 Mbit/s
+batchSize: 29, bufferSize: 128
+INFO: showStats(): Time taken:       269.999 ms
+INFO: showStats(): Throughput:     31703.289 Mbit/s
+batchSize: 29, bufferSize: 256
+INFO: showStats(): Time taken:       292.815 ms
+INFO: showStats(): Throughput:     29232.984 Mbit/s
+batchSize: 29, bufferSize: 512
+INFO: showStats(): Time taken:       343.351 ms
+INFO: showStats(): Throughput:     24930.337 Mbit/s
+batchSize: 29, bufferSize: 1024
+INFO: showStats(): Time taken:       407.495 ms
+INFO: showStats(): Throughput:     21006.040 Mbit/s
+batchSize: 30, bufferSize: 2
+INFO: showStats(): Time taken:       236.511 ms
+INFO: showStats(): Throughput:     36192.212 Mbit/s
+batchSize: 30, bufferSize: 4
+INFO: showStats(): Time taken:       216.842 ms
+INFO: showStats(): Throughput:     39475.084 Mbit/s
+batchSize: 30, bufferSize: 8
+INFO: showStats(): Time taken:       212.714 ms
+INFO: showStats(): Throughput:     40241.151 Mbit/s
+batchSize: 30, bufferSize: 16
+INFO: showStats(): Time taken:       206.961 ms
+INFO: showStats(): Throughput:     41359.755 Mbit/s
+batchSize: 30, bufferSize: 32
+INFO: showStats(): Time taken:       232.581 ms
+INFO: showStats(): Throughput:     36803.764 Mbit/s
+batchSize: 30, bufferSize: 64
+INFO: showStats(): Time taken:       248.552 ms
+INFO: showStats(): Throughput:     34438.895 Mbit/s
+batchSize: 30, bufferSize: 128
+INFO: showStats(): Time taken:       268.413 ms
+INFO: showStats(): Throughput:     31890.617 Mbit/s
+batchSize: 30, bufferSize: 256
+INFO: showStats(): Time taken:       289.048 ms
+INFO: showStats(): Throughput:     29613.961 Mbit/s
+batchSize: 30, bufferSize: 512
+INFO: showStats(): Time taken:       335.144 ms
+INFO: showStats(): Throughput:     25540.831 Mbit/s
+batchSize: 30, bufferSize: 1024
+INFO: showStats(): Time taken:       415.890 ms
+INFO: showStats(): Throughput:     20582.020 Mbit/s
+batchSize: 31, bufferSize: 2
+INFO: showStats(): Time taken:       234.743 ms
+INFO: showStats(): Throughput:     36464.799 Mbit/s
+batchSize: 31, bufferSize: 4
+INFO: showStats(): Time taken:       214.875 ms
+INFO: showStats(): Throughput:     39836.445 Mbit/s
+batchSize: 31, bufferSize: 8
+INFO: showStats(): Time taken:       208.379 ms
+INFO: showStats(): Throughput:     41078.305 Mbit/s
+batchSize: 31, bufferSize: 16
+INFO: showStats(): Time taken:       205.407 ms
+INFO: showStats(): Throughput:     41672.661 Mbit/s
+batchSize: 31, bufferSize: 32
+INFO: showStats(): Time taken:       237.083 ms
+INFO: showStats(): Throughput:     36104.892 Mbit/s
+batchSize: 31, bufferSize: 64
+INFO: showStats(): Time taken:       254.442 ms
+INFO: showStats(): Throughput:     33641.679 Mbit/s
+batchSize: 31, bufferSize: 128
+INFO: showStats(): Time taken:       271.266 ms
+INFO: showStats(): Throughput:     31555.212 Mbit/s
+batchSize: 31, bufferSize: 256
+INFO: showStats(): Time taken:       297.256 ms
+INFO: showStats(): Throughput:     28796.244 Mbit/s
+batchSize: 31, bufferSize: 512
+INFO: showStats(): Time taken:       334.548 ms
+INFO: showStats(): Throughput:     25586.332 Mbit/s
+batchSize: 31, bufferSize: 1024
+INFO: showStats(): Time taken:       412.569 ms
+INFO: showStats(): Throughput:     20747.696 Mbit/s
+batchSize: 32, bufferSize: 2
+INFO: showStats(): Time taken:       226.309 ms
+INFO: showStats(): Throughput:     37823.755 Mbit/s
+batchSize: 32, bufferSize: 4
+INFO: showStats(): Time taken:       224.373 ms
+INFO: showStats(): Throughput:     38150.117 Mbit/s
+batchSize: 32, bufferSize: 8
+INFO: showStats(): Time taken:       202.189 ms
+INFO: showStats(): Throughput:     42335.914 Mbit/s
+batchSize: 32, bufferSize: 16
+INFO: showStats(): Time taken:       208.877 ms
+INFO: showStats(): Throughput:     40980.367 Mbit/s
+batchSize: 32, bufferSize: 32
+INFO: showStats(): Time taken:       229.551 ms
+INFO: showStats(): Throughput:     37289.562 Mbit/s
+batchSize: 32, bufferSize: 64
+INFO: showStats(): Time taken:       246.500 ms
+INFO: showStats(): Throughput:     34725.583 Mbit/s
+batchSize: 32, bufferSize: 128
+INFO: showStats(): Time taken:       271.694 ms
+INFO: showStats(): Throughput:     31505.503 Mbit/s
+batchSize: 32, bufferSize: 256
+INFO: showStats(): Time taken:       299.017 ms
+INFO: showStats(): Throughput:     28626.654 Mbit/s
+batchSize: 32, bufferSize: 512
+INFO: showStats(): Time taken:       344.324 ms
+INFO: showStats(): Throughput:     24859.888 Mbit/s
+batchSize: 32, bufferSize: 1024
+INFO: showStats(): Time taken:       413.049 ms
+INFO: showStats(): Throughput:     20723.585 Mbit/s
