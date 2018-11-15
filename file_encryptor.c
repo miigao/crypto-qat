@@ -18,7 +18,6 @@
 #include "rt_utils.h"
 #include "icp_sal_poll.h"
 
-#define batchSize	16
 #define TIMEOUT_MS  5000    // 5 seconds
 #define MAX_PATH    1024
 // Function qatMemAllocNUMA can only allocate a contiguous memory with size up
@@ -38,13 +37,16 @@ typedef struct {
 	short *qu;
 	short *R;
 	short index;
-}callbackArgs;
+        unsigned int batchSize;
+}callbackArgs;	//Arguments needed in the callback phase.
 
 typedef struct {
     int isEnc;
     int nrThread;
     char fileToEncrypt[MAX_PATH];
     char fileToWrite[MAX_PATH];
+    unsigned int batchSize;
+    unsigned int bufferSize;
 } CmdlineArgs;
 
 typedef struct {
@@ -53,6 +55,8 @@ typedef struct {
     int isEnc;
     int threadId;
     int nrThread;
+    unsigned int batchSize;
+    unsigned int bufferSize;
 } WorkerArgs;
 
 typedef struct {
@@ -80,6 +84,8 @@ static QatHardware gQatHardware = {
     .nrCyInstHandles = 0,
     .idx = 0};
 static CmdlineArgs gCmdlineArgs = {
+    .batchSize = 16,
+    .bufferSize = 128,
     .isEnc = 1,
     .nrThread = 1};
 
@@ -147,43 +153,49 @@ static void symCallback(void *pCallbackTag,
 {
 	callbackArgs *myArgs = (callbackArgs *)pCallbackTag;
 	RT_PRINT_DBG("Callback called with status = %d.\n", status);
+
 	//Plus by one to indicate a task is done.
 	*(myArgs->cnt) = *(myArgs->cnt) + 1;
+
+	//Withdraw a bufferList.
 	*((myArgs->qu) + *(myArgs->R)) = myArgs->index;
-	*(myArgs->R) = (*(myArgs->R) + 1)%(batchSize + 1);
+	*(myArgs->R) = (*(myArgs->R) + 1)%(myArgs->batchSize + 1);
+
 	memcpy(myArgs->pDst, myArgs->pSrc, myArgs->size);
 }
 
 static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
                                  CpaCySymSessionCtx sessionCtx,
                                  char *src, unsigned int srcLen,
-                                 char *dst, unsigned int dstLen)
+                                 char *dst, unsigned int dstLen, unsigned int batchSize, unsigned int bufferSize)
 {
 	CpaStatus status = CPA_STATUS_SUCCESS;
-	Cpa32U numBuffers = 1, bufferMetaSize, thisBatch, cnt, numTaskDone, bufferSize = 1024*128, rounds, tail, sent;
-	Cpa8U *pBufferMeta = NULL, *pSrcBuffer[batchSize] = {NULL}, *pTailSrcBuffer = NULL;
-	CpaBufferList *pBufferList[batchSize] = {NULL};
+	Cpa32U numBuffers = 1, bufferMetaSize, i, numTaskDone, rounds, tail, sent;
+	Cpa8U *pBufferMeta = NULL, *pSrcBuffer[100] = {NULL}, *pTailSrcBuffer = NULL;
+	CpaBufferList *pBufferList[100] = {NULL};
 	CpaFlatBuffer *pFlatBuffer = NULL;
 	CpaCySymOpData *pOpData = NULL;
 	Cpa32U bufferListMemSize = sizeof(CpaBufferList) + (numBuffers * sizeof(CpaFlatBuffer));
-	callbackArgs myArgs[batchSize];
-	short qu[batchSize + 1], H = 0, R = 0;
+	callbackArgs myArgs[100];
+	short qu[120], H = 0, R = 0, pollingInterval;	//qu is a queue,its elements are indices of bufferLists not in use. H is head-pointer,R is rear-pointer.
 	
+	bufferSize *= 1024;	//Unit of bufferSize is K.
 	rounds = srcLen/bufferSize; tail = srcLen%bufferSize;
+	pollingInterval = (batchSize >= 2 ? batchSize/2 : 1);
 	
 	status = cpaCyBufferListGetMetaSize(cyInstHandle, numBuffers, &bufferMetaSize);
 	
 	if (CPA_STATUS_SUCCESS == status){
 		status = PHYS_CONTIG_ALLOC(&pBufferMeta, bufferMetaSize);
-    }
+	}
 	
-	for (cnt = 0; CPA_STATUS_SUCCESS == status && cnt < batchSize; cnt++){
-		status = OS_MALLOC(&pBufferList[cnt], bufferListMemSize);
-    }
+	for (i = 0; CPA_STATUS_SUCCESS == status && i < batchSize; i++){
+		status = OS_MALLOC(&pBufferList[i], bufferListMemSize);
+	}
 	
-	for (cnt = 0; CPA_STATUS_SUCCESS == status && cnt < batchSize; cnt++){
-		status = PHYS_CONTIG_ALLOC(&pSrcBuffer[cnt], bufferSize);
-    }
+	for (i = 0; CPA_STATUS_SUCCESS == status && i < batchSize; i++){
+		status = PHYS_CONTIG_ALLOC(&pSrcBuffer[i], bufferSize);
+	}
 	
 	if (tail && CPA_STATUS_SUCCESS == status){
 		status = PHYS_CONTIG_ALLOC(&pTailSrcBuffer, tail);
@@ -200,39 +212,48 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
 		pOpData->messageLenToCipherInBytes = bufferSize;
 		pOpData->pIv = NULL;
 		pOpData->ivLenInBytes = 0;
-    }
-	for (cnt = 0; CPA_STATUS_SUCCESS == status && cnt < batchSize; cnt++){
-		/* increment by sizeof(CpaBufferList) to get at the array of flatbuffers */
-		pFlatBuffer = (CpaFlatBuffer *)(pBufferList[cnt] + 1);
+	}
 
-		pBufferList[cnt]->pBuffers = pFlatBuffer;
-		pBufferList[cnt]->numBuffers = numBuffers;
-		pBufferList[cnt]->pPrivateMetaData = pBufferMeta;
+	for (i = 0; CPA_STATUS_SUCCESS == status && i < batchSize; i++){
+		/* increment by sizeof(CpaBufferList) to get at the array of flatbuffers */
+		pFlatBuffer = (CpaFlatBuffer *)(pBufferList[i] + 1);
+
+		pBufferList[i]->pBuffers = pFlatBuffer;
+		pBufferList[i]->numBuffers = numBuffers;
+		pBufferList[i]->pPrivateMetaData = pBufferMeta;
 
 		pFlatBuffer->dataLenInBytes = bufferSize;
-		pFlatBuffer->pData = pSrcBuffer[cnt];
+		pFlatBuffer->pData = pSrcBuffer[i];
 		//Initialize some args for callback function.
-		myArgs[cnt].cnt = &numTaskDone; myArgs[cnt].size = bufferSize; myArgs[cnt].pSrc = (char *)pSrcBuffer[cnt];
-		myArgs[cnt].qu = &qu[0]; myArgs[cnt].R = &R;
+		myArgs[i].cnt = &numTaskDone; myArgs[i].size = bufferSize; myArgs[i].pSrc = (char *)pSrcBuffer[i];
+		myArgs[i].qu = &qu[0]; myArgs[i].R = &R; myArgs[i].batchSize = batchSize;
 	}
-	for (cnt = 0; cnt < batchSize; cnt++) {
-		qu[R] = cnt;
+
+	//Initialize the queue.
+	for (i = 0; i < batchSize; i++) {
+		qu[R] = i;
 		R = (R + 1)%(batchSize + 1);
 	}
+
 	numTaskDone = 0; sent = 0;
 	while (1) {
 		if (numTaskDone == rounds) break;
 		while (CPA_STATUS_SUCCESS == status && R != H && sent < rounds){
-			cnt = qu[H];
+			//DeQueue.
+			i = qu[H];
 			H = (H + 1)%(batchSize + 1);
-			memcpy(pSrcBuffer[cnt], src, bufferSize);
-			myArgs[cnt].pDst = dst; myArgs[cnt].index = cnt;
+
+			memcpy(pSrcBuffer[i], src, bufferSize);
+			myArgs[i].pDst = dst; myArgs[i].index = i;
 			src += bufferSize; dst += bufferSize;
 			
 			RT_PRINT_DBG("cpaCySymPerformOp\n");
-			status = cpaCySymPerformOp(cyInstHandle, (void *)&myArgs[cnt], pOpData, pBufferList[cnt], pBufferList[cnt], NULL);
+			status = cpaCySymPerformOp(cyInstHandle, (void *)&myArgs[i], pOpData, pBufferList[i], pBufferList[i], NULL);
 			sent++;
+			if (sent%pollingInterval == 0)
+				icp_sal_CyPollInstance(cyInstHandle, 0);
 		}
+
 		if (CPA_STATUS_SUCCESS == status && numTaskDone < rounds){
 			icp_sal_CyPollInstance(cyInstHandle, 0);
 		}
@@ -267,9 +288,9 @@ static CpaStatus cipherPerformOp(CpaInstanceHandle cyInstHandle,
 		RT_PRINT("cpaCySymPerformOp failed. (status = %d)\n", status);
 	}
 	//Free memory.
-	for (cnt = 0; cnt < batchSize; cnt++){
-		PHYS_CONTIG_FREE(pSrcBuffer[cnt]);
-		OS_FREE(pBufferList[cnt]);
+	for (i = 0; i < batchSize; i++){
+		PHYS_CONTIG_FREE(pSrcBuffer[i]);
+		OS_FREE(pBufferList[i]);
 	}
 	PHYS_CONTIG_FREE(pBufferMeta);
 	PHYS_CONTIG_FREE(pTailSrcBuffer);
@@ -365,7 +386,7 @@ void qatAes256EcbSessionFree(QatAes256EcbSession *sess)
 }
 
 CpaStatus qatAes256EcbEnc(char *src, unsigned int srcLen, char *dst,
-        unsigned int dstLen, int isEnc)
+        unsigned int dstLen, int isEnc, unsigned int batchSize, unsigned int bufferSize)
 {
     //extern int gDebugParam;
     CpaStatus rc = CPA_STATUS_SUCCESS;
@@ -375,7 +396,7 @@ CpaStatus qatAes256EcbEnc(char *src, unsigned int srcLen, char *dst,
     // Acquire a QAT_CY instance & initialize a QAT_CY_SYM_AES_256_ECB session
     qatAes256EcbSessionInit(sess, isEnc);
     // Perform Cipher operation (sync / async / batch, etc.)
-    rc = cipherPerformOp(sess->cyInstHandle, sess->ctx, src, srcLen, dst, dstLen);
+    rc = cipherPerformOp(sess->cyInstHandle, sess->ctx, src, srcLen, dst, dstLen, batchSize, bufferSize);
     // Wait for inflight requests before free resources
     symSessionWaitForInflightReq(sess->ctx);
 
@@ -410,7 +431,7 @@ void *workerThreadStart(void *threadArgs)
     char *dst = args->dst + offInBytes;
     unsigned int dstLen = srcLen;
 
-    CHECK(qatAes256EcbEnc(src, srcLen, dst, dstLen, args->isEnc));
+    CHECK(qatAes256EcbEnc(src, srcLen, dst, dstLen, args->isEnc, args->batchSize, args->bufferSize));
 
     return NULL;
 }
@@ -468,6 +489,8 @@ void doEncryptFile(CmdlineArgs *cmdlineArgs)
         args[i].isEnc = cmdlineArgs->isEnc;
         args[i].nrThread = cmdlineArgs->nrThread;
         args[i].threadId = i;
+        args[i].batchSize = cmdlineArgs->batchSize;
+        args[i].bufferSize = cmdlineArgs->bufferSize;
     }
     
     // \begin timer
@@ -511,6 +534,8 @@ void printUsage(const char *progname)
     printf("Usage: %s [options] <file_to_enc>\n", progname);
     printf("Program options:\n");
     printf("    -t  --thread <INT>          Number of thread to co-operate the given file\n");
+    printf("    -b  --batchSize <INT>       Number of bufferList to co-operate in a thread\n");
+    printf("    -B  --bufferSize <INT>      Size of buffer in a bufferList(unit:K)\n");
     printf("    -w  --file_to_write <PATH>  File to save output data\n");
     printf("    -d  --decrypt               Switch to decryption mode\n");
     printf("    -h  --help                  This message\n");
@@ -519,18 +544,20 @@ void printUsage(const char *progname)
 // About code style: since QAT APIs use camel case, we begin to follow it.
 int main(int argc, char *argv[])
 {
-    // \begin parse commandline args
+    // \begin parsei commandline args
     int opt;
 
     static struct option longOptions[] = {
         {"thread",        required_argument, 0, 't'},
+        {"batchSize",     required_argument, 0, 'b'},
+        {"bufferSize",    required_argument, 0, 'B'},
         {"file_to_write", required_argument, 0, 'w'},
         {"decrypt",       no_argument,       0, 'd'},
         {"help",          no_argument,       0, 'h'},
         {0,               0,                 0,  0 }
     };
 
-    while ((opt = getopt_long(argc, argv, "t:w:dh", longOptions, NULL)) != -1) {
+    while ((opt = getopt_long(argc, argv, "t:b:B:w:dh", longOptions, NULL)) != -1) {
         switch (opt) {
             case 't':
                 gCmdlineArgs.nrThread = atoi(optarg);
@@ -541,6 +568,12 @@ int main(int argc, char *argv[])
                 break;
             case 'd':
                 gCmdlineArgs.isEnc = 0;
+                break;
+            case 'b':
+                gCmdlineArgs.batchSize = atoi(optarg);
+                break;
+            case 'B':
+                gCmdlineArgs.bufferSize = atoi(optarg);
                 break;
             case 'h':
             case '?':
